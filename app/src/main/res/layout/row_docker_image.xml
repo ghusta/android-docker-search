@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/listitem_image_stars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:drawablePadding="1dp"
+        android:drawableTop="@android:drawable/star_off"
+        android:gravity="center_vertical"
+        android:minWidth="30dp"
+        android:text="123"
+        android:textAlignment="center"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/listitem_image_stars"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/listitem_image_official"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_verified_user"
+            android:alpha="0.4"  />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/listitem_image_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@id/listitem_image_stars"
+        android:ellipsize="end"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/textColorPrimary"
+        />
+
+    <TextView
+        android:id="@+id/listitem_image_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/listitem_image_name"
+        android:layout_toStartOf="@+id/listitem_image_stars"
+        android:ellipsize="end"
+        android:maxLines="2"/>
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/box_stars"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_alignParentEnd="true">-->
+    <!--<ImageView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:srcCompat="@android:drawable/star_off"-->
+    <!--android:baselineAlignBottom="false"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/listitem_image_stars"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--/>-->
+    <!--</LinearLayout>-->
+
+</RelativeLayout>

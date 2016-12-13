@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_action_search"
+        android:title="@string/search_title"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+    <!--android:actionViewClass="android.widget.SearchView"-->
+
+    <item
+        android:id="@+id/menu_clear_search_history"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:onClick="clickClearSearchHistory"
+        android:title="@string/clear_search_history"/>
+
+    <item
+        android:id="@+id/menu_submit_issue"
+        android:icon="@android:drawable/ic_menu_send"
+        android:onClick="clickSubmitIssue"
+        android:title="@string/action_report_issue"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_contribute"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:onClick="clickContribute"
+        android:title="@string/action_contribute"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_note_app"
+        android:icon="@android:drawable/star_big_on"
+        android:onClick="clickNoteApp"
+        android:title="@string/action_rate_app"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_about"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:onClick="clickAbout"
+        android:title="@string/about"
+        app:showAsAction="never"/>
+
+</menu>

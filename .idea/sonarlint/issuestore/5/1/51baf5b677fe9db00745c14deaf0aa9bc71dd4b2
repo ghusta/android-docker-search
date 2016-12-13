@@ -1,0 +1,19 @@
+
+gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(”Æ‰Ó8µþ¨‡Ž+
+}squid:S1188"\Reduce this anonymous class number of lines from 23 to at most 20, or make it a named class.(þ¾™Ýûÿÿÿÿ8„«£ŒŒ+
+esquid:HiddenFieldCheck">Rename "searchView" which hides the field declared at line 62.( Ì„î8µþ¨‡Ž+
+gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Ú°à¬8ç¿úß+
+:squid:S1166"%Either log or rethrow this exception.(çÔÑû
+Ysquid:UselessImportCheck"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8µþ¨‡Ž+
+Tsquid:UselessParenthesesCheck"!Remove those useless parentheses.(õ§¼ïýÿÿÿÿ8ÃÒïß+
+wsquid:S1188"\Reduce this anonymous class number of lines from 27 to at most 20, or make it a named class.(èàôi8Ñ¿õÌ+
+Psquid:S2696"6Make the enclosing method "static" or remove this set.(û˜´ùÿÿÿÿ
+Psquid:S1444"6Make this "public static APP_PACKAGE_NAME" field final(¬¯àŸûÿÿÿÿ
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(œÜ¯‹ýÿÿÿÿ8ç¿úß+
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Šó¶úÿÿÿÿ8ç¿úß+
+gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Þ…íÚ8ÁóÓØ+
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ªè«Ôúÿÿÿÿ8ÁóÓØ+
+"squid:ClassVariableVisibilityCheck"\Make APP_PACKAGE_NAME a static final constant or non-public and provide accessors if needed.(¬¯àŸûÿÿÿÿ
+osquid:MaximumInheritanceDepth"<This class has 7 parents which is greater than 5 authorized.(ù ®Íúÿÿÿÿ8èùœŽ+
+usquid:S3008"[Rename this field "APP_PACKAGE_NAME" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¬¯àŸûÿÿÿÿ
+Ssquid:S1135"2Complete the task associated to this TODO comment.(Þ£Žíþÿÿÿÿ8‰óô˜+

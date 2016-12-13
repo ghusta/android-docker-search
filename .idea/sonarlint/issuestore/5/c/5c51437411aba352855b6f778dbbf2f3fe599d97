@@ -1,0 +1,6 @@
+
+gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÿ¢ù¼8õÊ¥ù+
+Tsquid:S1213"8Move this variable to comply with Java Code Conventions.(º§Ž«8è…ÿÞ+
+\squid:S1213";Move this constructor to comply with Java Code Conventions.(¼¢£Êûÿÿÿÿ8è…ÿÞ+
+fsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ø‹‘8ÉËŽù+
+¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(åÏ¨ûÿÿÿÿ8±å¶ñŒ+

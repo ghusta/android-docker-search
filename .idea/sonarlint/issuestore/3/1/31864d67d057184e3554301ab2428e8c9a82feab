@@ -1,0 +1,7 @@
+
+\squid:UselessImportCheck".Remove this unused import 'android.os.Parcel'.(˜ÂÍóûÿÿÿÿ8‘„ß+
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ûº“Ãùÿÿÿÿ8²¯·+
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ç†¥ıÿÿÿÿ8× ¸+
+[squid:UselessImportCheck"2Remove this unused import 'android.os.Parcelable'.(õÃÀ­8¹ÚäŞ+
+dsquid:S1226"HIntroduce a new variable instead of reusing the parameter "convertView".(‹‡±ï8 ÍÕ‡Œ+
+Œsquid:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(‚‰§°8õ¨ß+

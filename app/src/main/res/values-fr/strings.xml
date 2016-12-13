@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_title">Rechercher</string>
+    <string name="about">À propos</string>
+    <string name="msg_cleared_search_history">Historique des recherches supprimé</string>
+    <string name="clear_search_history">Effacer l\'historique des recherches</string>
+
+    <string name="action_settings">Paramètres</string>
+    <string name="action_contribute">Contribuez !</string>
+    <string name="action_rate_app">Noter l\'appli</string>
+    <string name="action_report_issue">Signaler un problème</string>
+    <string name="action_about">À propos</string>
+
+    <string name="msg_err_playstore_not_installed">Play Store non installé ?</string>
+    <string name="Official">Officiel</string>
+    <string name="msg_searching">Recherche…</string>
+</resources>
