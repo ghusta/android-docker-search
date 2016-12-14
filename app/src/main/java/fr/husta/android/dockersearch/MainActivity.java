@@ -238,6 +238,7 @@ public class MainActivity extends AppCompatActivity
             public void onResponse(Call<ContainerImageSearchResult> call, Response<ContainerImageSearchResult> response)
             {
                 ContainerImageSearchResult body = response.body();
+                Log.d(TAG, "searchImagesAsync.onResponse: returned " + body.getResults().size() + " out of " + body.getNumResults());
                 Collections.sort(body.getResults(), new DefaultImageSearchComparator());
                 dockerImageListAdapter.setNotifyOnChange(false);
                 dockerImageListAdapter.clear();

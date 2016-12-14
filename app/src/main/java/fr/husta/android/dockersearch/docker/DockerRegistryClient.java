@@ -31,7 +31,7 @@ public class DockerRegistryClient
     public void searchImagesAsync(String term, Callback<ContainerImageSearchResult> callback)
     {
 
-        final int pageSize = 25; // max = 100
+        final int pageSize = 30; // max = 100
 //        final WebTarget resource = resource().path("v1").path("search").queryParam("q", term).queryParam("n", pageSize);
 //        Response response = resource.request()
 //                .accept(MediaType.APPLICATION_JSON).get();
@@ -48,7 +48,7 @@ public class DockerRegistryClient
                 .build();
 
         DockerSearchRestService dockerSearchService = retrofit.create(DockerSearchRestService.class);
-        Call<ContainerImageSearchResult> call = dockerSearchService.searchImages(term);
+        Call<ContainerImageSearchResult> call = dockerSearchService.searchImages(term, pageSize);
         Log.d("DOCKER_CLIENT", "Calling Docker Registry API (searchImages)...");
         call.enqueue(callback);
     }
