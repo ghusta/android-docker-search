@@ -14,4 +14,8 @@
     <string name="msg_err_playstore_not_installed">Play Store non installé ?</string>
     <string name="Official">Officiel</string>
     <string name="msg_searching">Recherche…</string>
+    <string name="msg_about_credits">Cette application fonctionne avec :</string>
+    <string name="msg_about_version">Version : %s</string>
+    <string name="msg_about_docker_website">Site web : https://www.docker.com</string>
+    <string name="msg_no_network_connection">Aucune connexion Internet !</string>
 </resources>

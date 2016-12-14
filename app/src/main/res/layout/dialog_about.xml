@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:padding="20dip">
+              android:padding="10dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -18,9 +18,30 @@
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:paddingTop="20dip"
-        android:text="Hello World..."
+        android:text="@string/msg_about_credits"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"/>
-    <!--android:text="@string/app_credits"-->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/docker_logo_small"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:paddingTop="20dip"
+        android:text="@string/msg_about_docker_website"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/about_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="16sp"/>
 
 </LinearLayout>

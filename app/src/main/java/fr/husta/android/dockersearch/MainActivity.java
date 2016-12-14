@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity
         progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressBar.setMessage(getString(R.string.msg_searching));
 
-        // TODO: use async ?
         checkInternetConnection();
 
         listView = (ListView) findViewById(R.id.listView);
@@ -308,9 +307,12 @@ public class MainActivity extends AppCompatActivity
         TextView textView = (TextView) messageView.findViewById(R.id.about_credits);
         int defaultColor = textView.getTextColors().getDefaultColor();
         textView.setTextColor(defaultColor);
-        textView.setText("Une application créée avec les doigts.\n" +
-                "\n" +
-                "v" + applicationVersion);
+
+        TextView textViewVersion = (TextView) messageView.findViewById(R.id.about_version);
+        textViewVersion.setText(String.format(
+                getString(R.string.msg_about_version),
+                applicationVersion
+        ));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         ApplicationInfo applicationInfo = getApplicationInfo();
@@ -319,6 +321,7 @@ public class MainActivity extends AppCompatActivity
         builder.setIcon(icon);
         builder.setTitle(R.string.app_name);
         builder.setView(messageView);
+        builder.setPositiveButton(android.R.string.ok, null);
         builder.create();
         builder.show();
     }
