@@ -12,36 +12,51 @@
         android:textColor="?android:attr/textColorPrimaryInverse"
         android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/about_credits"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:paddingTop="20dip"
-        android:text="@string/msg_about_credits"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"/>
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/docker_logo_small"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:paddingTop="20dip"
-        android:text="@string/msg_about_docker_website"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/about_credits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:paddingTop="20dip"
+                android:text="@string/msg_about_credits"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/about_version"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/docker_logo_small"
+                android:contentDescription="Docker Logo"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:paddingTop="20dip"
+                android:text="@string/msg_about_docker_website"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/about_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"
+                android:text="Version : "/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
