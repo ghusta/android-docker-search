@@ -3,9 +3,15 @@ package fr.husta.android.dockersearch;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -93,6 +99,59 @@ public class TagListActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu_tags, menu);
+
+        // MenuItem warningItem = menu.findItem(R.id.menu_warning_taglist);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        boolean ret;
+        switch (item.getItemId())
+        {
+            case R.id.menu_warning_taglist:
+                // Toast.makeText(this, "Warning... Tag list not up to date", Toast.LENGTH_SHORT).show();
+                clickWarning(item);
+                ret = true;
+                break;
+
+            default:
+                ret = false;
+        }
+
+        return ret;
+    }
+
+    /**
+     * Disclaimer !!!
+     *
+     * @param item
+     */
+    public void clickWarning(MenuItem item)
+    {
+        // Inflate the about message contents
+        View messageView = getLayoutInflater().inflate(R.layout.dialog_warning_taglist, null, false);
+
+        TextView textView = (TextView) messageView.findViewById(R.id.txt_warning_taglist);
+        textView.setText(
+                "Tag list may not be up to date. \n" +
+                "See bug #687 ( https://github.com/docker/hub-feedback/issues/687 )");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Warning").setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setView(messageView);
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.create();
+        builder.show();
     }
 
 }
