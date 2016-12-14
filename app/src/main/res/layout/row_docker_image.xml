@@ -37,9 +37,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:alpha="0.4"
-            android:src="@drawable/ic_verified_user"
+            android:src="@drawable/ic_official_3"
+            android:minHeight="24dp"
             tools:ignore="ContentDescription"
-            tools:layout_gravity="center"/>
+            tools:layout_gravity="center"
+            android:paddingBottom="2dp"/>
     </LinearLayout>
 
     <TextView
