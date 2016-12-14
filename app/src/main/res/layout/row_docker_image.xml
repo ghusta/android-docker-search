@@ -5,32 +5,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/listitem_image_stars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:drawablePadding="1dp"
-        android:drawableTop="@android:drawable/star_off"
-        android:gravity="center_vertical"
-        android:minWidth="30dp"
-        android:text="123"
-        android:textAlignment="center"/>
-
     <LinearLayout
+        android:id="@+id/box_image_indicators"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/listitem_image_stars"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:gravity="center"
+        android:minWidth="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/listitem_image_stars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:drawablePadding="0dp"
+            android:drawableTop="@android:drawable/star_off"
+            android:gravity="center"
+            android:minWidth="30dp"
+            android:text="123"
+            android:textAlignment="center"
+            tools:gravity="center"/>
 
         <ImageView
             android:id="@+id/listitem_image_official"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0.4"
             android:src="@drawable/ic_verified_user"
-            android:alpha="0.4"  />
+            tools:ignore="ContentDescription"
+            tools:layout_gravity="center"/>
     </LinearLayout>
 
     <TextView
@@ -39,11 +48,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@id/listitem_image_stars"
+        android:layout_toStartOf="@id/box_image_indicators"
         android:ellipsize="end"
+        android:text="Image Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/textColorPrimary"
-        />
+        android:textColor="@color/textColorPrimary"/>
 
     <TextView
         android:id="@+id/listitem_image_desc"
@@ -51,27 +60,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/listitem_image_name"
-        android:layout_toStartOf="@+id/listitem_image_stars"
+        android:layout_toStartOf="@+id/box_image_indicators"
         android:ellipsize="end"
-        android:maxLines="2"/>
-
-    <!--<LinearLayout-->
-    <!--android:id="@+id/box_stars"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_alignParentEnd="true">-->
-    <!--<ImageView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:srcCompat="@android:drawable/star_off"-->
-    <!--android:baselineAlignBottom="false"/>-->
-    <!--<TextView-->
-    <!--android:id="@+id/listitem_image_stars"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--/>-->
-    <!--</LinearLayout>-->
+        android:maxLines="2"
+        android:text="Image Description"/>
 
 </RelativeLayout>
