@@ -1,8 +1,6 @@
 package fr.husta.android.dockersearch.listadapter;
 
 import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;

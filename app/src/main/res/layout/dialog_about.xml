@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="10dp">
+              android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
@@ -19,7 +18,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/about_credits"
@@ -34,8 +34,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/docker_logo_small"
-                android:contentDescription="Docker Logo"/>
+                android:contentDescription="Docker Logo"
+                android:src="@drawable/docker_logo_small"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -51,9 +51,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
+                android:text="Version : "
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="16sp"
-                android:text="Version : "/>
+                android:textSize="16sp"/>
 
         </LinearLayout>
 
