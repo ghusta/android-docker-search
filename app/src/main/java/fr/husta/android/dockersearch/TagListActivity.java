@@ -147,7 +147,7 @@ public class TagListActivity extends AppCompatActivity
                 "See bug #687 ( https://github.com/docker/hub-feedback/issues/687 )");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Warning").setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setTitle("Warning").setIcon(R.drawable.ic_warning_black_24dp);
         builder.setView(messageView);
         builder.setPositiveButton(android.R.string.ok, null);
         builder.create();
