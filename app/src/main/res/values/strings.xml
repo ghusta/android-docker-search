@@ -2,7 +2,6 @@
     <string name="app_name" translatable="false">Docker Search</string>
 
     <string name="search_title">Search</string>
-    <string name="search_hint">Hello !</string>
     <string name="clear_search_history">Clear search history</string>
     <string name="msg_cleared_search_history">Search history cleared</string>
 
