@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity
                 Log.e(TAG, t.getMessage(), t);
 
                 progressBar.hide();
-                Toast.makeText(MainActivity.this, "Erreur : " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, getString(R.string.msg_error, t.getMessage()), Toast.LENGTH_LONG).show();
             }
         });
 

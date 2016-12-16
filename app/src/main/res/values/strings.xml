@@ -22,4 +22,5 @@
     <string name="msg_about_credits">This application works with :</string>
     <string name="msg_about_docker_website">Web site : https://www.docker.com</string>
     <string name="menu_warning_taglist">Warning</string>
+    <string name="msg_error">Error : %s</string>
 </resources>

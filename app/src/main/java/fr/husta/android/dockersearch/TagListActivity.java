@@ -95,7 +95,7 @@ public class TagListActivity extends AppCompatActivity
             {
                 progressBar.hide();
 
-                Toast.makeText(TagListActivity.this, "Erreur : " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(TagListActivity.this, getString(R.string.msg_error, t.getMessage()), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -144,7 +144,7 @@ public class TagListActivity extends AppCompatActivity
         TextView textView = (TextView) messageView.findViewById(R.id.txt_warning_taglist);
         textView.setText(
                 "Tag list may not be up to date. \n" +
-                "See bug #687 ( https://github.com/docker/hub-feedback/issues/687 )");
+                        "See bug #687 ( https://github.com/docker/hub-feedback/issues/687 )");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Warning").setIcon(R.drawable.ic_warning_black_24dp);
