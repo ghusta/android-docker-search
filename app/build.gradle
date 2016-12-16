@@ -64,10 +64,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
-    //    compile('com.spotify:docker-client:6.0.0') {
-    //        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-    //    }
-    // compile 'com.google.guava:guava:20.0'
+
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
