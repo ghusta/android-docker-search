@@ -38,10 +38,10 @@ captures/
 /.idea/libraries
 /.idea/dictionaries/
 /.idea/sonarlint/
-/.idea/sonarlint/issuestore/index.pb
 .externalNativeBuild
 
 # Keystore files
 *.jks
+/keystore.properties
 
 .DS_Store
