@@ -14,6 +14,3 @@ See [reference documentation](https://docs.docker.com/v1.6/reference/api/registr
 
 Uses [Retrofit 2](https://square.github.io/retrofit/) and [Jackson 2](https://github.com/FasterXML/jackson)
 
-# Play Store
-
-<a href='https://play.google.com/store/apps/details?id=fr.husta.android.dockersearch&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
