@@ -16,6 +16,7 @@ import fr.husta.android.dockersearch.R;
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 import fr.husta.android.dockersearch.view.DockerImageViewHolder;
 
+@Deprecated
 public class DockerImageListAdapter
         extends ArrayAdapter<ImageSearchResult>
 {
@@ -46,8 +47,8 @@ public class DockerImageListAdapter
     {
         if (convertView == null)
         {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_docker_image,
-                    parent, false);
+//            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_docker_image_item,
+//                    parent, false);
         }
 
         DockerImageViewHolder viewHolder = (DockerImageViewHolder) convertView.getTag();

@@ -34,7 +34,7 @@ public class DockerTagListAdapter extends ArrayAdapter<RepositoryTag>
     {
         if (convertView == null)
         {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_docker_tag,
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_docker_tag_item,
                     parent, false);
         }
 

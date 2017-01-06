@@ -23,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ import fr.husta.android.dockersearch.docker.DockerRegistryClient;
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.comparator.DefaultImageSearchComparator;
+import fr.husta.android.dockersearch.listadapter.DockerImageExpandableListAdapter;
 import fr.husta.android.dockersearch.listadapter.DockerImageListAdapter;
 import fr.husta.android.dockersearch.search.RecentSearchProvider;
 import fr.husta.android.dockersearch.utils.AppInfo;
@@ -60,11 +62,11 @@ public class MainActivity extends AppCompatActivity
 
     private SearchView searchView;
 
-    private ListView listView;
+    private ExpandableListView listView;
 
     private ProgressDialog progressBar;
 
-    private DockerImageListAdapter dockerImageListAdapter;
+    private DockerImageExpandableListAdapter dockerImageExpandableListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -88,59 +90,36 @@ public class MainActivity extends AppCompatActivity
 
         checkInternetConnection();
 
-        listView = (ListView) findViewById(R.id.listView);
+        listView = (ExpandableListView) findViewById(R.id.listView);
         if (savedInstanceState == null)
         {
-            dockerImageListAdapter = new DockerImageListAdapter(MainActivity.this, new ArrayList<ImageSearchResult>());
+            dockerImageExpandableListAdapter = new DockerImageExpandableListAdapter(MainActivity.this,
+                    new ArrayList<ImageSearchResult>());
         } else
         {
             Log.d(TAG, "onCreate: state to be restored ?");
             ArrayList<ImageSearchResult> savedArrayList = savedInstanceState.getParcelableArrayList(KEY_IMAGE_LIST_ADAPTER);
-            dockerImageListAdapter = new DockerImageListAdapter(MainActivity.this, savedArrayList);
+            dockerImageExpandableListAdapter = new DockerImageExpandableListAdapter(MainActivity.this, savedArrayList);
         }
-        listView.setAdapter(dockerImageListAdapter);
+        listView.setAdapter(dockerImageExpandableListAdapter);
 
-        // save state ?
+        // listView.setOnGroupClickListener( );
+        // listView.setOnChildClickListener( );
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            public void onGroupExpand(int groupPosition)
             {
-                ImageSearchResult data =
-                        (ImageSearchResult) listView.getItemAtPosition(position);
-                Log.d(TAG, "data : " + data.getName());
+                int groupCount = listView.getExpandableListAdapter().getGroupCount();
 
-                startActivityTagList(MainActivity.this, data);
-            }
-        });
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-        {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                ImageSearchResult data =
-                        (ImageSearchResult) listView.getItemAtPosition(position);
-                Log.d(TAG, "data : " + data.getName());
-
-                Uri uri;
-                if (data.isOfficial())
+                for (int i = 0; i < groupCount; i++)
                 {
-                    uri = Uri.parse(DOCKER_HUB_BASE_URL + "/_/" + data.getName());
-                } else
-                {
-                    uri = Uri.parse(DOCKER_HUB_BASE_URL + "/r/" + data.getName());
+                    if (groupPosition != i && listView.isGroupExpanded(i))
+                    {
+                        listView.collapseGroup(i);
+                    }
                 }
-
-                Intent starter = new Intent(MainActivity.this, ImageWebViewActivity.class);
-                starter.setData(uri);
-                startActivity(starter);
-
-                // Launch image page in browser
-                // openUrlInBrowser(uri);
-
-                return true;
             }
         });
     }
@@ -177,7 +156,7 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState (1): " + this.getLocalClassName());
         Log.d(TAG, "onSaveInstanceState: listView => " + listView.getAdapter().getCount());
-        outState.putParcelableArrayList(KEY_IMAGE_LIST_ADAPTER, dockerImageListAdapter.getList());
+        outState.putParcelableArrayList(KEY_IMAGE_LIST_ADAPTER, dockerImageExpandableListAdapter.getGroupList());
     }
 
     @Override
@@ -239,10 +218,18 @@ public class MainActivity extends AppCompatActivity
                 ContainerImageSearchResult body = response.body();
                 Log.d(TAG, "searchImagesAsync.onResponse: returned " + body.getResults().size() + " out of " + body.getNumResults());
                 Collections.sort(body.getResults(), new DefaultImageSearchComparator());
-                dockerImageListAdapter.setNotifyOnChange(false);
-                dockerImageListAdapter.clear();
-                dockerImageListAdapter.addAll(body.getResults());
-                dockerImageListAdapter.notifyDataSetChanged();
+
+                dockerImageExpandableListAdapter.notifyDataSetInvalidated(); // necessaire ?
+                // Collapse all
+                for (int i = 0; i < dockerImageExpandableListAdapter.getGroupCount(); i++)
+                {
+                    listView.collapseGroup(i);
+                }
+
+                // dockerImageExpandableListAdapter.setNotifyOnChange(false);
+                dockerImageExpandableListAdapter.getGroupList().clear();
+                dockerImageExpandableListAdapter.getGroupList().addAll(body.getResults());
+                dockerImageExpandableListAdapter.notifyDataSetChanged();
 
                 progressBar.hide();
             }
