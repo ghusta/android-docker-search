@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,8 +137,8 @@ public class DockerImageExpandableListAdapter
 
         final ImageSearchResult item = getGroup(groupPosition);
 
-        ImageButton btnA = (ImageButton) convertView.findViewById(R.id.btn_image_tags);
-        btnA.setOnClickListener(new View.OnClickListener()
+        ImageButton btnTags = (ImageButton) convertView.findViewById(R.id.btn_image_tags);
+        btnTags.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -149,8 +150,8 @@ public class DockerImageExpandableListAdapter
             }
         });
 
-        ImageButton btnB = (ImageButton) convertView.findViewById(R.id.btn_image_hub_page);
-        btnB.setOnClickListener(new View.OnClickListener()
+        ImageButton btnViewPage = (ImageButton) convertView.findViewById(R.id.btn_image_hub_page);
+        btnViewPage.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -172,6 +173,32 @@ public class DockerImageExpandableListAdapter
                 // Launch image page in browser
                 // openUrlInBrowser(uri);
 
+            }
+        });
+
+        ImageButton btnShare = (ImageButton) convertView.findViewById(R.id.btn_image_share);
+        btnShare.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Uri uri;
+                if (item.isOfficial())
+                {
+                    uri = Uri.parse(DOCKER_HUB_BASE_URL + "/_/" + item.getName());
+                } else
+                {
+                    uri = Uri.parse(DOCKER_HUB_BASE_URL + "/r/" + item.getName());
+                }
+
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                final String subject = "Docker Image : " + item.getName();
+                final String body = uri.toString();
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, body);
+                Activity activity = (Activity) parent.getContext();
+                activity.startActivity(Intent.createChooser(shareIntent, activity.getString(R.string.share)));
             }
         });
 
