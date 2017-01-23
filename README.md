@@ -14,3 +14,6 @@ See [reference documentation](https://docs.docker.com/v1.6/reference/api/registr
 
 Uses [Retrofit 2](https://square.github.io/retrofit/) and [Jackson 2](https://github.com/FasterXML/jackson)
 
+# Install the app
+
+Download and install the APK [on my website](http://g.husta.free.fr/android/#docker-search) or on [GitHub](https://github.com/ghusta/android-docker-search/releases).
