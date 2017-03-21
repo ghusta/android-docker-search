@@ -66,8 +66,8 @@ dependencies {
     compile 'com.android.support:design:25.0.0'
 
     compile 'org.apache.commons:commons-lang3:3.5'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.2.0'
     // compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
     testCompile 'junit:junit:4.12'
     // can't use java.nio.file.*
