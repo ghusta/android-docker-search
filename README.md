@@ -16,13 +16,26 @@ Uses [Retrofit 2](https://square.github.io/retrofit/) and [Jackson 2](https://gi
 
 # Build the app
 
-With Gradle :
+With Gradle ([doc](https://developer.android.com/studio/build/building-cmdline.html#DebugMode)) :
 
     gradlew assembleDebug
 
 Or (needs signing the APK - [Sign your app](https://developer.android.com/studio/publish/app-signing.html))
 
     gradlew assembleRelease
+
+# Check the code quality with Lint
+
+With Gradle ([doc](https://developer.android.com/studio/write/lint.html#lint-task)) :
+
+    gradlew lint
+
+Then open the report generated at `./app/build/reports/lint-results.html`.
+
+More on Android Lint :
+
+- https://developer.android.com/studio/write/lint.html
+- http://tools.android.com/tips/lint
 
 # Install the app
 
