@@ -23,4 +23,7 @@
     <string name="menu_warning_taglist">Warning</string>
     <string name="msg_error">Error : %s</string>
     <string name="share">Share</string>
+
+    <string name="menu_open_in_chrome">Open in Chrome</string>
+    <string name="menu_open_in_browser">Open in browser</string>
 </resources>

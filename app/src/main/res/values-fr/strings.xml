@@ -21,4 +21,7 @@
     <string name="msg_error">Erreur : %s</string>
     <string name="menu_warning_taglist">Attention</string>
     <string name="share">Partager</string>
+
+    <string name="menu_open_in_chrome">Ouvrir dans Chrome</string>
+    <string name="menu_open_in_browser">Ouvrir dans le navigateur</string>
 </resources>

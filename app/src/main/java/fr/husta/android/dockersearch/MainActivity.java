@@ -22,9 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +35,6 @@ import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.comparator.DefaultImageSearchComparator;
 import fr.husta.android.dockersearch.listadapter.DockerImageExpandableListAdapter;
-import fr.husta.android.dockersearch.listadapter.DockerImageListAdapter;
 import fr.husta.android.dockersearch.search.RecentSearchProvider;
 import fr.husta.android.dockersearch.utils.AppInfo;
 import retrofit2.Call;
