@@ -36,6 +36,7 @@
         android:onClick="clickNoteApp"
         android:title="@string/action_rate_app"
         android:enabled="false"
+        android:visible="false"
         app:showAsAction="never" />
 
     <item
