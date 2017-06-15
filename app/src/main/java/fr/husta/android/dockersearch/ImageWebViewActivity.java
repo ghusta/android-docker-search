@@ -33,6 +33,8 @@ public class ImageWebViewActivity extends AppCompatActivity
         progressBar.setVisibility(View.INVISIBLE);
 
         WebView webView = (WebView) findViewById(R.id.image_webview);
+        // Javascript in WebView : https://developer.android.com/guide/webapps/webview.html#UsingJavaScript
+        webView.getSettings().setJavaScriptEnabled(false);
         webView.setWebViewClient(new WebViewClient()
         {
             @Override
@@ -50,6 +52,7 @@ public class ImageWebViewActivity extends AppCompatActivity
             }
         });
         webView.loadUrl(uri.toString());
+        // String currentPageUrl = webView.getUrl();
     }
 
 }
