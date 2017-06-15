@@ -43,14 +43,12 @@ public class DockerTagListAdapter extends ArrayAdapter<RepositoryTag>
         {
             viewHolder = new DockerTagViewHolder();
             viewHolder.setName((TextView) convertView.findViewById(R.id.listitem_tag_name));
-            viewHolder.setLayer((TextView) convertView.findViewById(R.id.listitem_tag_layer));
         }
 
         RepositoryTag item = getItem(position);
         if (item != null)
         {
             viewHolder.getName().setText(item.getName());
-            viewHolder.getLayer().setText(item.getLayer());
         }
 
         return convertView;
