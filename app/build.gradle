@@ -11,12 +11,12 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '26.0.0'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
     defaultConfig {
         applicationId "fr.husta.android.dockersearch"
-        minSdkVersion 19
-        targetSdkVersion 23
+        minSdkVersion 19 // KITKAT
+        targetSdkVersion 23 // M
         versionCode 3
         versionName "1.0.0-beta.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -62,9 +62,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:design:25.0.0'
-
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
