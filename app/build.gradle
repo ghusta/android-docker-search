@@ -15,7 +15,7 @@ android {
     buildToolsVersion '25.0.3'
     defaultConfig {
         applicationId "fr.husta.android.dockersearch"
-        minSdkVersion 19 // KITKAT
+        minSdkVersion 18 // JB 4.3
         targetSdkVersion 23 // M
         versionCode 4
         versionName "1.0.0-beta.4"

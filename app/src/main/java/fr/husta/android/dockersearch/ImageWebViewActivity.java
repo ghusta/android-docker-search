@@ -3,6 +3,7 @@ package fr.husta.android.dockersearch;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -109,7 +110,9 @@ public class ImageWebViewActivity extends AppCompatActivity
 
     public void openUrlInBrowser(Uri uri)
     {
-        Objects.requireNonNull(uri);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(uri);
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
         startActivity(intent);

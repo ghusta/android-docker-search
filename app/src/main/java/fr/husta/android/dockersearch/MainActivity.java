@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.view.MenuItemCompat;
@@ -42,8 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
-        implements SearchView.OnQueryTextListener
-{
+        implements SearchView.OnQueryTextListener {
 
     public static final String PROJECT_GITHUB_URL = "https://github.com/ghusta/android-docker-search";
 
@@ -66,16 +66,14 @@ public class MainActivity extends AppCompatActivity
     private DockerImageExpandableListAdapter dockerImageExpandableListAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate : " + this.getLocalClassName());
         setContentView(R.layout.activity_main);
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
 
-        if (getIntent() != null)
-        {
+        if (getIntent() != null) {
             handleIntent(getIntent());
         }
 
@@ -88,12 +86,10 @@ public class MainActivity extends AppCompatActivity
         checkInternetConnection();
 
         listView = (ExpandableListView) findViewById(R.id.listView);
-        if (savedInstanceState == null)
-        {
+        if (savedInstanceState == null) {
             dockerImageExpandableListAdapter = new DockerImageExpandableListAdapter(MainActivity.this,
                     new ArrayList<ImageSearchResult>());
-        } else
-        {
+        } else {
             Log.d(TAG, "onCreate: state to be restored ?");
             ArrayList<ImageSearchResult> savedArrayList = savedInstanceState.getParcelableArrayList(KEY_IMAGE_LIST_ADAPTER);
             dockerImageExpandableListAdapter = new DockerImageExpandableListAdapter(MainActivity.this, savedArrayList);
@@ -103,34 +99,28 @@ public class MainActivity extends AppCompatActivity
         // listView.setOnGroupClickListener( );
         // listView.setOnChildClickListener( );
 
-        listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener()
-        {
+        listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
-            public void onGroupExpand(int groupPosition)
-            {
+            public void onGroupExpand(int groupPosition) {
                 int groupCount = listView.getExpandableListAdapter().getGroupCount();
 
-                for (int i = 0; i < groupCount; i++)
-                {
-                    if (groupPosition != i && listView.isGroupExpanded(i))
-                    {
+                for (int i = 0; i < groupCount; i++) {
+                    if (groupPosition != i && listView.isGroupExpanded(i)) {
                         listView.collapseGroup(i);
                     }
                 }
             }
         });
+
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
-    {
+    protected void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
 
-    private void handleIntent(Intent intent)
-    {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction()))
-        {
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             // SearchManager.QUERY is the key that a SearchManager will use to send a query string
             // to an Activity.
             String query = intent.getStringExtra(SearchManager.QUERY);
@@ -148,8 +138,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
+    protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState (1): " + this.getLocalClassName());
         Log.d(TAG, "onSaveInstanceState: listView => " + listView.getAdapter().getCount());
@@ -157,24 +146,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         Log.d(TAG, "onRestoreInstanceState : " + this.getLocalClassName());
 
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume : " + this.getLocalClassName());
 
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
 
@@ -194,8 +180,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query)
-    {
+    public boolean onQueryTextSubmit(String query) {
         Log.d(TAG, "onQueryTextSubmit : " + query);
 
         progressBar.show();
@@ -207,19 +192,16 @@ public class MainActivity extends AppCompatActivity
 
         // User pressed the search button
         DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
-        dockerRegistryClient.searchImagesAsync(query, new Callback<ContainerImageSearchResult>()
-        {
+        dockerRegistryClient.searchImagesAsync(query, new Callback<ContainerImageSearchResult>() {
             @Override
-            public void onResponse(Call<ContainerImageSearchResult> call, Response<ContainerImageSearchResult> response)
-            {
+            public void onResponse(Call<ContainerImageSearchResult> call, Response<ContainerImageSearchResult> response) {
                 ContainerImageSearchResult body = response.body();
                 Log.d(TAG, "searchImagesAsync.onResponse: returned " + body.getResults().size() + " out of " + body.getNumResults());
                 Collections.sort(body.getResults(), new DefaultImageSearchComparator());
 
                 dockerImageExpandableListAdapter.notifyDataSetInvalidated(); // necessaire ?
                 // Collapse all
-                for (int i = 0; i < dockerImageExpandableListAdapter.getGroupCount(); i++)
-                {
+                for (int i = 0; i < dockerImageExpandableListAdapter.getGroupCount(); i++) {
                     listView.collapseGroup(i);
                 }
 
@@ -232,8 +214,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onFailure(Call<ContainerImageSearchResult> call, Throwable t)
-            {
+            public void onFailure(Call<ContainerImageSearchResult> call, Throwable t) {
                 Log.e(TAG, t.getMessage(), t);
 
                 progressBar.hide();
@@ -248,30 +229,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onQueryTextChange(String newText)
-    {
+    public boolean onQueryTextChange(String newText) {
         // User changed the text
         return false;
     }
 
-    public void startActivityTagList(Context context, ImageSearchResult data)
-    {
+    public void startActivityTagList(Context context, ImageSearchResult data) {
         Intent starter = new Intent(context, TagListActivity.class);
         starter.putExtra(TagListActivity.DATA_IMG_NAME, data.getName());
         startActivity(starter);
     }
 
-    public void checkInternetConnection()
-    {
-        if (!isDeviceOnline())
-        {
+    public void checkInternetConnection() {
+        if (!isDeviceOnline()) {
             // display error
             Toast.makeText(this, R.string.msg_no_network_connection, Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void clickClearSearchHistory(MenuItem item)
-    {
+    public void clickClearSearchHistory(MenuItem item) {
         SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                 RecentSearchProvider.AUTHORITY, RecentSearchProvider.MODE);
         suggestions.clearHistory();
@@ -279,8 +255,7 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(this, R.string.msg_cleared_search_history, Toast.LENGTH_SHORT).show();
     }
 
-    public void clickAbout(MenuItem item)
-    {
+    public void clickAbout(MenuItem item) {
         // Inflate the about message contents
         View messageView = getLayoutInflater().inflate(R.layout.dialog_about, null, false);
 
@@ -310,18 +285,15 @@ public class MainActivity extends AppCompatActivity
         builder.show();
     }
 
-    public void clickSubmitIssue(MenuItem item)
-    {
+    public void clickSubmitIssue(MenuItem item) {
         openUrlInBrowser(Uri.parse(PROJECT_GITHUB_URL + "/issues"));
     }
 
-    public void clickContribute(MenuItem item)
-    {
+    public void clickContribute(MenuItem item) {
         openUrlInBrowser(Uri.parse(PROJECT_GITHUB_URL));
     }
 
-    public void clickNoteApp(MenuItem item)
-    {
+    public void clickNoteApp(MenuItem item) {
         // https://developer.android.com/distribute/tools/promote/linking.html#android-app
         // Ex : details?id=com.google.android.apps.maps
 
@@ -332,9 +304,10 @@ public class MainActivity extends AppCompatActivity
         openInMarket(Uri.parse("market://details?id=" + appPackageName));
     }
 
-    public void openUrlInBrowser(Uri uri)
-    {
-        Objects.requireNonNull(uri);
+    public void openUrlInBrowser(Uri uri) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(uri);
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
         startActivity(intent);
@@ -345,18 +318,17 @@ public class MainActivity extends AppCompatActivity
      *
      * @param uri
      */
-    public void openInMarket(Uri uri)
-    {
-        Objects.requireNonNull(uri);
+    public void openInMarket(Uri uri) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(uri);
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
-        try
-        {
+        try {
             startActivity(
                     //Intent.createChooser(
                     intent);
-        } catch (ActivityNotFoundException e)
-        {
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(this, R.string.msg_err_playstore_not_installed, Toast.LENGTH_SHORT).show();
         }
     }
@@ -366,8 +338,7 @@ public class MainActivity extends AppCompatActivity
      *
      * @return true if the device has a network connection, false otherwise.
      */
-    private boolean isDeviceOnline()
-    {
+    private boolean isDeviceOnline() {
         ConnectivityManager connMgr =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
