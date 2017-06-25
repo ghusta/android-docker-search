@@ -62,5 +62,6 @@ public class DockerRegistryClientTest
         long end = System.currentTimeMillis();
         System.out.println("Reponse en : " + (end - start) + " ms");
         System.out.println(repositoryTags.size());
+        assertThat(repositoryTags.size()).isGreaterThan(1);
     }
 }

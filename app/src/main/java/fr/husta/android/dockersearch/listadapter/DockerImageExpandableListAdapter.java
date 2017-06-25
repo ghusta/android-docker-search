@@ -3,7 +3,12 @@ package fr.husta.android.dockersearch.listadapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.customtabs.CustomTabsSession;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +22,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.husta.android.dockersearch.AppConstants;
 import fr.husta.android.dockersearch.ImageWebViewActivity;
+import fr.husta.android.dockersearch.MainActivity;
 import fr.husta.android.dockersearch.R;
 import fr.husta.android.dockersearch.TagListActivity;
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
@@ -118,7 +125,8 @@ public class DockerImageExpandableListAdapter
             if (item.isOfficial())
             {
                 viewHolder.getOfficial().setVisibility(View.VISIBLE);
-            } else
+            }
+            else
             {
                 viewHolder.getOfficial().setVisibility(View.INVISIBLE);
             }
@@ -160,19 +168,49 @@ public class DockerImageExpandableListAdapter
                 if (item.isOfficial())
                 {
                     uri = Uri.parse(DOCKER_HUB_BASE_URL + "/_/" + item.getName());
-                } else
+                }
+                else
                 {
                     uri = Uri.parse(DOCKER_HUB_BASE_URL + "/r/" + item.getName());
                 }
 
-                Intent starter = new Intent(context, ImageWebViewActivity.class);
-                starter.setData(uri);
-                Activity activity = (Activity) parent.getContext();
-                activity.startActivity(starter);
+                MainActivity hostActivity = (MainActivity) context;
+                if (AppConstants.USE_CHROME_CUSTOM_TABS)
+                {
+                    CustomTabsSession customTabsSession = null;
+                    CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder(customTabsSession);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    {
+                        intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.colorPrimary, context.getTheme()));
+                    }
+                    else
+                    {
+                        intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.colorPrimary));
+                    }
+                    intentBuilder.setShowTitle(true); // affiche title page au dessus URL
+                    intentBuilder.addDefaultShareMenuItem();
 
-                // Launch image page in browser
-                // openUrlInBrowser(uri);
+                    // Setting a custom back button
+                     Bitmap iconArrow = BitmapFactory.decodeResource(hostActivity.getResources(),
+                            R.drawable.ic_arrow_back);
+                     intentBuilder.setCloseButtonIcon(iconArrow);
 
+                    CustomTabsIntent customTabsIntent = intentBuilder.build();
+                    // Add your app as the referrer
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)
+                    {
+                        customTabsIntent.intent.putExtra(Intent.EXTRA_REFERRER,
+                                Uri.parse(Intent.URI_ANDROID_APP_SCHEME + "//" + context.getPackageName()));
+                    }
+                    customTabsIntent.launchUrl(context, uri);
+                }
+                else
+                {
+                    Intent starter = new Intent(context, ImageWebViewActivity.class);
+                    starter.setData(uri);
+                    Activity activity = (Activity) parent.getContext();
+                    activity.startActivity(starter);
+                }
             }
         });
 
@@ -186,7 +224,8 @@ public class DockerImageExpandableListAdapter
                 if (item.isOfficial())
                 {
                     uri = Uri.parse(DOCKER_HUB_BASE_URL + "/_/" + item.getName());
-                } else
+                }
+                else
                 {
                     uri = Uri.parse(DOCKER_HUB_BASE_URL + "/r/" + item.getName());
                 }

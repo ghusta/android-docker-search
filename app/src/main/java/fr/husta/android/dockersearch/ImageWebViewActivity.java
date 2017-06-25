@@ -18,6 +18,10 @@ import android.widget.ProgressBar;
 
 import java.util.Objects;
 
+/**
+ * @deprecated Utiliser Chrome Custom Tabs
+ */
+@Deprecated
 public class ImageWebViewActivity extends AppCompatActivity
 {
 
