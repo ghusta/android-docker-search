@@ -2,19 +2,23 @@ package fr.husta.android.dockersearch.listadapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 import fr.husta.android.dockersearch.R;
-import fr.husta.android.dockersearch.docker.model.RepositoryTag;
+import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
+import fr.husta.android.dockersearch.utils.format.unit.ByteSizeFormatterUtils;
 import fr.husta.android.dockersearch.view.DockerTagViewHolder;
 
-public class DockerTagListAdapter extends ArrayAdapter<RepositoryTag>
+public class DockerTagListAdapter extends ArrayAdapter<RepositoryTagV2>
 {
 
     /**
@@ -23,7 +27,7 @@ public class DockerTagListAdapter extends ArrayAdapter<RepositoryTag>
      * @param context
      * @param objects
      */
-    public DockerTagListAdapter(Context context, List<RepositoryTag> objects)
+    public DockerTagListAdapter(Context context, List<RepositoryTagV2> objects)
     {
         super(context, 0, objects);
     }
@@ -43,12 +47,33 @@ public class DockerTagListAdapter extends ArrayAdapter<RepositoryTag>
         {
             viewHolder = new DockerTagViewHolder();
             viewHolder.setName((TextView) convertView.findViewById(R.id.listitem_tag_name));
+            viewHolder.setSize((TextView) convertView.findViewById(R.id.listitem_tag_size));
+            viewHolder.setLastUpdated((TextView) convertView.findViewById(R.id.listitem_tag_last_updated));
         }
 
-        RepositoryTag item = getItem(position);
+        RepositoryTagV2 item = getItem(position);
         if (item != null)
         {
             viewHolder.getName().setText(item.getName());
+            if (item.getFullSize() != null)
+            {
+                viewHolder.getSize().setText(
+                        ByteSizeFormatterUtils.Android.formatShortSize(convertView.getContext(), item.getFullSize()));
+            }
+            else
+            {
+                viewHolder.getSize().setText("-");
+            }
+            if (item.getLastUpdated() != null)
+            {
+                long elapsedMillis = DateTime.now().getMillis() - item.getLastUpdated().getMillis();
+                viewHolder.getLastUpdated().setText(
+                        DateUtils.getRelativeTimeSpanString(item.getLastUpdated().getMillis()));
+            }
+            else
+            {
+                viewHolder.getLastUpdated().setText("-");
+            }
         }
 
         return convertView;

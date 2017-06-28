@@ -16,15 +16,27 @@
         android:textColor="@color/textColorPrimary"
         tools:ignore="HardcodedText"/>
 
-    <!--<TextView-->
-        <!--android:id="@+id/listitem_tag_layer"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_toEndOf="@+id/listitem_tag_name"-->
-        <!--android:textAlignment="textEnd"-->
-        <!--android:textStyle="italic"-->
-        <!--/>-->
+    <TextView
+        android:id="@+id/listitem_tag_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="213 MB"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/listitem_tag_name"
+        android:textAlignment="textEnd"
+        android:textStyle="italic"
+        />
+
+    <TextView
+        android:id="@+id/listitem_tag_last_updated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="date time"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/listitem_tag_size"
+        android:textAlignment="textEnd"
+        android:textStyle="italic"
+        />
 
 </RelativeLayout>

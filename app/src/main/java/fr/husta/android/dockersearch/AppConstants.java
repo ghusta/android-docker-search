@@ -1,7 +1,8 @@
 package fr.husta.android.dockersearch;
 
 
-public interface AppConstants {
+public interface AppConstants
+{
 
     /**
      * https://developer.chrome.com/multidevice/android/customtabs
@@ -14,5 +15,7 @@ public interface AppConstants {
      * MAX = 100.
      */
     int IMAGE_SEARCH_PAGE_SIZE = 30;
+
+    int TAG_LIST_PAGE_SIZE = 50;
 
 }

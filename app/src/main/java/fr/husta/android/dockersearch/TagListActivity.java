@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.husta.android.dockersearch.docker.DockerRegistryClient;
-import fr.husta.android.dockersearch.docker.model.RepositoryTag;
+import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
+import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
 import fr.husta.android.dockersearch.listadapter.DockerTagListAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,8 +36,12 @@ public class TagListActivity extends AppCompatActivity
     private DockerTagListAdapter dockerTagListAdapter;
 
     private ListView listView;
+    private Button btnNextPage;
 
     private ProgressDialog progressBar;
+
+    private int currentPage = -1;
+    private boolean hasNextPage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,8 +58,6 @@ public class TagListActivity extends AppCompatActivity
         {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             Log.d(TAG, "SupportActionBar.title = " + getSupportActionBar().getTitle());
-//            getSupportActionBar().setTitle("Tags : " + imgName);
-//            getSupportActionBar().setSubtitle(null);
             getSupportActionBar().setTitle("Tags");
             getSupportActionBar().setSubtitle("Image : " + imgName);
         }
@@ -65,40 +69,77 @@ public class TagListActivity extends AppCompatActivity
         progressBar.setMessage(getString(R.string.msg_searching));
 
         listView = (ListView) findViewById(R.id.tags_listview);
+        btnNextPage = (Button) findViewById(R.id.btn_tags_next_page);
 
-        dockerTagListAdapter = new DockerTagListAdapter(TagListActivity.this, new ArrayList<RepositoryTag>());
+        dockerTagListAdapter = new DockerTagListAdapter(TagListActivity.this, new ArrayList<RepositoryTagV2>());
         listView.setAdapter(dockerTagListAdapter);
 
-        // Fetch list tags
+        requestTagsList(imgName, 1);
+    }
+
+    private void requestTagsList(String imgName, final int pageNumber)
+    {
+        // Fetch list tags (first page)
         progressBar.show();
         final DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
-        dockerRegistryClient.listTagsAsync(imgName, new Callback<List<RepositoryTag>>()
+        dockerRegistryClient.listTagsV2Async(imageNameToRepository(imgName), pageNumber, new Callback<ContainerRepositoryTagV2>()
         {
             @Override
-            public void onResponse(Call<List<RepositoryTag>> call, Response<List<RepositoryTag>> response)
+            public void onResponse(Call<ContainerRepositoryTagV2> call, Response<ContainerRepositoryTagV2> response)
             {
-                List<RepositoryTag> listTags = response.body();
+                if (response.isSuccessful())
+                {
+                    if (response.body() != null)
+                    {
+                        List<RepositoryTagV2> listTags = response.body().getTags();
+                        int count = response.body().getTotalCount();
 
-                dockerTagListAdapter = new DockerTagListAdapter(TagListActivity.this, listTags);
-                listView.setAdapter(dockerTagListAdapter);
+                        dockerTagListAdapter.addAll(listTags);
+                        // dockerTagListAdapter.notifyDataSetChanged();
 
-//                dockerImageListAdapter.setNotifyOnChange(false);
-//                dockerImageListAdapter.clear();
-//                dockerImageListAdapter.addAll(body.getResults());
-//                dockerImageListAdapter.notifyDataSetChanged();
+                        currentPage = pageNumber;
+                        Log.d(TAG, "requestTagsList() - currentPage = " + currentPage);
+                        hasNextPage = response.body().getNextUrl() != null;
+                        Log.d(TAG, "requestTagsList() - hasNextPage = " + hasNextPage);
+
+                        if (hasNextPage)
+                        {
+                            btnNextPage.setVisibility(View.VISIBLE);
+                        }
+                        else
+                        {
+                            btnNextPage.setVisibility(View.GONE);
+                        }
+                    }
+                }
 
                 progressBar.hide();
             }
 
             @Override
-            public void onFailure(Call<List<RepositoryTag>> call, Throwable t)
+            public void onFailure(Call<ContainerRepositoryTagV2> call, Throwable t)
             {
                 progressBar.hide();
 
                 Toast.makeText(TagListActivity.this, getString(R.string.msg_error, t.getMessage()), Toast.LENGTH_LONG).show();
             }
         });
+    }
 
+    public static String imageNameToRepository(final String imageName)
+    {
+        if (imageName == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        if (imageName.contains("/"))
+        {
+            return imageName;
+        }
+        else
+        {
+            return "library/" + imageName;
+        }
     }
 
     @Override
@@ -152,6 +193,17 @@ public class TagListActivity extends AppCompatActivity
         builder.setPositiveButton(android.R.string.ok, null);
         builder.create();
         builder.show();
+    }
+
+    public void loadNextPage(View view)
+    {
+        Intent intent = getIntent();
+        String imgName = intent.getStringExtra(DATA_IMG_NAME);
+
+        if (hasNextPage)
+        {
+            requestTagsList(imgName, currentPage + 1);
+        }
     }
 
 }

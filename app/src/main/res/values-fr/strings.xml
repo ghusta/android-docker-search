@@ -11,6 +11,7 @@
     <string name="action_rate_app">Noter l\'appli</string>
     <string name="action_report_issue">Signaler un problème</string>
     <string name="action_about">À propos</string>
+    <string name="action_next">Suivant</string>
 
     <string name="msg_err_playstore_not_installed">Play Store non installé ?</string>
     <string name="Official">Officiel</string>
