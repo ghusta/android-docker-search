@@ -17,8 +17,8 @@ android {
         applicationId "fr.husta.android.dockersearch"
         minSdkVersion 18 // JB 4.3
         targetSdkVersion 23 // M
-        versionCode 4
-        versionName "1.0.0-beta.4"
+        versionCode 5
+        versionName "1.0.0-beta.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
