@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import fr.husta.android.dockersearch.AppConstants;
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.RepositoryTag;
 import okhttp3.OkHttpClient;
@@ -25,7 +26,7 @@ public class DockerRegistryClient
 
     public void searchImagesAsync(String term, Callback<ContainerImageSearchResult> callback)
     {
-        final int pageSize = 30; // max = 100
+        final int pageSize = AppConstants.IMAGE_SEARCH_PAGE_SIZE;
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URI)
