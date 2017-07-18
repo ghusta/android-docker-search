@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search_title">Rechercher</string>
+    <string name="search_hint">Rechercher…</string>
     <string name="about">À propos</string>
     <string name="msg_cleared_search_history">Historique des recherches supprimé</string>
     <string name="clear_search_history">Effacer l\'historique des recherches</string>
