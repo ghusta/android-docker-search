@@ -18,7 +18,7 @@ android {
         minSdkVersion 17 // JB 4.2
         targetSdkVersion 23 // M
         versionCode 5
-        versionName "1.0.0-beta.5"
+        versionName "1.0.0-rc.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
