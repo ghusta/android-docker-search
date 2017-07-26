@@ -5,6 +5,10 @@
 
 This Android application enables you do perform a **Docker Search** on your device, like if you did it on a computer in a terminal, with docker-engine installed.
 
+The results should be the same than `docker search` with command line interface (see [reference doc](https://docs.docker.com/engine/reference/commandline/search/)) :
+
+    docker search [OPTIONS] TERM
+
 ### Features
 
 - Search images on Docker Hub
