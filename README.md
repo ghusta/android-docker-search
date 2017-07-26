@@ -11,6 +11,7 @@ This Android application enables you do perform a **Docker Search** on your devi
 - Display all tags for an image, including the date and size
 - Display the web page for an image, in a separate Chrome Tab
 - Share the URL of the image
+- Minimum supported version : [Android 4.2 (Jelly Bean)](https://developer.android.com/about/versions/android-4.2.html)
 
 ## Screenshots
 
