@@ -16,6 +16,10 @@ This Android application enables you do perform a **Docker Search** on your devi
 
 ![screenshot 1](/media/android-app-screenshot_1.png)
 
+## Install the app
+
+Download and install the APK [on my website](http://g.husta.free.fr/android/#docker-search) or on [GitHub](https://github.com/ghusta/android-docker-search/releases).
+
 ## Docker API
 
 Uses Registry Hub REST API v1 or v2.  
@@ -51,7 +55,3 @@ More on Android Lint :
 
 - https://developer.android.com/studio/write/lint.html
 - http://tools.android.com/tips/lint
-
-## Install the app
-
-Download and install the APK [on my website](http://g.husta.free.fr/android/#docker-search) or on [GitHub](https://github.com/ghusta/android-docker-search/releases).
