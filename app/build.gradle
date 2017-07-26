@@ -20,6 +20,7 @@ android {
         versionCode 7
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        setProperty("archivesBaseName", "android-docker-search-$versionName")
     }
     compileOptions {
         // See : https://developer.android.com/guide/platform/j8-jack.html
