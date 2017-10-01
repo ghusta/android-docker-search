@@ -13,11 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -233,7 +231,12 @@ public class DockerImageExpandableListAdapter
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 final String subject = "Docker Image : " + item.getName();
-                final String body = uri.toString();
+                String body = "";
+                if (item.getDescription() != null && item.getDescription().trim().length() != 0)
+                {
+                    body += item.getDescription() + "\n\n";
+                }
+                body += uri.toString();
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
                 shareIntent.putExtra(Intent.EXTRA_TEXT, body);
                 Activity activity = (Activity) parent.getContext();
