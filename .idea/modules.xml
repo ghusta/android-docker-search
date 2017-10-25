@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DockerSearch.iml" filepath="$PROJECT_DIR$/DockerSearch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-docker-search.iml" filepath="$PROJECT_DIR$/android-docker-search.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
