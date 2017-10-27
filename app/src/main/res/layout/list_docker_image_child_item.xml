@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:src="@drawable/ic_tag_black_24dp"
+        app:srcCompat="@drawable/ic_tag_black_24dp"
         android:tint="@android:color/white"
         android:text="Tags"
         android:textColor="@android:color/white"/>
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:src="@drawable/ic_public_black_24dp"
+        app:srcCompat="@drawable/ic_public_black_24dp"
         android:tint="@android:color/white"
         android:text="Docker Hub Page"
         android:textColor="@android:color/white"/>
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:src="@drawable/ic_share_black_24dp"
+        app:srcCompat="@drawable/ic_share_black_24dp"
         android:tint="@android:color/white"
         android:text="Share"
         android:textColor="@android:color/white"/>

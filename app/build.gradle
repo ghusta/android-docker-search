@@ -21,6 +21,7 @@ android {
         versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "android-docker-search-$versionName")
+        vectorDrawables.useSupportLibrary = true
     }
     compileOptions {
         // See : https://developer.android.com/guide/platform/j8-jack.html
