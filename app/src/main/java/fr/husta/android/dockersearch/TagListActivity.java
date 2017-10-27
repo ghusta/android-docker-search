@@ -3,6 +3,7 @@ package fr.husta.android.dockersearch;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -36,7 +37,7 @@ public class TagListActivity extends AppCompatActivity
     private DockerTagListAdapter dockerTagListAdapter;
 
     private ListView listView;
-    private Button btnNextPage;
+    private FloatingActionButton fabNextPage;
 
     private ProgressDialog progressBar;
 
@@ -68,8 +69,16 @@ public class TagListActivity extends AppCompatActivity
         progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressBar.setMessage(getString(R.string.msg_searching));
 
-        listView = (ListView) findViewById(R.id.tags_listview);
-        btnNextPage = (Button) findViewById(R.id.btn_tags_next_page);
+        listView = findViewById(R.id.tags_listview);
+        fabNextPage = findViewById(R.id.fab_tags_next_page);
+        fabNextPage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                loadNextPage(view);
+            }
+        });
 
         dockerTagListAdapter = new DockerTagListAdapter(TagListActivity.this, new ArrayList<RepositoryTagV2>());
         listView.setAdapter(dockerTagListAdapter);
@@ -104,11 +113,11 @@ public class TagListActivity extends AppCompatActivity
 
                         if (hasNextPage)
                         {
-                            btnNextPage.setVisibility(View.VISIBLE);
+                            fabNextPage.setVisibility(View.VISIBLE);
                         }
                         else
                         {
-                            btnNextPage.setVisibility(View.GONE);
+                            fabNextPage.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -182,7 +191,7 @@ public class TagListActivity extends AppCompatActivity
         // Inflate the about message contents
         View messageView = getLayoutInflater().inflate(R.layout.dialog_warning_taglist, null, false);
 
-        TextView textView = (TextView) messageView.findViewById(R.id.txt_warning_taglist);
+        TextView textView = messageView.findViewById(R.id.txt_warning_taglist);
         textView.setText(
                 "Tag list may not be up to date. \n" +
                         "See bug #687 ( https://github.com/docker/hub-feedback/issues/687 )");
