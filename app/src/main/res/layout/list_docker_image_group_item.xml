@@ -18,7 +18,7 @@
         android:gravity="center"
         android:minWidth="30dp"
         android:orientation="vertical"
-         >
+        android:paddingRight="2dp">
 
         <TextView
             android:id="@+id/listitem_image_stars"
@@ -29,7 +29,7 @@
             android:drawableTop="@android:drawable/star_off"
             android:gravity="center"
             android:minWidth="30dp"
-            android:text="123"
+            android:text="1234"
             android:textAlignment="center"
             tools:gravity="center"/>
 
@@ -39,11 +39,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:alpha="0.4"
-            app:srcCompat="@drawable/ic_official_3"
             android:minHeight="24dp"
+            android:paddingBottom="2dp"
+            app:srcCompat="@drawable/ic_official_3"
             tools:ignore="ContentDescription"
-            tools:layout_gravity="center"
-            android:paddingBottom="2dp"/>
+            tools:layout_gravity="center"/>
     </LinearLayout>
 
     <TextView
