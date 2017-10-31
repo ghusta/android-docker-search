@@ -16,7 +16,7 @@ android {
     defaultConfig {
         applicationId "fr.husta.android.dockersearch"
         minSdkVersion 17 // JB 4.2
-        targetSdkVersion 23 // M
+        targetSdkVersion 27 // O 8.1
         versionCode 8
         versionName "1.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
