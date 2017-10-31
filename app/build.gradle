@@ -60,21 +60,23 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:customtabs:26.1.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:customtabs:26.1.0'
 
-    compile 'org.apache.commons:commons-lang3:3.5'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.9'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.8.9'
-    compile 'joda-time:joda-time:2.9.9'
-    testCompile 'junit:junit:4.12'
+    implementation 'org.apache.commons:commons-lang3:3.5'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-jackson:2.3.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.9'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.8.9'
+    implementation 'joda-time:joda-time:2.9.9'
+
+    testImplementation 'junit:junit:4.12'
     // can't use java.nio.file.*
-    testCompile 'org.assertj:assertj-core:1.7.1'
+    testImplementation 'org.assertj:assertj-core:1.7.1'
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
 }
