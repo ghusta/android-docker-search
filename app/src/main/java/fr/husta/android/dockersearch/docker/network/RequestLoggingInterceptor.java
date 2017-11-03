@@ -1,12 +1,15 @@
 package fr.husta.android.dockersearch.docker.network;
 
-
 import java.io.IOException;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * @deprecated See okhttp3.logging.HttpLoggingInterceptor in com.squareup.okhttp3:logging-interceptor
+ */
+@Deprecated
 public class RequestLoggingInterceptor
         implements Interceptor
 {
