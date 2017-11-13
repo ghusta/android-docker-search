@@ -22,7 +22,7 @@ public interface DockerSearchRestService
      * @return
      */
     @GET("v1/search")
-    Call<ContainerImageSearchResult> searchImages(@Query("q") String term, @Query("n") int size);
+    Call<ContainerImageSearchResult> searchImages(@Query("q") String term, @Query("n") Integer size);
 
     @GET("v1/repositories/{repository}/tags")
     @Deprecated
@@ -35,6 +35,6 @@ public interface DockerSearchRestService
      * @return
      */
     @GET("v2/repositories/{repository}/tags/")
-    Call<ContainerRepositoryTagV2> listTagsV2(@Path(value = "repository", encoded = true) String repository, @Query("page") int page, @Query("page_size") int pageSize);
+    Call<ContainerRepositoryTagV2> listTagsV2(@Path(value = "repository", encoded = true) String repository, @Query("page") Integer page, @Query("page_size") Integer pageSize);
 
 }
