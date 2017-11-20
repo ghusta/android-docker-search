@@ -1,6 +1,8 @@
 # android-docker-search
 :whale: Docker Search on Android
 
+[![Build Status](https://travis-ci.org/ghusta/android-docker-search.svg?branch=master)](https://travis-ci.org/ghusta/android-docker-search)
+
 ## Overview
 
 This Android application enables you do perform a **Docker Search** on your device, like if you did it on a computer in a terminal, with docker-engine installed.
