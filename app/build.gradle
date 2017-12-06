@@ -7,8 +7,8 @@ android {
         applicationId "fr.husta.android.dockersearch"
         minSdkVersion 17 // JB 4.2
         targetSdkVersion 27 // O 8.1
-        versionCode 8
-        versionName "1.1.1"
+        versionCode 9
+        versionName "1.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "android-docker-search-$versionName")
         vectorDrawables.useSupportLibrary = true
