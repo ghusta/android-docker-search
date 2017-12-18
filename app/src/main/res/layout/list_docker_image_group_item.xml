@@ -4,21 +4,21 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft">
+                android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft">
 
     <LinearLayout
         android:id="@+id/box_image_indicators"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:gravity="center"
         android:minWidth="30dp"
         android:orientation="vertical"
-        android:paddingRight="2dp">
+        android:paddingEnd="2dp">
 
         <TextView
             android:id="@+id/listitem_image_stars"
@@ -31,7 +31,8 @@
             android:minWidth="30dp"
             android:text="1234"
             android:textAlignment="center"
-            tools:gravity="center"/>
+            tools:gravity="center"
+            tools:ignore="HardcodedText"/>
 
         <ImageView
             android:id="@+id/listitem_image_official"
@@ -50,23 +51,26 @@
         android:id="@+id/listitem_image_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@id/box_image_indicators"
         android:ellipsize="end"
+        android:maxLines="2"
         android:text="Image Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/textColorPrimary"/>
+        android:textColor="@color/textColorPrimary"
+        tools:ignore="HardcodedText"/>
 
     <TextView
         android:id="@+id/listitem_image_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@id/listitem_image_name"
         android:layout_toStartOf="@+id/box_image_indicators"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="Image Description"/>
+        android:text="Image Description"
+        tools:ignore="HardcodedText"/>
 
 </RelativeLayout>
