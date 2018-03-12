@@ -14,7 +14,7 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     compileOptions {
-        // See : https://developer.android.com/guide/platform/j8-jack.html
+        // See : https://developer.android.com/studio/write/java8-support.html
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
