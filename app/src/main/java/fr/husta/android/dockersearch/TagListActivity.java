@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,16 +70,9 @@ public class TagListActivity extends AppCompatActivity
 
         listView = findViewById(R.id.tags_listview);
         fabNextPage = findViewById(R.id.fab_tags_next_page);
-        fabNextPage.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                loadNextPage(view);
-            }
-        });
+        fabNextPage.setOnClickListener(view -> loadNextPage(view));
 
-        dockerTagListAdapter = new DockerTagListAdapter(TagListActivity.this, new ArrayList<RepositoryTagV2>());
+        dockerTagListAdapter = new DockerTagListAdapter(TagListActivity.this, new ArrayList<>());
         listView.setAdapter(dockerTagListAdapter);
 
         requestTagsList(imgName, 1);

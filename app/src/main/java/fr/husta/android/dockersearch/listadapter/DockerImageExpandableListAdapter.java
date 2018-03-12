@@ -14,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,10 +106,10 @@ public class DockerImageExpandableListAdapter
         if (viewHolder == null)
         {
             viewHolder = new DockerImageViewHolder();
-            viewHolder.setName((TextView) convertView.findViewById(R.id.listitem_image_name));
-            viewHolder.setDescription((TextView) convertView.findViewById(R.id.listitem_image_desc));
-            viewHolder.setStars((TextView) convertView.findViewById(R.id.listitem_image_stars));
-            viewHolder.setOfficial((ImageView) convertView.findViewById(R.id.listitem_image_official));
+            viewHolder.setName(convertView.findViewById(R.id.listitem_image_name));
+            viewHolder.setDescription(convertView.findViewById(R.id.listitem_image_desc));
+            viewHolder.setStars(convertView.findViewById(R.id.listitem_image_stars));
+            viewHolder.setOfficial(convertView.findViewById(R.id.listitem_image_official));
         }
 
         ImageSearchResult item = getGroup(groupPosition);
@@ -143,105 +141,93 @@ public class DockerImageExpandableListAdapter
 
         final ImageSearchResult item = getGroup(groupPosition);
 
-        ImageButton btnTags = (ImageButton) convertView.findViewById(R.id.btn_image_tags);
-        btnTags.setOnClickListener(new View.OnClickListener()
+        ImageButton btnTags = convertView.findViewById(R.id.btn_image_tags);
+        btnTags.setOnClickListener(view ->
         {
-            @Override
-            public void onClick(View v)
+            Intent starter = new Intent(context, TagListActivity.class);
+            starter.putExtra(TagListActivity.DATA_IMG_NAME, item.getName());
+            Activity activity = (Activity) parent.getContext();
+            activity.startActivity(starter);
+        });
+
+        ImageButton btnViewPage = convertView.findViewById(R.id.btn_image_hub_page);
+        btnViewPage.setOnClickListener(view ->
+        {
+            Uri uri;
+            if (item.isOfficial())
             {
-                Intent starter = new Intent(context, TagListActivity.class);
-                starter.putExtra(TagListActivity.DATA_IMG_NAME, item.getName());
+                uri = Uri.parse(DOCKER_HUB_BASE_URL + "/_/" + item.getName());
+            }
+            else
+            {
+                uri = Uri.parse(DOCKER_HUB_BASE_URL + "/r/" + item.getName());
+            }
+
+            MainActivity hostActivity = (MainActivity) context;
+            if (AppConstants.USE_CHROME_CUSTOM_TABS)
+            {
+                CustomTabsSession customTabsSession = null;
+                CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder(customTabsSession);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                {
+                    intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.colorPrimary, context.getTheme()));
+                }
+                else
+                {
+                    intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.colorPrimary));
+                }
+                intentBuilder.setShowTitle(true); // affiche title page au dessus URL
+                intentBuilder.addDefaultShareMenuItem();
+
+                // Setting a custom back button
+                Bitmap iconArrow = BitmapFactory.decodeResource(hostActivity.getResources(),
+                        R.drawable.ic_arrow_back);
+                intentBuilder.setCloseButtonIcon(iconArrow);
+
+                CustomTabsIntent customTabsIntent = intentBuilder.build();
+                // Add your app as the referrer
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)
+                {
+                    customTabsIntent.intent.putExtra(Intent.EXTRA_REFERRER,
+                            Uri.parse(Intent.URI_ANDROID_APP_SCHEME + "//" + context.getPackageName()));
+                }
+                customTabsIntent.launchUrl(context, uri);
+            }
+            else
+            {
+                Intent starter = new Intent(context, ImageWebViewActivity.class);
+                starter.setData(uri);
                 Activity activity = (Activity) parent.getContext();
                 activity.startActivity(starter);
             }
         });
 
-        ImageButton btnViewPage = (ImageButton) convertView.findViewById(R.id.btn_image_hub_page);
-        btnViewPage.setOnClickListener(new View.OnClickListener()
+        ImageButton btnShare = convertView.findViewById(R.id.btn_image_share);
+        btnShare.setOnClickListener(view ->
         {
-            @Override
-            public void onClick(View v)
+            Uri uri;
+            if (item.isOfficial())
             {
-                Uri uri;
-                if (item.isOfficial())
-                {
-                    uri = Uri.parse(DOCKER_HUB_BASE_URL + "/_/" + item.getName());
-                }
-                else
-                {
-                    uri = Uri.parse(DOCKER_HUB_BASE_URL + "/r/" + item.getName());
-                }
-
-                MainActivity hostActivity = (MainActivity) context;
-                if (AppConstants.USE_CHROME_CUSTOM_TABS)
-                {
-                    CustomTabsSession customTabsSession = null;
-                    CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder(customTabsSession);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    {
-                        intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.colorPrimary, context.getTheme()));
-                    }
-                    else
-                    {
-                        intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.colorPrimary));
-                    }
-                    intentBuilder.setShowTitle(true); // affiche title page au dessus URL
-                    intentBuilder.addDefaultShareMenuItem();
-
-                    // Setting a custom back button
-                     Bitmap iconArrow = BitmapFactory.decodeResource(hostActivity.getResources(),
-                            R.drawable.ic_arrow_back);
-                     intentBuilder.setCloseButtonIcon(iconArrow);
-
-                    CustomTabsIntent customTabsIntent = intentBuilder.build();
-                    // Add your app as the referrer
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)
-                    {
-                        customTabsIntent.intent.putExtra(Intent.EXTRA_REFERRER,
-                                Uri.parse(Intent.URI_ANDROID_APP_SCHEME + "//" + context.getPackageName()));
-                    }
-                    customTabsIntent.launchUrl(context, uri);
-                }
-                else
-                {
-                    Intent starter = new Intent(context, ImageWebViewActivity.class);
-                    starter.setData(uri);
-                    Activity activity = (Activity) parent.getContext();
-                    activity.startActivity(starter);
-                }
+                uri = Uri.parse(DOCKER_HUB_BASE_URL + "/_/" + item.getName());
             }
-        });
-
-        ImageButton btnShare = (ImageButton) convertView.findViewById(R.id.btn_image_share);
-        btnShare.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
+            else
             {
-                Uri uri;
-                if (item.isOfficial())
-                {
-                    uri = Uri.parse(DOCKER_HUB_BASE_URL + "/_/" + item.getName());
-                }
-                else
-                {
-                    uri = Uri.parse(DOCKER_HUB_BASE_URL + "/r/" + item.getName());
-                }
-
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                final String subject = "Docker Image : " + item.getName();
-                String body = "";
-                if (item.getDescription() != null && item.getDescription().trim().length() != 0)
-                {
-                    body += item.getDescription() + "\n\n";
-                }
-                body += uri.toString();
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, body);
-                Activity activity = (Activity) parent.getContext();
-                activity.startActivity(Intent.createChooser(shareIntent, activity.getString(R.string.share)));
+                uri = Uri.parse(DOCKER_HUB_BASE_URL + "/r/" + item.getName());
             }
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            final String subject = "Docker Image : " + item.getName();
+            String body = "";
+            if (item.getDescription() != null && item.getDescription().trim().length() != 0)
+            {
+                body += item.getDescription() + "\n\n";
+            }
+            body += uri.toString();
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, body);
+            Activity activity = (Activity) parent.getContext();
+            activity.startActivity(Intent.createChooser(shareIntent, activity.getString(R.string.share)));
         });
 
         return convertView;

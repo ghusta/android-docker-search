@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import org.joda.time.DateTime;
 
@@ -46,9 +45,9 @@ public class DockerTagListAdapter extends ArrayAdapter<RepositoryTagV2>
         if (viewHolder == null)
         {
             viewHolder = new DockerTagViewHolder();
-            viewHolder.setName((TextView) convertView.findViewById(R.id.listitem_tag_name));
-            viewHolder.setSize((TextView) convertView.findViewById(R.id.listitem_tag_size));
-            viewHolder.setLastUpdated((TextView) convertView.findViewById(R.id.listitem_tag_last_updated));
+            viewHolder.setName(convertView.findViewById(R.id.listitem_tag_name));
+            viewHolder.setSize(convertView.findViewById(R.id.listitem_tag_size));
+            viewHolder.setLastUpdated(convertView.findViewById(R.id.listitem_tag_last_updated));
         }
 
         RepositoryTagV2 item = getItem(position);

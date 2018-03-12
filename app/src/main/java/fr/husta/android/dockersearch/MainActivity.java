@@ -85,10 +85,10 @@ public class MainActivity extends AppCompatActivity
 
         checkInternetConnection();
 
-        listView = (ExpandableListView) findViewById(R.id.listView);
+        listView = findViewById(R.id.listView);
         if (savedInstanceState == null) {
             dockerImageExpandableListAdapter = new DockerImageExpandableListAdapter(MainActivity.this,
-                    new ArrayList<ImageSearchResult>());
+                    new ArrayList<>());
         } else {
             Log.d(TAG, "onCreate: state to be restored ?");
             ArrayList<ImageSearchResult> savedArrayList = savedInstanceState.getParcelableArrayList(KEY_IMAGE_LIST_ADAPTER);
@@ -99,15 +99,15 @@ public class MainActivity extends AppCompatActivity
         // listView.setOnGroupClickListener( );
         // listView.setOnChildClickListener( );
 
-        listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                int groupCount = listView.getExpandableListAdapter().getGroupCount();
+        listView.setOnGroupExpandListener(groupPosition ->
+        {
+            int groupCount = listView.getExpandableListAdapter().getGroupCount();
 
-                for (int i = 0; i < groupCount; i++) {
-                    if (groupPosition != i && listView.isGroupExpanded(i)) {
-                        listView.collapseGroup(i);
-                    }
+            for (int i = 0; i < groupCount; i++)
+            {
+                if (groupPosition != i && listView.isGroupExpanded(i))
+                {
+                    listView.collapseGroup(i);
                 }
             }
         });
@@ -263,11 +263,11 @@ public class MainActivity extends AppCompatActivity
 
         // When linking text, force to always use default color. This works
         // around a pressed color state bug.
-        TextView textView = (TextView) messageView.findViewById(R.id.about_credits);
+        TextView textView = messageView.findViewById(R.id.about_credits);
         int defaultColor = textView.getTextColors().getDefaultColor();
         textView.setTextColor(defaultColor);
 
-        TextView textViewVersion = (TextView) messageView.findViewById(R.id.about_version);
+        TextView textViewVersion = messageView.findViewById(R.id.about_version);
         textViewVersion.setText(String.format(
                 getString(R.string.msg_about_version),
                 applicationVersion
