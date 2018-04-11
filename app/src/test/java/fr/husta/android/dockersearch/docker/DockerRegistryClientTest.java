@@ -1,7 +1,5 @@
 package fr.husta.android.dockersearch.docker;
 
-import android.support.test.filters.MediumTest;
-
 import org.junit.Ignore;
 import org.junit.Test;
 

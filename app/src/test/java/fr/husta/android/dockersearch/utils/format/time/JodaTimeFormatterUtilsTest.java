@@ -1,7 +1,5 @@
 package fr.husta.android.dockersearch.utils.format.time;
 
-import android.support.test.filters.SmallTest;
-
 import org.joda.time.DateTime;
 import org.joda.time.Instant;
 import org.joda.time.LocalDateTime;
