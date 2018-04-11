@@ -1,5 +1,7 @@
 package fr.husta.android.dockersearch.docker.model.comparator;
 
+import android.support.test.filters.SmallTest;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SmallTest
 public class DefaultImageSearchComparatorTest
 {
 

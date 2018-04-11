@@ -1,5 +1,7 @@
 package fr.husta.android.dockersearch.docker;
 
+import android.support.test.filters.MediumTest;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -17,6 +19,7 @@ import retrofit2.Response;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
+@MediumTest
 public class DockerRegistryClientTest
 {
 
