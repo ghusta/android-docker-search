@@ -15,16 +15,16 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressKey;
+import static android.support.test.espresso.action.ViewActions.pressMenuKey;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.hasToString;
-import static org.hamcrest.Matchers.is;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -83,6 +83,29 @@ public class MainActivityUITest
         {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void shouldDisplayAboutDialog()
+    {
+        onView(withId(R.id.activity_main))
+                .perform(pressMenuKey());
+
+        try
+        {
+            Thread.sleep(200L);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
+        onView(withText(R.string.about))
+                .check(matches(isDisplayed()))
+                .perform(click());
+
+        onView(withId(R.id.about_dialog))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()));
     }
 
 }
