@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import java.util.Locale;
 
-@SmallTest
 public class JodaTimeFormatterUtilsTest
 {
 

@@ -12,7 +12,6 @@ import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SmallTest
 public class DefaultImageSearchComparatorTest
 {
 
