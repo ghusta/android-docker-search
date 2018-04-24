@@ -25,7 +25,7 @@ The results should be the same than `docker search` with command line interface 
 
 ## Install the app
 
-Download and install the APK [on my website](http://g.husta.free.fr/android/#docker-search) or on [GitHub](https://github.com/ghusta/android-docker-search/releases).
+Download and install the APK on [GitHub](https://github.com/ghusta/android-docker-search/releases).
 
 ## Docker API
 
