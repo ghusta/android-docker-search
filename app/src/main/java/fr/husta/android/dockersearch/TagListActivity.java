@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,6 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TagListActivity extends AppCompatActivity
+        implements SwipeRefreshLayout.OnRefreshListener
 {
 
     private static final String TAG = "TAG_LIST";
@@ -42,6 +44,7 @@ public class TagListActivity extends AppCompatActivity
 
     private int currentPage = -1;
     private boolean hasNextPage = false;
+    private String imageName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,7 +54,7 @@ public class TagListActivity extends AppCompatActivity
         setContentView(R.layout.activity_taglist);
 
         Intent intent = getIntent();
-        String imgName = intent.getStringExtra(DATA_IMG_NAME);
+        imageName = intent.getStringExtra(DATA_IMG_NAME);
 
         // https://developer.android.com/training/implementing-navigation/ancestral.html#up
         if (getSupportActionBar() != null)
@@ -59,7 +62,7 @@ public class TagListActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             Log.d(TAG, "SupportActionBar.title = " + getSupportActionBar().getTitle());
             getSupportActionBar().setTitle("Tags");
-            getSupportActionBar().setSubtitle("Image : " + imgName);
+            getSupportActionBar().setSubtitle("Image : " + imageName);
         }
 
         progressBar = new ProgressDialog(this);
@@ -75,7 +78,10 @@ public class TagListActivity extends AppCompatActivity
         dockerTagListAdapter = new DockerTagListAdapter(TagListActivity.this, new ArrayList<>());
         listView.setAdapter(dockerTagListAdapter);
 
-        requestTagsList(imgName, 1);
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_tags);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        requestTagsList(imageName, 1);
     }
 
     private void requestTagsList(String imgName, final int pageNumber)
@@ -198,13 +204,19 @@ public class TagListActivity extends AppCompatActivity
 
     public void loadNextPage(View view)
     {
-        Intent intent = getIntent();
-        String imgName = intent.getStringExtra(DATA_IMG_NAME);
-
         if (hasNextPage)
         {
-            requestTagsList(imgName, currentPage + 1);
+            requestTagsList(imageName, currentPage + 1);
         }
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_tags);
+        swipeRefreshLayout.setRefreshing(false);
+        dockerTagListAdapter.clear();
+        requestTagsList(imageName, 1);
     }
 
 }

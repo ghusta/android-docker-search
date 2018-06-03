@@ -7,13 +7,20 @@
                 android:layout_height="match_parent"
                 tools:context=".TagListActivity">
 
-    <ListView
-        android:id="@+id/tags_listview"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_tags"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp">
-    </ListView>
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/tags_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp">
+        </ListView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_tags_next_page"
