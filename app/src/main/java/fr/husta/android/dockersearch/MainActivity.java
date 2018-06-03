@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -43,7 +44,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
-        implements SearchView.OnQueryTextListener {
+        implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener
+{
 
     public static final String PROJECT_GITHUB_URL = "https://github.com/ghusta/android-docker-search";
 
@@ -112,6 +114,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_images);
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -232,6 +236,15 @@ public class MainActivity extends AppCompatActivity
     public boolean onQueryTextChange(String newText) {
         // User changed the text
         return false;
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_images);
+        swipeRefreshLayout.setRefreshing(false);
+        CharSequence query = searchView.getQuery();
+        searchView.setQuery(query, true);
     }
 
     public void startActivityTagList(Context context, ImageSearchResult data) {
