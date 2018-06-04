@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_images);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorSecondary);
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 

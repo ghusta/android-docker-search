@@ -79,6 +79,7 @@ public class TagListActivity extends AppCompatActivity
         listView.setAdapter(dockerTagListAdapter);
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_tags);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorSecondary);
         swipeRefreshLayout.setOnRefreshListener(this);
 
         requestTagsList(imageName, 1);
