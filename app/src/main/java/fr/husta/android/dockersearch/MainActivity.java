@@ -28,6 +28,8 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
@@ -72,6 +74,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate : " + this.getLocalClassName());
         setContentView(R.layout.activity_main);
+
+        // Init : https://github.com/JakeWharton/ThreeTenABP#usage
+        AndroidThreeTen.init(this);
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
 

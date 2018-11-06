@@ -1,7 +1,7 @@
 package fr.husta.android.dockersearch.docker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.datatype.threetenbp.ThreeTenModule;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,8 +11,6 @@ import fr.husta.android.dockersearch.AppConstants;
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
 import fr.husta.android.dockersearch.docker.model.RepositoryTag;
-import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
-import fr.husta.android.dockersearch.docker.network.RequestLoggingInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -106,7 +104,7 @@ public class DockerRegistryClient
                         .readTimeout(30, TimeUnit.SECONDS)
                         .build())
                 .addConverterFactory(
-                        JacksonConverterFactory.create(new ObjectMapper().registerModule(new JodaModule())))
+                        JacksonConverterFactory.create(new ObjectMapper().registerModule(new ThreeTenModule())))
                 .build();
 
         DockerSearchRestService dockerSearchService = retrofit.create(DockerSearchRestService.class);
@@ -136,7 +134,7 @@ public class DockerRegistryClient
 //                        .addInterceptor(new RequestLoggingInterceptor())
                         .build())
                 .addConverterFactory(
-                        JacksonConverterFactory.create(new ObjectMapper().registerModule(new JodaModule())))
+                        JacksonConverterFactory.create(new ObjectMapper().registerModule(new ThreeTenModule())))
                 .build();
 
         DockerSearchRestService dockerSearchService = retrofit.create(DockerSearchRestService.class);

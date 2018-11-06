@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.joda.time.DateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -28,7 +28,7 @@ public class RepositoryTagV2
      * Ex : "2017-06-09T20:52:13.939283Z".
      */
     @JsonProperty("last_updated")
-    private DateTime lastUpdated;
+    private ZonedDateTime lastUpdated;
 
     // java.time.Instant, java.time.* -> from Android O
 
@@ -56,12 +56,12 @@ public class RepositoryTagV2
         this.fullSize = fullSize;
     }
 
-    public DateTime getLastUpdated()
+    public ZonedDateTime getLastUpdated()
     {
         return lastUpdated;
     }
 
-    public void setLastUpdated(DateTime lastUpdated)
+    public void setLastUpdated(ZonedDateTime lastUpdated)
     {
         this.lastUpdated = lastUpdated;
     }
