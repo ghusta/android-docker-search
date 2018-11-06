@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +41,7 @@ public class DockerRegistryClient
         ObjectMapper objectMapper = JsonMapper.builder()
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .addModule(new JodaModule())
+                .addModule(new JavaTimeModule())
                 .build();
 
         retrofitDockerIndex = new Retrofit.Builder()

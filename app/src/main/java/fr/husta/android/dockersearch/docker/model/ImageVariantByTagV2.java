@@ -2,7 +2,7 @@ package fr.husta.android.dockersearch.docker.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
-import org.joda.time.DateTime;
+import java.time.ZonedDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -43,7 +43,7 @@ public class ImageVariantByTagV2
      */
     private String status;
 
-    private DateTime lastPushed;
+    private ZonedDateTime lastPushed;
 
     public ImageVariantByTagV2()
     {
@@ -119,12 +119,12 @@ public class ImageVariantByTagV2
         this.status = status;
     }
 
-    public DateTime getLastPushed()
+    public ZonedDateTime getLastPushed()
     {
         return lastPushed;
     }
 
-    public void setLastPushed(DateTime lastPushed)
+    public void setLastPushed(ZonedDateTime lastPushed)
     {
         this.lastPushed = lastPushed;
     }

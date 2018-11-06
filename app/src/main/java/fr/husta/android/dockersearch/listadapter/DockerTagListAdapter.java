@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import org.joda.time.DateTime;
-
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -65,9 +63,9 @@ public class DockerTagListAdapter extends ArrayAdapter<RepositoryTagV2>
             }
             if (item.getLastUpdated() != null)
             {
-                long elapsedMillis = DateTime.now().getMillis() - item.getLastUpdated().getMillis();
+                long elapsedMillis = System.currentTimeMillis() - item.getLastUpdated().toInstant().toEpochMilli();
                 viewHolder.getLastUpdated().setText(
-                        DateUtils.getRelativeTimeSpanString(item.getLastUpdated().getMillis()));
+                        DateUtils.getRelativeTimeSpanString(item.getLastUpdated().toInstant().toEpochMilli()));
             }
             else
             {
