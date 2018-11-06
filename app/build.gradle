@@ -16,6 +16,9 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     compileOptions {
+        // Flag to enable support for the new language APIs
+        // See : https://developer.android.com/studio/write/java8-support#library-desugaring
+        coreLibraryDesugaringEnabled true
         // See : https://developer.android.com/studio/write/java8-support.html
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -82,8 +85,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.13.4'
-    implementation 'joda-time:joda-time:2.11.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4'
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.0'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'com.google.truth:truth:1.1.3'
