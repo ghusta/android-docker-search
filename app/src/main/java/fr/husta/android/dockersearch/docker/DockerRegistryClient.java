@@ -11,8 +11,6 @@ import fr.husta.android.dockersearch.AppConstants;
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
 import fr.husta.android.dockersearch.docker.model.RepositoryTag;
-import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
-import fr.husta.android.dockersearch.docker.network.RequestLoggingInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
