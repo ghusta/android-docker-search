@@ -10,7 +10,7 @@ public interface AppConstants
     boolean USE_CHROME_CUSTOM_TABS = true;
 
     /**
-     * Default page size for {@link fr.husta.android.dockersearch.docker.DockerSearchRestService#searchImages(java.lang.String, int)}.
+     * Default page size for {@link fr.husta.android.dockersearch.docker.DockerSearchRestService#searchImages(String, Integer)}.
      * <br/>
      * MAX = 100.
      */
