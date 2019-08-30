@@ -82,7 +82,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-jackson:2.6.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.9'
-    implementation 'joda-time:joda-time:2.10.1'
+    implementation 'joda-time:joda-time:2.10.3'
 
     testImplementation 'junit:junit:4.12'
     // can't use java.nio.file.*
