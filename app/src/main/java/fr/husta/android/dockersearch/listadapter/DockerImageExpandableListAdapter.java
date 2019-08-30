@@ -7,8 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.customtabs.CustomTabsSession;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +16,8 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsSession;
 import fr.husta.android.dockersearch.AppConstants;
 import fr.husta.android.dockersearch.ImageWebViewActivity;
 import fr.husta.android.dockersearch.MainActivity;

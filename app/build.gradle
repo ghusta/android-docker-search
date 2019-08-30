@@ -9,7 +9,7 @@ android {
         targetSdkVersion 28 // P 9.0
         versionCode 15
         versionName "1.3.2"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "android-docker-search-$versionName")
         vectorDrawables.useSupportLibrary = true
     }
@@ -72,10 +72,10 @@ if (keystorePropertiesFile.exists()) {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:customtabs:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     implementation 'org.apache.commons:commons-lang3:3.8.1'
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
@@ -87,6 +87,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     // can't use java.nio.file.*
     testImplementation 'org.assertj:assertj-core:1.7.1'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // https://developer.android.com/training/testing/set-up-project#android-test-dependencies
+    // Core library
+    androidTestImplementation 'androidx.test:core:1.2.0'
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    // Assertions
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    // Espresso dependencies
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

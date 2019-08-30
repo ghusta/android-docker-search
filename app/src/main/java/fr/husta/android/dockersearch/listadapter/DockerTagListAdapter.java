@@ -1,7 +1,6 @@
 package fr.husta.android.dockersearch.listadapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,7 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import fr.husta.android.dockersearch.R;
 import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
 import fr.husta.android.dockersearch.utils.format.unit.ByteSizeFormatterUtils;

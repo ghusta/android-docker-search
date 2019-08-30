@@ -7,7 +7,7 @@
                 android:layout_height="match_parent"
                 tools:context=".TagListActivity">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_tags"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -20,9 +20,9 @@
             android:paddingRight="0dp">
         </ListView>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_tags_next_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

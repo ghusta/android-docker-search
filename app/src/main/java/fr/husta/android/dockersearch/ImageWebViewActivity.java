@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +16,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @deprecated Utiliser Chrome Custom Tabs
