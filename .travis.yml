@@ -1,6 +1,7 @@
 language: android
 sudo: required
 dist: xenial
+# See : https://docs.travis-ci.com/user/reference/xenial/
 
 android:
   components:
