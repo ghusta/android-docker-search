@@ -8,7 +8,8 @@ import java.util.List;
 
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class DefaultImageSearchComparatorTest
 {
@@ -37,15 +38,15 @@ public class DefaultImageSearchComparatorTest
         Collections.sort(list, comparator);
         assertThat(list).isNotEmpty();
         // #1 => elt3
-        assertThat(list.get(0)).isSameAs(elt3);
+        assertThat(list.get(0)).isSameInstanceAs(elt3);
         // #2 => elt1
-        assertThat(list.get(1)).isSameAs(elt1);
+        assertThat(list.get(1)).isSameInstanceAs(elt1);
         // #3 => elt4
-        assertThat(list.get(2)).isSameAs(elt4);
+        assertThat(list.get(2)).isSameInstanceAs(elt4);
         // #4 => elt5
-        assertThat(list.get(3)).isSameAs(elt5);
+        assertThat(list.get(3)).isSameInstanceAs(elt5);
         // #5 => elt2
-        assertThat(list.get(4)).isSameAs(elt2);
+        assertThat(list.get(4)).isSameInstanceAs(elt2);
     }
 
 }

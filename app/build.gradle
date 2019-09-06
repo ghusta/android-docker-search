@@ -85,8 +85,8 @@ dependencies {
     implementation 'joda-time:joda-time:2.10.3'
 
     testImplementation 'junit:junit:4.12'
-    // can't use java.nio.file.*
-    testImplementation 'org.assertj:assertj-core:1.7.1'
+    testImplementation 'com.google.truth:truth:1.0'
+
     // https://developer.android.com/training/testing/set-up-project#android-test-dependencies
     // Core library
     androidTestImplementation 'androidx.test:core:1.2.0'
