@@ -26,4 +26,10 @@
 
     <string name="menu_open_in_chrome">Ouvrir dans Chrome</string>
     <string name="menu_open_in_browser">Ouvrir dans le navigateur</string>
+
+    <string name="choose_theme">Sélectionner un thème</string>
+    <string name="item_theme_light">Clair</string>
+    <string name="item_theme_dark">Foncé</string>
+    <string name="item_theme_default_until_android_9">Défini par l\'économiseur de batterie</string>
+
 </resources>
