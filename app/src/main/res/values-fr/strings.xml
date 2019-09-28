@@ -28,8 +28,8 @@
     <string name="menu_open_in_browser">Ouvrir dans le navigateur</string>
 
     <string name="choose_theme">Sélectionner un thème</string>
-    <string name="item_theme_light">Clair</string>
-    <string name="item_theme_dark">Foncé</string>
-    <string name="item_theme_default_until_android_9">Défini par l\'économiseur de batterie</string>
+    <string name="choice_light_mode">Clair</string>
+    <string name="choice_dark_mode">Foncé</string>
+    <string name="choice_system_mode">Défini par l\'économiseur de batterie</string>
 
 </resources>
