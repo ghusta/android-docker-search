@@ -81,14 +81,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        // read preferences at start
+        preferences = getPreferences(MODE_PRIVATE);
+        selectedTheme = preferences.getInt(KEY_PREF_SAVED_DARK_MODE, 2);
+        // ensure correct theme is applied
+        applyTheme(selectedTheme);
+
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate : " + this.getLocalClassName());
         setContentView(R.layout.activity_main);
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
-
-        preferences = getPreferences(MODE_PRIVATE);
-        selectedTheme = preferences.getInt(KEY_PREF_SAVED_DARK_MODE, 2);
 
         themeChooserDialog = initThemeChooserAlertDialog();
 
@@ -187,9 +190,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume()
     {
+        // read preferences at start
+        preferences = getPreferences(MODE_PRIVATE);
+        selectedTheme = preferences.getInt(KEY_PREF_SAVED_DARK_MODE, 2);
+        // ensure correct theme is applied
+        applyTheme(selectedTheme);
+
         super.onResume();
         Log.d(TAG, "onResume : " + this.getLocalClassName());
-
     }
 
     @Override
