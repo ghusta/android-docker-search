@@ -6,6 +6,7 @@ import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MAIN";
     public static final String KEY_IMAGE_LIST_ADAPTER = "KEY_IMAGE_LIST_ADAPTER";
 
+    public static final String KEY_PREF_SAVED_DARK_MODE = "last_dark_mode";
+
     /**
      * Fetched in AndroidManifest.xml
      */
@@ -68,7 +71,11 @@ public class MainActivity extends AppCompatActivity
 
     private DockerImageExpandableListAdapter dockerImageExpandableListAdapter;
 
-    private int selectedTheme = 2;
+    private SharedPreferences preferences;
+
+    private AlertDialog themeChooserDialog;
+
+    private int selectedTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -78,6 +85,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
+
+        preferences = getPreferences(MODE_PRIVATE);
+        selectedTheme = preferences.getInt(KEY_PREF_SAVED_DARK_MODE, 2);
+
+        themeChooserDialog = initThemeChooserAlertDialog();
 
         if (getIntent() != null)
         {
@@ -297,6 +309,11 @@ public class MainActivity extends AppCompatActivity
 
     public void clickChooseTheme(MenuItem item)
     {
+        themeChooserDialog.show();
+    }
+
+    private AlertDialog initThemeChooserAlertDialog()
+    {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.choose_theme);
         // list : 'Light', 'Dark', 'Set by Battery Saver'
@@ -307,7 +324,9 @@ public class MainActivity extends AppCompatActivity
                 });
         builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
             // User clicked OK button
-            Toast.makeText(this, "Choice = " + selectedTheme, Toast.LENGTH_SHORT).show();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt(KEY_PREF_SAVED_DARK_MODE, selectedTheme);
+            editor.apply();
             dialog.dismiss();
         });
         builder.setNegativeButton(android.R.string.cancel, (dialog, id) -> {
@@ -315,8 +334,7 @@ public class MainActivity extends AppCompatActivity
             dialog.dismiss();
         });
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        return builder.create();
     }
 
     public void clickAbout(MenuItem item)
