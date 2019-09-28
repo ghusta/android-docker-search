@@ -31,6 +31,7 @@ import java.util.Objects;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -327,6 +328,8 @@ public class MainActivity extends AppCompatActivity
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt(KEY_PREF_SAVED_DARK_MODE, selectedTheme);
             editor.apply();
+
+            applyTheme(selectedTheme);
             dialog.dismiss();
         });
         builder.setNegativeButton(android.R.string.cancel, (dialog, id) -> {
@@ -335,6 +338,30 @@ public class MainActivity extends AppCompatActivity
         });
 
         return builder.create();
+    }
+
+    private void applyTheme(int selectedTheme)
+    {
+        // See https://developer.android.com/guide/topics/ui/look-and-feel/darktheme#changing_themes_in-app
+        switch (selectedTheme)
+        {
+            case 0:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case 1:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case 2:
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)
+                {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+                }
+                else // API 29+
+                {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                }
+                break;
+        }
     }
 
     public void clickAbout(MenuItem item)
