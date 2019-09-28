@@ -30,8 +30,8 @@
     <string name="menu_open_in_browser">Open in browser</string>
 
     <string name="choose_theme">Choose theme</string>
-    <string name="item_theme_light">Light</string>
-    <string name="item_theme_dark">Dark</string>
-    <string name="item_theme_default_until_android_9">Set by Battery Saver</string>
+    <string name="choice_light_mode">Light</string>
+    <string name="choice_dark_mode">Dark</string>
+    <string name="choice_system_mode">Set by Battery Saver</string>
 
 </resources>
