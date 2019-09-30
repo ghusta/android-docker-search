@@ -82,7 +82,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-jackson:2.6.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.0'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.10.0'
-    implementation 'joda-time:joda-time:2.10.3'
+    implementation 'joda-time:joda-time:2.10.4'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.truth:truth:1.0'
