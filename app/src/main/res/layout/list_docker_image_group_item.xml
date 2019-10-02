@@ -42,7 +42,7 @@
             android:alpha="0.4"
             android:minHeight="24dp"
             android:paddingBottom="2dp"
-            app:srcCompat="@drawable/ic_official_3"
+            app:srcCompat="@drawable/ic_official_image"
             tools:ignore="ContentDescription"
             tools:layout_gravity="center"/>
     </LinearLayout>
