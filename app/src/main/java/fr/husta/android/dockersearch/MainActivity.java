@@ -324,26 +324,22 @@ public class MainActivity extends AppCompatActivity
     private AlertDialog initThemeChooserAlertDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.choose_theme);
-        // list : 'Light', 'Dark', 'Set by Battery Saver'
-        // See RECO : https://developer.android.com/guide/topics/ui/look-and-feel/darktheme#changing_themes_in-app
-        builder.setSingleChoiceItems(R.array.themes_until_android_9_array, selectedTheme,
-                (dialog, which) -> {
+        builder.setTitle(R.string.choose_theme)
+                // list : 'Light', 'Dark', 'Set by Battery Saver / System'
+                // See RECO : https://developer.android.com/guide/topics/ui/look-and-feel/darktheme#changing_themes_in-app
+                .setSingleChoiceItems(R.array.themes_list, selectedTheme, (dialog, which) -> {
                     selectedTheme = which;
-                });
-        builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
-            // User clicked OK button
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt(KEY_PREF_SAVED_DARK_MODE, selectedTheme);
-            editor.apply();
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putInt(KEY_PREF_SAVED_DARK_MODE, selectedTheme);
+                    editor.apply();
 
-            applyTheme(selectedTheme);
-            dialog.dismiss();
-        });
-        builder.setNegativeButton(android.R.string.cancel, (dialog, id) -> {
-            // User cancelled the dialog
-            dialog.dismiss();
-        });
+                    applyTheme(selectedTheme);
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.cancel, (dialog, id) -> {
+                    // User cancelled the dialog
+                    dialog.dismiss();
+                });
 
         return builder.create();
     }
