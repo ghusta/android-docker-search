@@ -46,6 +46,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
+
 public class MainActivity extends AppCompatActivity
         implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener
 {
@@ -201,6 +206,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onNightModeChanged(int mode)
+    {
+        switch (mode)
+        {
+            case MODE_NIGHT_NO:
+                Log.d(TAG, String.format("onNightModeChanged : mode = %s", "MODE_NIGHT_NO"));
+                break;
+            case MODE_NIGHT_YES:
+                Log.d(TAG, String.format("onNightModeChanged : mode = %s", "MODE_NIGHT_YES"));
+                break;
+            case MODE_NIGHT_AUTO_BATTERY:
+                Log.d(TAG, String.format("onNightModeChanged : mode = %s", "MODE_NIGHT_AUTO_BATTERY"));
+                break;
+            case MODE_NIGHT_FOLLOW_SYSTEM:
+                Log.d(TAG, String.format("onNightModeChanged : mode = %s", "MODE_NIGHT_FOLLOW_SYSTEM"));
+                break;
+            default:
+                Log.d(TAG, String.format("onNightModeChanged : mode = %d", mode));
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
@@ -350,7 +377,7 @@ public class MainActivity extends AppCompatActivity
         switch (selectedTheme)
         {
             case 0:
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO);
                 break;
             case 1:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
