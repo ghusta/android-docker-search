@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2F3D46</color>
+    <color name="colorPrimaryDark">#191B1B</color>
+
+    <!-- bg color for FAB -->
+    <color name="colorAccent">#157CAD</color>
+    <color name="colorSecondary">#DFA031</color>
+
+    <color name="textColorPrimary">#FF1593CD</color>
+</resources>

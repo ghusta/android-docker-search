@@ -2,6 +2,8 @@
 <resources>
     <color name="colorPrimary">#1593cd</color>
     <color name="colorPrimaryDark">#09658f</color>
+
+    <!-- bg color for FAB -->
     <color name="colorAccent">#138ac1</color>
     <color name="colorSecondary">#ffab00</color>
 
