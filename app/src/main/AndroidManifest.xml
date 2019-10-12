@@ -50,7 +50,7 @@
 
         <provider
             android:name=".search.RecentSearchProvider"
-            android:authorities="fr.husta.android.dockersearch.search.RecentSearchProvider"/>
+            android:authorities="${applicationId}.search.RecentSearchProvider" />
 
     </application>
 
