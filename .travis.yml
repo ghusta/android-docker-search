@@ -17,6 +17,7 @@ android:
 stages:
   - compile
   - test
+  - lint
   - name: deploy
     if: branch = master
 
@@ -30,6 +31,9 @@ jobs:
     - stage: test
       script:
         - ./gradlew test
+    - stage: lint
+      script:
+        - ./gradlew lint
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
