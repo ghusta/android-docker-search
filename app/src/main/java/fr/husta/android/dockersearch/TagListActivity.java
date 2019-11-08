@@ -117,11 +117,11 @@ public class TagListActivity extends AppCompatActivity
                         // See : https://stackoverflow.com/questions/50343634/android-p-visibilityawareimagebutton-setvisibility-can-only-be-called-from-the-s
                         if (hasNextPage)
                         {
-                            ((View) fabNextPage).setVisibility(View.VISIBLE);
+                            fabNextPage.show();
                         }
                         else
                         {
-                            ((View) fabNextPage).setVisibility(View.GONE);
+                            fabNextPage.hide();
                         }
                     }
                 }
