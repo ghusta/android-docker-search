@@ -111,13 +111,17 @@ public class TagListActivity extends AppCompatActivity
                         hasNextPage = response.body().getNextUrl() != null;
                         Log.d(TAG, "requestTagsList() - hasNextPage = " + hasNextPage);
 
+                        // Lint incorrectly reported :
+                        // Error: VisibilityAwareImageButton.setVisibility can only be called from within
+                        // the same library group (groupId=com.google.android.material) [RestrictedApi]
+                        // See : https://stackoverflow.com/questions/50343634/android-p-visibilityawareimagebutton-setvisibility-can-only-be-called-from-the-s
                         if (hasNextPage)
                         {
-                            fabNextPage.setVisibility(View.VISIBLE);
+                            ((View) fabNextPage).setVisibility(View.VISIBLE);
                         }
                         else
                         {
-                            fabNextPage.setVisibility(View.GONE);
+                            ((View) fabNextPage).setVisibility(View.GONE);
                         }
                     }
                 }
