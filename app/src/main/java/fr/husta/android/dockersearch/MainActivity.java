@@ -120,7 +120,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
         handleIntent(intent);
     }
 
