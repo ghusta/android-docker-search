@@ -1,7 +1,7 @@
 # android-docker-search
 :whale: Docker Search on Android
 
-[![Build Status](https://img.shields.io/travis/ghusta/android-docker-search/master?logo=travis)](https://travis-ci.org/ghusta/android-docker-search) [![GitHub release](https://img.shields.io/github/release/ghusta/android-docker-search.svg)](https://github.com/ghusta/android-docker-search/releases)
+[![Build Status](https://img.shields.io/travis/ghusta/android-docker-search/master?logo=travis)](https://travis-ci.org/ghusta/android-docker-search) [![GitHub release](https://img.shields.io/github/v/release/ghusta/android-docker-search?sort=semver&logo=GitHub)](https://github.com/ghusta/android-docker-search/releases)
 
 ## Overview
 
