@@ -1,6 +1,5 @@
 package fr.husta.android.dockersearch.docker.model;
 
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

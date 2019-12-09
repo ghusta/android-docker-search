@@ -1,6 +1,5 @@
 package fr.husta.android.dockersearch;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
@@ -33,7 +32,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.husta.android.dockersearch.docker.DockerRegistryClient;
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
