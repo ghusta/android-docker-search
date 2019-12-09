@@ -17,7 +17,7 @@ The results should be the same than `docker search` with command line interface 
 - Display all tags for an image, including the date and size
 - Display the web page for an image, in a separate [Chrome Custom Tab](https://developer.chrome.com/multidevice/android/customtabs)
 - Share the URL of the image
-- Minimum supported version : [Android 4.2 (Jelly Bean)](https://developer.android.com/about/versions/android-4.2.html)
+- Minimum supported version : [Android 5.0 (Lollipop)](https://developer.android.com/about/versions/android-5.0.html)
 
 ## Screenshots
 
