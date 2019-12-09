@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity
         inflater.inflate(R.menu.options_menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.menu_search);
-        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
 
         // Associate searchable configuration with the SearchView

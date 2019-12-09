@@ -154,7 +154,7 @@ public class ImageSearchResult implements Parcelable
             return Objects.hash(description, official, automated, name, starCount);
         }
         else {
-            return ObjectUtils.hashCode(this);
+            return Objects.hashCode(this);
         }
     }
 
