@@ -321,9 +321,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void openUrlInBrowser(Uri uri) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Objects.requireNonNull(uri);
-        }
+        Objects.requireNonNull(uri);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
         startActivity(intent);
@@ -335,9 +333,7 @@ public class MainActivity extends AppCompatActivity
      * @param uri
      */
     public void openInMarket(Uri uri) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Objects.requireNonNull(uri);
-        }
+        Objects.requireNonNull(uri);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
         try {

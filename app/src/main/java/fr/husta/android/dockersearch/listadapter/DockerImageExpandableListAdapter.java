@@ -19,7 +19,6 @@ import java.util.List;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.browser.customtabs.CustomTabsSession;
 import fr.husta.android.dockersearch.AppConstants;
-import fr.husta.android.dockersearch.ImageWebViewActivity;
 import fr.husta.android.dockersearch.MainActivity;
 import fr.husta.android.dockersearch.R;
 import fr.husta.android.dockersearch.TagListActivity;
@@ -195,10 +194,7 @@ public class DockerImageExpandableListAdapter
             }
             else
             {
-                Intent starter = new Intent(context, ImageWebViewActivity.class);
-                starter.setData(uri);
-                Activity activity = (Activity) parent.getContext();
-                activity.startActivity(starter);
+                throw new UnsupportedOperationException("Not implemented");
             }
         });
 

@@ -150,12 +150,7 @@ public class ImageSearchResult implements Parcelable
     @Override
     public int hashCode()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return Objects.hash(description, official, automated, name, starCount);
-        }
-        else {
-            return Objects.hashCode(this);
-        }
+        return Objects.hashCode(this);
     }
 
     @Override
