@@ -29,7 +29,7 @@
 
     <string name="choose_theme">Sélectionner un thème</string>
     <string name="choice_light_mode">Clair</string>
-    <string name="choice_dark_mode">Foncé</string>
+    <string name="choice_dark_mode">Sombre</string>
     <string name="choice_system_mode">Défini par l\'économiseur de batterie</string>
 
 </resources>
