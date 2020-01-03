@@ -84,7 +84,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.10.1'
     implementation 'joda-time:joda-time:2.10.5'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     testImplementation 'com.google.truth:truth:1.0'
 
     // https://developer.android.com/training/testing/set-up-project#android-test-dependencies
