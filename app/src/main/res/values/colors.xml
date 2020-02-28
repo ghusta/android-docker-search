@@ -9,4 +9,6 @@
 
     <!--<color name="textColorPrimary">#3F51B5</color>-->
     <color name="textColorPrimary">#FF1593CD</color>
+
+    <color name="secondaryTextColor">#4D000000</color>
 </resources>
