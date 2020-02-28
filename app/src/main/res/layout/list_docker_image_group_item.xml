@@ -20,13 +20,23 @@
         android:orientation="vertical"
         android:paddingEnd="2dp">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minHeight="24dp"
+            android:paddingBottom="2dp"
+            android:tint="@color/secondaryTextColor"
+            android:tintMode="src_in"
+            app:srcCompat="@drawable/ic_star_24dp"
+            tools:ignore="ContentDescription"
+            tools:layout_gravity="center"/>
+
         <TextView
             android:id="@+id/listitem_image_stars"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
-            android:drawablePadding="0dp"
-            android:drawableTop="@android:drawable/star_off"
             android:gravity="center"
             android:minWidth="30dp"
             android:text="1234"
@@ -39,9 +49,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:alpha="0.4"
             android:minHeight="24dp"
             android:paddingBottom="2dp"
+            android:tint="@color/secondaryTextColor"
+            android:tintMode="src_in"
             app:srcCompat="@drawable/ic_official_image"
             tools:ignore="ContentDescription"
             tools:layout_gravity="center"/>
