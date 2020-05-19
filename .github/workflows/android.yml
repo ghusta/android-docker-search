@@ -19,3 +19,5 @@ jobs:
         java-version: 1.8
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Display built artifacts
+      run: ls -lh app/build/outputs/apk/debug/*.apk
