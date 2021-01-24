@@ -434,6 +434,11 @@ public class MainActivity extends AppCompatActivity
         openUrlInBrowser(Uri.parse(PROJECT_GITHUB_URL));
     }
 
+    public void clickCheckLatestRelease(MenuItem item)
+    {
+        openUrlInBrowser(Uri.parse(PROJECT_GITHUB_URL + "/releases/latest"));
+    }
+
     public void clickNoteApp(MenuItem item)
     {
         // https://developer.android.com/distribute/tools/promote/linking.html#android-app

@@ -35,6 +35,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/menu_check_latest_release"
+        android:onClick="clickCheckLatestRelease"
+        android:title="@string/action_check_latest_release"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_note_app"
         android:enabled="false"
         android:icon="@android:drawable/star_big_on"

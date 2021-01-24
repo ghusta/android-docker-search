@@ -10,6 +10,7 @@
     <string name="action_contribute">Contribuez !</string>
     <string name="action_rate_app">Noter l\'appli</string>
     <string name="action_report_issue">Signaler un problème</string>
+    <string name="action_check_latest_release">Vérifier la dernière release</string>
     <string name="action_about">À propos</string>
     <string name="action_next">Suivant</string>
 
