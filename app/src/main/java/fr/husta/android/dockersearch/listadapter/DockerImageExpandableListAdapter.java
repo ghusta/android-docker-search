@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.icu.text.CompactDecimalFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -13,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.browser.customtabs.CustomTabsSession;
@@ -34,9 +38,9 @@ public class DockerImageExpandableListAdapter
         extends BaseExpandableListAdapter
 {
 
-    private Context context;
-    private List<ImageSearchResult> groupList;
-    private LayoutInflater inflater;
+    private final Context context;
+    private final List<ImageSearchResult> groupList;
+    private final LayoutInflater inflater;
 
     public DockerImageExpandableListAdapter(Context context, List<ImageSearchResult> groupList)
     {
@@ -116,7 +120,8 @@ public class DockerImageExpandableListAdapter
         {
             viewHolder.getName().setText(item.getName());
             viewHolder.getDescription().setText(item.getDescription());
-            viewHolder.getStars().setText(String.valueOf(item.getStarCount()));
+            String formattedStarCount = formatCompactNumber(item.getStarCount());
+            viewHolder.getStars().setText(formattedStarCount);
             if (item.isOfficial())
             {
                 viewHolder.getOfficial().setVisibility(View.VISIBLE);
@@ -128,6 +133,35 @@ public class DockerImageExpandableListAdapter
         }
 
         return convertView;
+    }
+
+    private String formatCompactNumber(int inputNumber)
+    {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
+        {
+            CompactDecimalFormat compactDecimalFormat = CompactDecimalFormat.getInstance(Locale.getDefault(), CompactDecimalFormat.CompactStyle.SHORT);
+//            compactDecimalFormat.setMinimumSignificantDigits(1);
+//            compactDecimalFormat.setMaximumSignificantDigits(3);
+            return compactDecimalFormat.format(inputNumber);
+        }
+        else
+        {
+            // fallback to function
+            return formatCompactNumberBeforeNougat(inputNumber, Locale.getDefault());
+        }
+    }
+
+    public static String formatCompactNumberBeforeNougat(long count, Locale locale)
+    {
+        if (count < 1000)
+        {
+            return "" + count;
+        }
+        int exp = (int) (Math.log(count) / Math.log(1000));
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+        DecimalFormat df = new DecimalFormat("0.#", symbols);
+        String nb = df.format(count / Math.pow(1000, exp));
+        return String.format("%s %c", nb, "kMGTPE".charAt(exp - 1));
     }
 
     @Override
