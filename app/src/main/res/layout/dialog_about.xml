@@ -1,59 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/about_dialog"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/about_credits"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:autoLink="web"
+            android:paddingTop="20dip"
+            android:text="@string/msg_about_credits"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/about_credits"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:paddingTop="20dip"
-                android:text="@string/msg_about_credits"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="16sp"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:contentDescription="Docker Logo"
+            android:src="@drawable/new_docker_logo"
+            tools:ignore="HardcodedText" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dip"
-                android:contentDescription="Docker Logo"
-                android:src="@drawable/new_docker_logo"
-                tools:ignore="HardcodedText" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:paddingTop="20dip"
+            android:text="@string/msg_about_docker_website"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="16sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:paddingTop="20dip"
-                android:text="@string/msg_about_docker_website"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/about_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:text="Version : "
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/about_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:text="Version : "
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="16sp"/>
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </ScrollView>
-
-</LinearLayout>
+</ScrollView>

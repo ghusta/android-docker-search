@@ -1,50 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
 
     <TextView
         android:id="@+id/listitem_tag_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/layout_size_and_timestamp"
+        android:layout_marginEnd="1dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="1.0-alpha-alpha-alpha.beta-beta-beta-beta-beta-beta-beta"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/textColorPrimary"
-        tools:ignore="HardcodedText"/>
+        app:layout_constraintEnd_toStartOf="@id/barrier_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
-    <LinearLayout
-        android:id="@+id/layout_size_and_timestamp"
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical">
+        app:barrierDirection="left"
+        app:constraint_referenced_ids="listitem_tag_size,listitem_tag_last_updated" />
 
-        <TextView
-            android:id="@+id/listitem_tag_size"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="213 MB"
-            android:textAlignment="textEnd"
-            android:textStyle="italic"
-            tools:ignore="HardcodedText"/>
+    <TextView
+        android:id="@+id/listitem_tag_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="213 MB"
+        android:textAlignment="textEnd"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/listitem_tag_last_updated"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
-        <TextView
-            android:id="@+id/listitem_tag_last_updated"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="date time relative"
-            android:textAlignment="textEnd"
-            android:textStyle="italic"
-            tools:ignore="HardcodedText"/>
+    <TextView
+        android:id="@+id/listitem_tag_last_updated"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginBottom="2dp"
+        android:text="date time relative"
+        android:textAlignment="textEnd"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listitem_tag_size"
+        tools:ignore="HardcodedText" />
 
-    </LinearLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
