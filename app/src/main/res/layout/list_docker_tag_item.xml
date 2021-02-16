@@ -19,6 +19,7 @@
         android:text="1.0-alpha-alpha-alpha.beta-beta-beta-beta-beta-beta-beta"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/barrier_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
