@@ -16,14 +16,13 @@
         android:layout_marginEnd="1dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="1.0-alpha-alpha-alpha.beta-beta-beta-beta-beta-beta-beta"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/barrier_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
+        tools:text="1.0-beta.2" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_1"
@@ -36,25 +35,23 @@
         android:id="@+id/listitem_tag_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="213 MB"
         android:textAlignment="textEnd"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/listitem_tag_last_updated"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
+        tools:text="213 MB" />
 
     <TextView
         android:id="@+id/listitem_tag_last_updated"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:layout_marginBottom="2dp"
-        android:text="date time relative"
         android:textAlignment="textEnd"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listitem_tag_size"
-        tools:ignore="HardcodedText" />
+        tools:text="date time relative" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
