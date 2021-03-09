@@ -225,4 +225,23 @@ public class TagListActivity extends AppCompatActivity
         requestTagsList(imageName, 1);
     }
 
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        if (progressBar != null)
+        {
+            progressBar.dismiss();
+        }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if (progressBar != null)
+        {
+            progressBar.dismiss();
+        }
+    }
 }
