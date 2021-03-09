@@ -1,28 +1,19 @@
 package fr.husta.android.dockersearch.docker.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ContainerImageSearchResult
 {
 
-    @JsonProperty("num_pages")
     private int numPages;
 
-    @JsonProperty("page")
     private int page;
 
-    @JsonProperty("page_size")
     private int pageSize;
 
-    @JsonProperty("num_results")
     private int numResults;
 
-    @JsonProperty("results")
     private List<ImageSearchResult> results = new ArrayList<>();
 
     public int getNumPages()

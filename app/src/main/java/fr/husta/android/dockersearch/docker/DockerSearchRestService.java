@@ -5,6 +5,7 @@ import java.util.List;
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
 import fr.husta.android.dockersearch.docker.model.RepositoryTag;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -22,7 +23,7 @@ public interface DockerSearchRestService
      * @return
      */
     @GET("v1/search")
-    Call<ContainerImageSearchResult> searchImages(@Query("q") String term, @Query("n") Integer size);
+    Observable<ContainerImageSearchResult> searchImages(@Query("q") String term, @Query("n") Integer size);
 
     @GET("v1/repositories/{repository}/tags")
     @Deprecated
@@ -35,6 +36,6 @@ public interface DockerSearchRestService
      * @return
      */
     @GET("v2/repositories/{repository}/tags/")
-    Call<ContainerRepositoryTagV2> listTagsV2(@Path(value = "repository", encoded = true) String repository, @Query("page") Integer page, @Query("page_size") Integer pageSize);
+    Observable<ContainerRepositoryTagV2> listTagsV2(@Path(value = "repository", encoded = true) String repository, @Query("page") Integer page, @Query("page_size") Integer pageSize);
 
 }

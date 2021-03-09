@@ -1,20 +1,19 @@
 package fr.husta.android.dockersearch.docker;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import fr.husta.android.dockersearch.AppConstants;
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
+import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class DockerRegistryClient
@@ -27,92 +26,76 @@ public class DockerRegistryClient
     private static final String BASE_URI = "https://index.docker.io";
     private static final String BASE_REGISTRY_URI = "https://registry.hub.docker.com";
 
+    /**
+     * Retrofit using async callbacks
+     */
+    private final Retrofit retrofitDockerIndex;
+    /**
+     * Retrofit using RxJava2
+     */
+    private final Retrofit retrofitRxJava2;
+
     public DockerRegistryClient()
     {
-    }
+        ObjectMapper objectMapper = new ObjectMapper()
+                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .registerModule(new JodaModule());
 
-    public void searchImagesAsync(String term, Callback<ContainerImageSearchResult> callback)
-    {
-        final int pageSize = AppConstants.IMAGE_SEARCH_PAGE_SIZE;
-
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofitDockerIndex = new Retrofit.Builder()
                 .baseUrl(BASE_URI)
                 .client(new OkHttpClient.Builder()
                         .connectTimeout(5, TimeUnit.SECONDS)
                         .readTimeout(30, TimeUnit.SECONDS)
                         .build())
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        DockerSearchRestService dockerSearchService = retrofit.create(DockerSearchRestService.class);
-        Call<ContainerImageSearchResult> call = dockerSearchService.searchImages(term, pageSize);
-//        Log.d("DOCKER_CLIENT", "Calling Docker Registry API (searchImages)...");
-        call.enqueue(callback);
-    }
-
-    public void listTagsV2Async(String repository, Callback<ContainerRepositoryTagV2> callback)
-    {
-        listTagsV2Async(repository, 1, callback);
-    }
-
-    public void listTagsV2Async(String repository, int page, Callback<ContainerRepositoryTagV2> callback)
-    {
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofitRxJava2 = new Retrofit.Builder()
                 .baseUrl(BASE_REGISTRY_URI)
                 .client(new OkHttpClient.Builder()
                         .connectTimeout(5, TimeUnit.SECONDS)
                         .readTimeout(30, TimeUnit.SECONDS)
                         .build())
-                .addConverterFactory(
-                        JacksonConverterFactory.create(new ObjectMapper().registerModule(new JodaModule())))
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-
-        DockerSearchRestService dockerSearchService = retrofit.create(DockerSearchRestService.class);
-        Call<ContainerRepositoryTagV2> call =
-                dockerSearchService.listTagsV2(repository, page, AppConstants.TAG_LIST_PAGE_SIZE);
-//        Log.d("DOCKER_CLIENT", "Calling Docker Registry API (listTags)...");
-        call.enqueue(callback);
     }
 
-    public ContainerRepositoryTagV2 listTagsV2(String repository) throws IOException
+    public Observable<ContainerImageSearchResult> searchImagesAsync(String term)
+    {
+        final int pageSize = AppConstants.IMAGE_SEARCH_PAGE_SIZE;
+
+        DockerSearchRestService dockerSearchService = retrofitDockerIndex.create(DockerSearchRestService.class);
+        return dockerSearchService.searchImages(term, pageSize);
+    }
+
+    public Observable<ContainerRepositoryTagV2> listTagsV2Async(String repository)
+    {
+        return listTagsV2Async(repository, 1);
+    }
+
+    public Observable<ContainerRepositoryTagV2> listTagsV2Async(String repository, int page)
+    {
+        DockerSearchRestService dockerSearchService = retrofitRxJava2.create(DockerSearchRestService.class);
+        return dockerSearchService.listTagsV2(repository, page, AppConstants.TAG_LIST_PAGE_SIZE);
+    }
+
+    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository)
     {
         return listTagsV2(repository, 1);
     }
 
-    public ContainerRepositoryTagV2 listTagsV2(String repository, int page) throws IOException
+    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page)
     {
         return listTagsV2(repository, page, AppConstants.TAG_LIST_PAGE_SIZE);
     }
 
-    ContainerRepositoryTagV2 listTagsV2(String repository, int page, int pageSize) throws IOException
+    Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page, int pageSize)
     {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_REGISTRY_URI)
-                .client(new OkHttpClient.Builder()
-                        .connectTimeout(5, TimeUnit.SECONDS)
-                        .readTimeout(30, TimeUnit.SECONDS)
-//                        .addInterceptor(new RequestLoggingInterceptor())
-                        .build())
-                .addConverterFactory(
-                        JacksonConverterFactory.create(new ObjectMapper().registerModule(new JodaModule())))
-                .build();
-
-        DockerSearchRestService dockerSearchService = retrofit.create(DockerSearchRestService.class);
-        Call<ContainerRepositoryTagV2> call =
-                dockerSearchService.listTagsV2(repository, page, pageSize);
-
-        Response<ContainerRepositoryTagV2> response = call.execute();
-//        int count = response.body().getTotalCount();
-//        return response.body().getTags();
-        if (response.isSuccessful())
-        {
-            return response.body();
-        }
-        else
-        {
-            ResponseBody errorBody = response.errorBody();
-            throw new RuntimeException("Error (" + response.code() + ")");
-        }
+        DockerSearchRestService dockerSearchService = retrofitRxJava2.create(DockerSearchRestService.class);
+        return dockerSearchService.listTagsV2(repository, page, pageSize);
     }
 
 }

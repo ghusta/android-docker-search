@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -16,14 +15,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 @JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, setterVisibility = NONE)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ImageSearchResult implements Parcelable
 {
 
-    @JsonProperty("name")
     private String name;
 
-    @JsonProperty("description")
     private String description;
 
     @JsonProperty("is_official")
@@ -35,7 +31,6 @@ public class ImageSearchResult implements Parcelable
     @JsonProperty("is_trusted")
     private boolean trusted;
 
-    @JsonProperty("star_count")
     private int starCount;
 
     /**
