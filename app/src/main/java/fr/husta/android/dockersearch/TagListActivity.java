@@ -21,12 +21,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.husta.android.dockersearch.docker.DockerRegistryClient;
-import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
 import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
 import fr.husta.android.dockersearch.listadapter.DockerTagListAdapter;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class TagListActivity extends AppCompatActivity
         implements SwipeRefreshLayout.OnRefreshListener
@@ -47,6 +47,7 @@ public class TagListActivity extends AppCompatActivity
     private boolean hasNextPage = false;
     private String imageName;
 
+    private CompositeDisposable disposables = new CompositeDisposable();
     private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
 
     @Override
@@ -91,53 +92,40 @@ public class TagListActivity extends AppCompatActivity
     private void requestTagsList(String imgName, final int pageNumber)
     {
         // Fetch list tags (first page)
-        progressBar.show();
-        dockerRegistryClient.listTagsV2Async(imageNameToRepository(imgName), pageNumber, new Callback<ContainerRepositoryTagV2>()
-        {
-            @Override
-            public void onResponse(Call<ContainerRepositoryTagV2> call, Response<ContainerRepositoryTagV2> response)
-            {
-                if (response.isSuccessful())
-                {
-                    if (response.body() != null)
-                    {
-                        List<RepositoryTagV2> listTags = response.body().getTags();
-                        int count = response.body().getTotalCount();
+        Disposable disposable = dockerRegistryClient.listTagsV2Async(imageNameToRepository(imgName), pageNumber)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(data -> progressBar.show())
+                .subscribe(data -> {
+                            List<RepositoryTagV2> listTags = data.getTags();
+                            int count = data.getTotalCount();
 
-                        dockerTagListAdapter.addAll(listTags);
-                        // dockerTagListAdapter.notifyDataSetChanged();
+                            dockerTagListAdapter.addAll(listTags);
+                            // dockerTagListAdapter.notifyDataSetChanged();
 
-                        currentPage = pageNumber;
-                        Log.d(TAG, "requestTagsList() - currentPage = " + currentPage);
-                        hasNextPage = response.body().getNextUrl() != null;
-                        Log.d(TAG, "requestTagsList() - hasNextPage = " + hasNextPage);
+                            currentPage = pageNumber;
+                            Log.d(TAG, "requestTagsList() - currentPage = " + currentPage);
+                            hasNextPage = data.getNextUrl() != null;
+                            Log.d(TAG, "requestTagsList() - hasNextPage = " + hasNextPage);
 
-                        // Lint incorrectly reported :
-                        // Error: VisibilityAwareImageButton.setVisibility can only be called from within
-                        // the same library group (groupId=com.google.android.material) [RestrictedApi]
-                        // See : https://stackoverflow.com/questions/50343634/android-p-visibilityawareimagebutton-setvisibility-can-only-be-called-from-the-s
-                        if (hasNextPage)
-                        {
-                            fabNextPage.show();
-                        }
-                        else
-                        {
-                            fabNextPage.hide();
-                        }
-                    }
-                }
-
-                progressBar.hide();
-            }
-
-            @Override
-            public void onFailure(Call<ContainerRepositoryTagV2> call, Throwable t)
-            {
-                progressBar.hide();
-
-                Toast.makeText(TagListActivity.this, getString(R.string.msg_error, t.getMessage()), Toast.LENGTH_LONG).show();
-            }
-        });
+                            // Lint incorrectly reported :
+                            // Error: VisibilityAwareImageButton.setVisibility can only be called from within
+                            // the same library group (groupId=com.google.android.material) [RestrictedApi]
+                            // See : https://stackoverflow.com/questions/50343634/android-p-visibilityawareimagebutton-setvisibility-can-only-be-called-from-the-s
+                            if (hasNextPage)
+                            {
+                                fabNextPage.show();
+                            }
+                            else
+                            {
+                                fabNextPage.hide();
+                            }
+                        }, throwable -> {
+                            progressBar.hide();
+                            Toast.makeText(TagListActivity.this, getString(R.string.msg_error, throwable.getMessage()), Toast.LENGTH_LONG).show();
+                        }, () -> progressBar.hide()
+                );
+        disposables.add(disposable);
     }
 
     public static String imageNameToRepository(final String imageName)
@@ -240,6 +228,7 @@ public class TagListActivity extends AppCompatActivity
     protected void onDestroy()
     {
         super.onDestroy();
+        this.disposables.clear();
         if (progressBar != null)
         {
             progressBar.dismiss();

@@ -1,22 +1,17 @@
 package fr.husta.android.dockersearch.docker;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
-import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
-import fr.husta.android.dockersearch.docker.model.RepositoryTag;
 import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
-import static org.junit.Assert.fail;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 public class DockerRegistryClientTest
 {
@@ -25,31 +20,17 @@ public class DockerRegistryClientTest
     private static final long _45_SECONDS_IN_MILLIS = 45 * 1000L;
 
     @Test(timeout = _30_SECONDS_IN_MILLIS)
-    @Ignore
     public void searchImagesAsync() throws Exception
     {
         DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
         String term;
 
         term = "tomcat";
-        dockerRegistryClient.searchImagesAsync(term, new Callback<ContainerImageSearchResult>()
-        {
-            @Override
-            public void onResponse(Call<ContainerImageSearchResult> call, Response<ContainerImageSearchResult> response)
-            {
-                ContainerImageSearchResult body = response.body();
-                List<ImageSearchResult> results = body.getResults();
-
-                assertThat(results).isNotEmpty();
-                System.out.println("Nb res = " + body.getNumResults());
-            }
-
-            @Override
-            public void onFailure(Call<ContainerImageSearchResult> call, Throwable t)
-            {
-                fail();
-            }
-        });
+        Observable<ContainerImageSearchResult> containerImageSearchResultObservable = dockerRegistryClient.searchImagesAsync(term);
+        ContainerImageSearchResult containerImageSearchResult = containerImageSearchResultObservable
+                .blockingFirst();
+        assertThat(containerImageSearchResult).isNotNull();
+        assertThat(containerImageSearchResult.getResults()).isNotEmpty();
     }
 
     @Test(timeout = _30_SECONDS_IN_MILLIS)
@@ -61,17 +42,21 @@ public class DockerRegistryClientTest
 
 //        repo = "tomcat";
         repo = "library/tomcat";
-        ContainerRepositoryTagV2 containerRepositoryTagV2 = dockerRegistryClient.listTagsV2(repo);
-        List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.getTags();
+        // ContainerRepositoryTagV2 containerRepositoryTagV2 = dockerRegistryClient.listTagsV2(repo);
+        AtomicReference<ContainerRepositoryTagV2> containerRepositoryTagV2 = new AtomicReference<>();
+        Disposable disposable = dockerRegistryClient.listTagsV2(repo).subscribe(containerRepositoryTagV2::set);
+        List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.get().getTags();
 
         long end = System.currentTimeMillis();
         System.out.println("Reponse en : " + (end - start) + " ms");
         System.out.println("Page count = " + repositoryTags.size());
-        System.out.println("Total count = " + containerRepositoryTagV2.getTotalCount());
+        System.out.println("Total count = " + containerRepositoryTagV2.get().getTotalCount());
         assertThat(repositoryTags.size()).isGreaterThan(1);
         RepositoryTagV2 firstTag = repositoryTags.get(0);
         System.out.println(String.format("%s / %,d bytes / %s",
                 firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated()));
+
+        disposable.dispose();
     }
 
     @Test(timeout = _30_SECONDS_IN_MILLIS)
@@ -83,14 +68,17 @@ public class DockerRegistryClientTest
 
 //        repo = "tomcat";
         repo = "library/jenkins";
-        ContainerRepositoryTagV2 containerRepositoryTagV2 = dockerRegistryClient.listTagsV2(repo);
-        List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.getTags();
+        AtomicReference<ContainerRepositoryTagV2> containerRepositoryTagV2 = new AtomicReference<>();
+        Disposable disposable = dockerRegistryClient.listTagsV2(repo).subscribe(containerRepositoryTagV2::set);
+        List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.get().getTags();
 
         System.out.println("Page count = " + repositoryTags.size());
         assertThat(repositoryTags.size()).isGreaterThan(1);
         RepositoryTagV2 firstTag = repositoryTags.get(0);
         System.out.println(String.format("%s / %,d bytes / %s",
                 firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated()));
+
+        disposable.dispose();
     }
 
     @Test(timeout = _30_SECONDS_IN_MILLIS)
@@ -103,20 +91,23 @@ public class DockerRegistryClientTest
 //        repo = "tomcat";
         repo = "library/tomcat";
         int pageSize = 5;
-        ContainerRepositoryTagV2 containerRepositoryTagV2 = dockerRegistryClient.listTagsV2(repo, 1, pageSize);
-        List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.getTags();
-        assertThat(containerRepositoryTagV2.getPreviousUrl()).isNull();
-        assertThat(containerRepositoryTagV2.getNextUrl()).isNotNull();
-        assertThat(containerRepositoryTagV2.getTotalCount()).isGreaterThan(pageSize);
+        AtomicReference<ContainerRepositoryTagV2> containerRepositoryTagV2 = new AtomicReference<>();
+        Disposable disposable = dockerRegistryClient.listTagsV2(repo, 1, pageSize).subscribe(containerRepositoryTagV2::set);
+        List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.get().getTags();
+        assertThat(containerRepositoryTagV2.get().getPreviousUrl()).isNull();
+        assertThat(containerRepositoryTagV2.get().getNextUrl()).isNotNull();
+        assertThat(containerRepositoryTagV2.get().getTotalCount()).isGreaterThan(pageSize);
 
         long end = System.currentTimeMillis();
         System.out.println("Reponse en : " + (end - start) + " ms");
         System.out.println("Page count = " + repositoryTags.size());
-        System.out.println("Total count = " + containerRepositoryTagV2.getTotalCount());
+        System.out.println("Total count = " + containerRepositoryTagV2.get().getTotalCount());
         assertThat(repositoryTags.size()).isGreaterThan(1);
         RepositoryTagV2 firstTag = repositoryTags.get(0);
         System.out.println(String.format("%s / %,d bytes / %s",
                 firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated()));
+
+        disposable.dispose();
     }
 
     @Test(timeout = _30_SECONDS_IN_MILLIS)
@@ -129,29 +120,34 @@ public class DockerRegistryClientTest
         repo = "library/tomcat";
         int pageSize = 5;
         // 1st request
-        ContainerRepositoryTagV2 containerRepositoryTagV2 = dockerRegistryClient.listTagsV2(repo, 1, pageSize);
-        List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.getTags();
-        assertThat(containerRepositoryTagV2.getPreviousUrl()).isNull();
-        assertThat(containerRepositoryTagV2.getNextUrl()).isNotNull();
-        assertThat(containerRepositoryTagV2.getTotalCount()).isGreaterThan(pageSize);
-        System.out.println("Next URL : " + containerRepositoryTagV2.getNextUrl());
+        AtomicReference<ContainerRepositoryTagV2> containerRepositoryTagV2 = new AtomicReference<>();
+        Disposable disposable = dockerRegistryClient.listTagsV2(repo, 1, pageSize).subscribe(containerRepositoryTagV2::set);
+        List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.get().getTags();
+        assertThat(containerRepositoryTagV2.get().getPreviousUrl()).isNull();
+        assertThat(containerRepositoryTagV2.get().getNextUrl()).isNotNull();
+        assertThat(containerRepositoryTagV2.get().getTotalCount()).isGreaterThan(pageSize);
+        System.out.println("Next URL : " + containerRepositoryTagV2.get().getNextUrl());
 
-        int lastPage = containerRepositoryTagV2.getTotalCount() / pageSize;
-        if (containerRepositoryTagV2.getTotalCount() % pageSize != 0)
+        int lastPage = containerRepositoryTagV2.get().getTotalCount() / pageSize;
+        if (containerRepositoryTagV2.get().getTotalCount() % pageSize != 0)
         {
             lastPage++;
         }
 
         // 2nd request
-        ContainerRepositoryTagV2 containerRepositoryTagV2_lastPage = dockerRegistryClient.listTagsV2(repo, lastPage, pageSize);
-        repositoryTags = containerRepositoryTagV2_lastPage.getTags();
-        assertThat(containerRepositoryTagV2_lastPage.getPreviousUrl()).isNotNull();
-        assertThat(containerRepositoryTagV2_lastPage.getNextUrl()).isNull();
-        System.out.println("Prev URL : " + containerRepositoryTagV2_lastPage.getPreviousUrl());
+        AtomicReference<ContainerRepositoryTagV2> containerRepositoryTagV2_lastPage = new AtomicReference<>();
+        Disposable disposable2 = dockerRegistryClient.listTagsV2(repo, lastPage, pageSize).subscribe(containerRepositoryTagV2_lastPage::set);
+        repositoryTags = containerRepositoryTagV2_lastPage.get().getTags();
+        assertThat(containerRepositoryTagV2_lastPage.get().getPreviousUrl()).isNotNull();
+        assertThat(containerRepositoryTagV2_lastPage.get().getNextUrl()).isNull();
+        System.out.println("Prev URL : " + containerRepositoryTagV2_lastPage.get().getPreviousUrl());
 
         RepositoryTagV2 lastTag = repositoryTags.get(repositoryTags.size() - 1);
         System.out.println(String.format("%s / %,d bytes / %s",
                 lastTag.getName(), lastTag.getFullSize(), lastTag.getLastUpdated()));
+
+        disposable.dispose();
+        disposable2.dispose();
     }
 
 }

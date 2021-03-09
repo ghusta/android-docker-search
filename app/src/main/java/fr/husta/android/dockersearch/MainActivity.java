@@ -34,15 +34,15 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.husta.android.dockersearch.docker.DockerRegistryClient;
-import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.comparator.DefaultImageSearchComparator;
 import fr.husta.android.dockersearch.listadapter.DockerImageExpandableListAdapter;
 import fr.husta.android.dockersearch.search.RecentSearchProvider;
 import fr.husta.android.dockersearch.utils.AppInfo;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity
 
     private String lastSearchQuery;
 
+    private CompositeDisposable disposables = new CompositeDisposable();
     private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
 
     @Override
@@ -261,47 +262,39 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onQueryTextSubmit : " + query);
         this.lastSearchQuery = query;
 
-        progressBar.show();
-
         // save query
         SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                 RecentSearchProvider.AUTHORITY, RecentSearchProvider.MODE);
         suggestions.saveRecentQuery(query, null);
 
         // User pressed the search button
-        dockerRegistryClient.searchImagesAsync(query, new Callback<ContainerImageSearchResult>()
-        {
-            @Override
-            public void onResponse(Call<ContainerImageSearchResult> call, Response<ContainerImageSearchResult> response)
-            {
-                ContainerImageSearchResult body = response.body();
-                Log.d(TAG, "searchImagesAsync.onResponse: returned " + body.getResults().size() + " out of " + body.getNumResults());
-                Collections.sort(body.getResults(), new DefaultImageSearchComparator());
+        Disposable disposable = dockerRegistryClient.searchImagesAsync(query)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(data -> progressBar.show())
+                .subscribe(data -> {
+                            Log.d(TAG, "searchImagesAsync.onResponse: returned " + data.getResults().size() + " out of " + data.getNumResults());
+                            Collections.sort(data.getResults(), new DefaultImageSearchComparator());
 
-                dockerImageExpandableListAdapter.notifyDataSetInvalidated(); // necessaire ?
-                // Collapse all
-                for (int i = 0; i < dockerImageExpandableListAdapter.getGroupCount(); i++)
-                {
-                    listView.collapseGroup(i);
-                }
+                            dockerImageExpandableListAdapter.notifyDataSetInvalidated(); // necessaire ?
+                            // Collapse all
+                            for (int i = 0; i < dockerImageExpandableListAdapter.getGroupCount(); i++)
+                            {
+                                listView.collapseGroup(i);
+                            }
 
-                // dockerImageExpandableListAdapter.setNotifyOnChange(false);
-                dockerImageExpandableListAdapter.getGroupList().clear();
-                dockerImageExpandableListAdapter.getGroupList().addAll(body.getResults());
-                dockerImageExpandableListAdapter.notifyDataSetChanged();
-
-                progressBar.hide();
-            }
-
-            @Override
-            public void onFailure(Call<ContainerImageSearchResult> call, Throwable t)
-            {
-                Log.e(TAG, t.getMessage(), t);
-
-                progressBar.hide();
-                Toast.makeText(MainActivity.this, getString(R.string.msg_error, t.getMessage()), Toast.LENGTH_LONG).show();
-            }
-        });
+                            // dockerImageExpandableListAdapter.setNotifyOnChange(false);
+                            dockerImageExpandableListAdapter.getGroupList().clear();
+                            dockerImageExpandableListAdapter.getGroupList().addAll(data.getResults());
+                            dockerImageExpandableListAdapter.notifyDataSetChanged();
+                        },
+                        throwable -> {
+                            Log.e(TAG, throwable.getMessage(), throwable);
+                            progressBar.hide();
+                            Toast.makeText(MainActivity.this, getString(R.string.msg_error, throwable.getMessage()), Toast.LENGTH_LONG).show();
+                        },
+                        () -> progressBar.hide());
+        disposables.add(disposable);
 
         // fermer le clavier de saisie
         searchView.clearFocus();
@@ -519,4 +512,10 @@ public class MainActivity extends AppCompatActivity
 //        return connectionStatusCode == ConnectionResult.SUCCESS;
 //    }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        this.disposables.clear();
+    }
 }
