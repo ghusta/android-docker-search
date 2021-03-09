@@ -4,13 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import fr.husta.android.dockersearch.AppConstants;
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
-import fr.husta.android.dockersearch.docker.model.RepositoryTag;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -43,51 +41,13 @@ public class DockerRegistryClient
                         .connectTimeout(5, TimeUnit.SECONDS)
                         .readTimeout(30, TimeUnit.SECONDS)
                         .build())
-                .addConverterFactory(
-                        JacksonConverterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create())
                 .build();
 
         DockerSearchRestService dockerSearchService = retrofit.create(DockerSearchRestService.class);
         Call<ContainerImageSearchResult> call = dockerSearchService.searchImages(term, pageSize);
 //        Log.d("DOCKER_CLIENT", "Calling Docker Registry API (searchImages)...");
         call.enqueue(callback);
-    }
-
-    @Deprecated
-    public void listTagsAsync(String repository, Callback<List<RepositoryTag>> callback)
-    {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URI)
-                .client(new OkHttpClient.Builder()
-                        .connectTimeout(5, TimeUnit.SECONDS)
-                        .readTimeout(30, TimeUnit.SECONDS)
-                        .build())
-                .addConverterFactory(
-                        JacksonConverterFactory.create())
-                .build();
-
-        DockerSearchRestService dockerSearchService = retrofit.create(DockerSearchRestService.class);
-        Call<List<RepositoryTag>> call = dockerSearchService.listTags(repository);
-//        Log.d("DOCKER_CLIENT", "Calling Docker Registry API (listTags)...");
-        call.enqueue(callback);
-    }
-
-    @Deprecated
-    public List<RepositoryTag> listTags(String repository) throws IOException
-    {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URI)
-                .client(new OkHttpClient.Builder()
-                        .connectTimeout(5, TimeUnit.SECONDS)
-                        .readTimeout(30, TimeUnit.SECONDS)
-                        .build())
-                .addConverterFactory(
-                        JacksonConverterFactory.create())
-                .build();
-
-        DockerSearchRestService dockerSearchService = retrofit.create(DockerSearchRestService.class);
-        Call<List<RepositoryTag>> call = dockerSearchService.listTags(repository);
-        return call.execute().body();
     }
 
     public void listTagsV2Async(String repository, Callback<ContainerRepositoryTagV2> callback)

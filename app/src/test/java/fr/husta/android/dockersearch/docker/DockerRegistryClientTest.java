@@ -53,22 +53,6 @@ public class DockerRegistryClientTest
     }
 
     @Test(timeout = _30_SECONDS_IN_MILLIS)
-    public void listTags() throws Exception
-    {
-        long start = System.currentTimeMillis();
-        DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
-        String repo;
-
-        repo = "tomcat";
-        List<RepositoryTag> repositoryTags = dockerRegistryClient.listTags(repo);
-
-        long end = System.currentTimeMillis();
-        System.out.println("Reponse en : " + (end - start) + " ms");
-        System.out.println(repositoryTags.size());
-        assertThat(repositoryTags.size()).isGreaterThan(1);
-    }
-
-    @Test(timeout = _30_SECONDS_IN_MILLIS)
     public void listTagsV2() throws Exception
     {
         long start = System.currentTimeMillis();
