@@ -507,4 +507,23 @@ public class MainActivity extends AppCompatActivity
 //        return connectionStatusCode == ConnectionResult.SUCCESS;
 //    }
 
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        if (progressBar != null)
+        {
+            progressBar.dismiss();
+        }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if (progressBar != null)
+        {
+            progressBar.dismiss();
+        }
+    }
 }
