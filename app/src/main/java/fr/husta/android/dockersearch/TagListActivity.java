@@ -47,6 +47,8 @@ public class TagListActivity extends AppCompatActivity
     private boolean hasNextPage = false;
     private String imageName;
 
+    private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -90,7 +92,6 @@ public class TagListActivity extends AppCompatActivity
     {
         // Fetch list tags (first page)
         progressBar.show();
-        final DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
         dockerRegistryClient.listTagsV2Async(imageNameToRepository(imgName), pageNumber, new Callback<ContainerRepositoryTagV2>()
         {
             @Override

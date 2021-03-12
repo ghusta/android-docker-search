@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity
 
     public static final String KEY_PREF_SAVED_DARK_MODE = "last_dark_mode";
 
+    private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
+
     /**
      * Fetched in AndroidManifest.xml
      */
@@ -259,7 +261,6 @@ public class MainActivity extends AppCompatActivity
         suggestions.saveRecentQuery(query, null);
 
         // User pressed the search button
-        DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
         dockerRegistryClient.searchImagesAsync(query, new Callback<ContainerImageSearchResult>()
         {
             @Override
