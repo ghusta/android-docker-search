@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity
 
     public static final String KEY_PREF_SAVED_DARK_MODE = "last_dark_mode";
 
-    private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
-
     /**
      * Fetched in AndroidManifest.xml
      */
@@ -82,6 +80,8 @@ public class MainActivity extends AppCompatActivity
     private AlertDialog themeChooserDialog;
 
     private int selectedTheme;
+
+    private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
