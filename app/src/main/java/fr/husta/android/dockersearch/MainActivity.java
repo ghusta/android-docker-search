@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "MAIN";
     public static final String KEY_IMAGE_LIST_ADAPTER = "KEY_IMAGE_LIST_ADAPTER";
+    public static final String KEY_LAST_SEARCH = "KEY_LAST_SEARCH";
 
     public static final String KEY_PREF_SAVED_DARK_MODE = "last_dark_mode";
 
@@ -80,6 +81,8 @@ public class MainActivity extends AppCompatActivity
     private AlertDialog themeChooserDialog;
 
     private int selectedTheme;
+
+    private String lastSearchQuery;
 
     private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
 
@@ -182,6 +185,10 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onSaveInstanceState (1): " + this.getLocalClassName());
         Log.d(TAG, "onSaveInstanceState: listView => " + listView.getAdapter().getCount());
         outState.putParcelableArrayList(KEY_IMAGE_LIST_ADAPTER, dockerImageExpandableListAdapter.getGroupList());
+        if (lastSearchQuery != null)
+        {
+            outState.putString(KEY_LAST_SEARCH, lastSearchQuery);
+        }
     }
 
     @Override
@@ -189,7 +196,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onRestoreInstanceState(savedInstanceState);
         Log.d(TAG, "onRestoreInstanceState : " + this.getLocalClassName());
-
+        lastSearchQuery = savedInstanceState.getString(KEY_LAST_SEARCH, "");
     }
 
     @Override
@@ -252,6 +259,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onQueryTextSubmit(String query)
     {
         Log.d(TAG, "onQueryTextSubmit : " + query);
+        this.lastSearchQuery = query;
 
         progressBar.show();
 
@@ -315,8 +323,7 @@ public class MainActivity extends AppCompatActivity
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_images);
         swipeRefreshLayout.setRefreshing(false);
         CharSequence query = searchView.getQuery();
-        Log.d(TAG, "onRefresh : last query = '" + query + "'");
-        searchView.setQuery(query, true);
+        searchView.setQuery(lastSearchQuery == null ? "" : lastSearchQuery, true);
     }
 
     public void startActivityTagList(Context context, ImageSearchResult data)
@@ -454,7 +461,8 @@ public class MainActivity extends AppCompatActivity
         openInMarket(Uri.parse("market://details?id=" + appPackageName));
     }
 
-    public void openUrlInBrowser(Uri uri) {
+    public void openUrlInBrowser(Uri uri)
+    {
         Objects.requireNonNull(uri);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
@@ -466,7 +474,8 @@ public class MainActivity extends AppCompatActivity
      *
      * @param uri
      */
-    public void openInMarket(Uri uri) {
+    public void openInMarket(Uri uri)
+    {
         Objects.requireNonNull(uri);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
