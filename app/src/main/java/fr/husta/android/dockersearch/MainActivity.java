@@ -311,9 +311,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRefresh()
     {
+        Log.d(TAG, "Swipe : refresh requested");
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_images);
         swipeRefreshLayout.setRefreshing(false);
         CharSequence query = searchView.getQuery();
+        Log.d(TAG, "onRefresh : last query = '" + query + "'");
         searchView.setQuery(query, true);
     }
 
