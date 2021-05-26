@@ -8,8 +8,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
 import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 import static com.google.common.truth.Truth.assertThat;
 
