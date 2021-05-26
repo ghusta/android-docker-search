@@ -10,10 +10,10 @@ import java.util.concurrent.TimeUnit;
 import fr.husta.android.dockersearch.AppConstants;
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class DockerRegistryClient
@@ -49,7 +49,7 @@ public class DockerRegistryClient
                         .readTimeout(30, TimeUnit.SECONDS)
                         .build())
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
 
         retrofitRxJava2 = new Retrofit.Builder()
@@ -59,7 +59,7 @@ public class DockerRegistryClient
                         .readTimeout(30, TimeUnit.SECONDS)
                         .build())
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
     }
 
