@@ -8,7 +8,7 @@ android {
         minSdkVersion 21 // L 5.0
         targetSdkVersion 30 // R
         versionCode 76
-        versionName "1.9.3"
+        versionName "1.10.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "android-docker-search-$versionName")
         vectorDrawables.useSupportLibrary = true
