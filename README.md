@@ -22,7 +22,7 @@ The results should be the same than `docker search` with command line interface 
 
 ## Screenshots
 
-![screenshot 1](/media/android-app-screenshot_1.png)
+![screenshot 1](/media/android-app-screenshot_2.png)
 
 ## Install the app
 
