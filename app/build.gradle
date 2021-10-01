@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "fr.husta.android.dockersearch"
         minSdkVersion 21 // L 5.0
-        targetSdkVersion 30 // R
+        targetSdkVersion 31 // S
         versionCode 80
         versionName "1.10.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
