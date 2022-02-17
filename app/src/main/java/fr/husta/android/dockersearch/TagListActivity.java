@@ -92,7 +92,7 @@ public class TagListActivity extends AppCompatActivity
     private void requestTagsList(String imgName, final int pageNumber)
     {
         // Fetch list tags (first page)
-        Disposable disposable = dockerRegistryClient.listTagsV2Async(imageNameToRepository(imgName), pageNumber)
+        Disposable disposable = dockerRegistryClient.listTagsV2(imageNameToRepository(imgName), pageNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(data -> progressBar.show())

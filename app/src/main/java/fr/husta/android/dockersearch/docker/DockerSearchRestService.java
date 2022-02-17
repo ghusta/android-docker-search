@@ -1,12 +1,8 @@
 package fr.husta.android.dockersearch.docker;
 
-import java.util.List;
-
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
-import fr.husta.android.dockersearch.docker.model.RepositoryTag;
 import io.reactivex.rxjava3.core.Observable;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -24,10 +20,6 @@ public interface DockerSearchRestService
      */
     @GET("v1/search")
     Observable<ContainerImageSearchResult> searchImages(@Query("q") String term, @Query("n") Integer size);
-
-    @GET("v1/repositories/{repository}/tags")
-    @Deprecated
-    Call<List<RepositoryTag>> listTags(@Path("repository") String repository);
 
     /**
      * @param repository Like 'library/centos' (param must be encoded because contains /)

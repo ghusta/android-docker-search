@@ -52,8 +52,8 @@ public class DockerRegistryClientTest
         System.out.println("Total count = " + containerRepositoryTagV2.get().getTotalCount());
         assertThat(repositoryTags.size()).isGreaterThan(1);
         RepositoryTagV2 firstTag = repositoryTags.get(0);
-        System.out.println(String.format("%s / %,d bytes / %s",
-                firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated()));
+        System.out.printf("%s / %,d bytes / %s%n",
+                firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated());
     }
 
     @Test(timeout = _30_SECONDS_IN_MILLIS)
@@ -72,8 +72,8 @@ public class DockerRegistryClientTest
         System.out.println("Page count = " + repositoryTags.size());
         assertThat(repositoryTags.size()).isGreaterThan(1);
         RepositoryTagV2 firstTag = repositoryTags.get(0);
-        System.out.println(String.format("%s / %,d bytes / %s",
-                firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated()));
+        System.out.printf("%s / %,d bytes / %s%n",
+                firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated());
     }
 
     @Test(timeout = _30_SECONDS_IN_MILLIS)
@@ -99,8 +99,8 @@ public class DockerRegistryClientTest
         System.out.println("Total count = " + containerRepositoryTagV2.get().getTotalCount());
         assertThat(repositoryTags.size()).isGreaterThan(1);
         RepositoryTagV2 firstTag = repositoryTags.get(0);
-        System.out.println(String.format("%s / %,d bytes / %s",
-                firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated()));
+        System.out.printf("%s / %,d bytes / %s%n",
+                firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated());
     }
 
     @Test(timeout = _30_SECONDS_IN_MILLIS)
@@ -116,6 +116,7 @@ public class DockerRegistryClientTest
         AtomicReference<ContainerRepositoryTagV2> containerRepositoryTagV2 = new AtomicReference<>();
         dockerRegistryClient.listTagsV2(repo, 1, pageSize).blockingSubscribe(containerRepositoryTagV2::set);
         List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.get().getTags();
+        assertThat(repositoryTags).hasSize(5);
         assertThat(containerRepositoryTagV2.get().getPreviousUrl()).isNull();
         assertThat(containerRepositoryTagV2.get().getNextUrl()).isNotNull();
         assertThat(containerRepositoryTagV2.get().getTotalCount()).isGreaterThan(pageSize);
@@ -136,8 +137,8 @@ public class DockerRegistryClientTest
         System.out.println("Prev URL : " + containerRepositoryTagV2_lastPage.get().getPreviousUrl());
 
         RepositoryTagV2 lastTag = repositoryTags.get(repositoryTags.size() - 1);
-        System.out.println(String.format("%s / %,d bytes / %s",
-                lastTag.getName(), lastTag.getFullSize(), lastTag.getLastUpdated()));
+        System.out.printf("%s / %,d bytes / %s%n",
+                lastTag.getName(), lastTag.getFullSize(), lastTag.getLastUpdated());
     }
 
 }

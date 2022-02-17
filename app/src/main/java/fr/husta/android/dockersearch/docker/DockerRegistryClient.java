@@ -71,17 +71,6 @@ public class DockerRegistryClient
         return dockerSearchService.searchImages(term, pageSize);
     }
 
-    public Observable<ContainerRepositoryTagV2> listTagsV2Async(String repository)
-    {
-        return listTagsV2Async(repository, 1);
-    }
-
-    public Observable<ContainerRepositoryTagV2> listTagsV2Async(String repository, int page)
-    {
-        DockerSearchRestService dockerSearchService = retrofitRxJava2.create(DockerSearchRestService.class);
-        return dockerSearchService.listTagsV2(repository, page, AppConstants.TAG_LIST_PAGE_SIZE);
-    }
-
     public Observable<ContainerRepositoryTagV2> listTagsV2(String repository)
     {
         return listTagsV2(repository, 1);
@@ -92,10 +81,9 @@ public class DockerRegistryClient
         return listTagsV2(repository, page, AppConstants.TAG_LIST_PAGE_SIZE);
     }
 
-    Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page, int pageSize)
+    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page, int pageSize)
     {
         DockerSearchRestService dockerSearchService = retrofitRxJava2.create(DockerSearchRestService.class);
         return dockerSearchService.listTagsV2(repository, page, pageSize);
     }
-
 }
