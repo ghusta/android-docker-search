@@ -1,8 +1,12 @@
 package fr.husta.android.dockersearch.docker.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.joda.time.DateTime;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,6 +29,9 @@ public class RepositoryTagV2
     private DateTime lastUpdated;
 
     // java.time.Instant, java.time.* -> from Android O
+
+    @JsonProperty("images")
+    private List<ImageVariantByTagV2> images = new ArrayList<>();
 
     public RepositoryTagV2()
     {
@@ -58,5 +65,15 @@ public class RepositoryTagV2
     public void setLastUpdated(DateTime lastUpdated)
     {
         this.lastUpdated = lastUpdated;
+    }
+
+    public List<ImageVariantByTagV2> getImages()
+    {
+        return images;
+    }
+
+    public void setImages(List<ImageVariantByTagV2> images)
+    {
+        this.images = images;
     }
 }
