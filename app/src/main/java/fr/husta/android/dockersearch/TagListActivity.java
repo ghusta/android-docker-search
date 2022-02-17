@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,17 @@ public class TagListActivity extends AppCompatActivity
 
         dockerTagListAdapter = new DockerTagListAdapter(TagListActivity.this, new ArrayList<>());
         listView.setAdapter(dockerTagListAdapter);
+
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            RepositoryTagV2 item = (RepositoryTagV2) listView.getItemAtPosition(i);
+//            String archList = "";
+//            for (ImageVariantByTagV2 image : item.getImages())
+//            {
+//                archList += image.getArchitecture() + " - ";
+//            }
+            int count = item.getImages().size();
+            Snackbar.make(view, getResources().getQuantityString(R.plurals.msg_tag_images, count, count), Snackbar.LENGTH_SHORT).show();
+        });
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_tags);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorSecondary);
