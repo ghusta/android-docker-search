@@ -91,7 +91,8 @@ public class TagListActivity extends AppCompatActivity
 //                archList += image.getArchitecture() + " - ";
 //            }
             int count = item.getImages().size();
-            Snackbar.make(view, getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(view, getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count), Snackbar.LENGTH_SHORT)
+                    .show();
         });
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_tags);
