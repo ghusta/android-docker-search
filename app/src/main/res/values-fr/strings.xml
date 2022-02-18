@@ -33,7 +33,7 @@
     <string name="choice_dark_mode">Sombre</string>
     <string name="choice_system_mode">Défini par l\'économiseur de batterie</string>
 
-    <plurals name="msg_tag_images">
+    <plurals name="msg_count_tag_images">
         <item quantity="one">%d image trouvée.</item>
         <item quantity="many">%d images trouvées.</item>
         <item quantity="other">%d images trouvées.</item>

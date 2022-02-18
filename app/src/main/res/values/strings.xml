@@ -35,7 +35,7 @@
     <string name="choice_dark_mode">Dark</string>
     <string name="choice_system_mode">Set by Battery Saver</string>
 
-    <plurals name="msg_tag_images">
+    <plurals name="msg_count_tag_images">
         <item quantity="one">%d image found.</item>
         <item quantity="other">%d images found.</item>
     </plurals>
