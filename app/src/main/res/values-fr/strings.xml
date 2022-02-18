@@ -35,6 +35,7 @@
 
     <plurals name="msg_tag_images">
         <item quantity="one">%d image trouvée.</item>
+        <item quantity="many">%d images trouvées.</item>
         <item quantity="other">%d images trouvées.</item>
     </plurals>
 </resources>
