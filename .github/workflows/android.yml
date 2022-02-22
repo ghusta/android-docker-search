@@ -35,4 +35,5 @@ jobs:
       - name: Archive Debug APK
         uses: actions/upload-artifact@v2
         with:
+          name: app-debug-apk
           path: app/build/outputs/apk/debug/*.apk
