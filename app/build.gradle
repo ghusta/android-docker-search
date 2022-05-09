@@ -4,6 +4,7 @@ apply plugin: 'org.owasp.dependencycheck'
 android {
     compileSdkVersion 32
     buildToolsVersion '32.0.0'
+    namespace 'fr.husta.android.dockersearch'
     defaultConfig {
         applicationId "fr.husta.android.dockersearch"
         minSdkVersion 21 // L 5.0
