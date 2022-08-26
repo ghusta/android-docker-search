@@ -31,9 +31,9 @@ public class DockerRegistryClient
      */
     private final Retrofit retrofitDockerIndex;
     /**
-     * Retrofit using RxJava2
+     * Retrofit using RxJava3
      */
-    private final Retrofit retrofitRxJava2;
+    private final Retrofit retrofitRxJava3;
 
     public DockerRegistryClient()
     {
@@ -52,7 +52,7 @@ public class DockerRegistryClient
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
 
-        retrofitRxJava2 = new Retrofit.Builder()
+        retrofitRxJava3 = new Retrofit.Builder()
                 .baseUrl(BASE_REGISTRY_URI)
                 .client(new OkHttpClient.Builder()
                         .connectTimeout(5, TimeUnit.SECONDS)
@@ -83,7 +83,7 @@ public class DockerRegistryClient
 
     public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page, int pageSize)
     {
-        DockerSearchRestService dockerSearchService = retrofitRxJava2.create(DockerSearchRestService.class);
+        DockerSearchRestService dockerSearchService = retrofitRxJava3.create(DockerSearchRestService.class);
         return dockerSearchService.listTagsV2(repository, page, pageSize);
     }
 }
