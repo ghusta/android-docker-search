@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.owasp.dependencycheck'
 
 android {
-    compileSdkVersion 32
-    buildToolsVersion '32.0.0'
+    compileSdkVersion 33
+    buildToolsVersion '33.0.0'
     namespace 'fr.husta.android.dockersearch'
     defaultConfig {
         applicationId "fr.husta.android.dockersearch"
         minSdkVersion 26 // O 8.0
-        targetSdkVersion 32 // Android 12L
-        versionCode 97
-        versionName "1.14.0"
+        targetSdkVersion 33 // Android 13
+        versionCode 100
+        versionName "1.15.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "android-docker-search-$versionName")
         vectorDrawables.useSupportLibrary = true
