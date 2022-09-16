@@ -33,7 +33,7 @@ jobs:
       - name: Display built artifacts
         run: ls -lh app/build/outputs/apk/debug/*.apk
       - name: Archive Debug APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: app-debug-apk
           path: app/build/outputs/apk/debug/*.apk
