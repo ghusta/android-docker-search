@@ -20,15 +20,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
-
-      - name: Set up cache
-        uses: actions/cache@v3
-        with:
-          # A list of files, directories, and wildcard patterns to cache and restore
-          path: |
-            ~/.gradle/wrapper
-            ~/.gradle/caches
-          key: build-cache
+          cache: 'gradle'
 
       - name: Build with Gradle
         run: ./gradlew build
