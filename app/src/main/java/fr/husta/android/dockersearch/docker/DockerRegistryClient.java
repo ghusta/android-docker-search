@@ -3,6 +3,7 @@ package fr.husta.android.dockersearch.docker;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import java.util.concurrent.TimeUnit;
@@ -37,10 +38,11 @@ public class DockerRegistryClient
 
     public DockerRegistryClient()
     {
-        ObjectMapper objectMapper = new ObjectMapper()
-                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+        ObjectMapper objectMapper = JsonMapper.builder()
+                .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .registerModule(new JodaModule());
+                .addModule(new JodaModule())
+                .build();
 
         retrofitDockerIndex = new Retrofit.Builder()
                 .baseUrl(BASE_URI)
