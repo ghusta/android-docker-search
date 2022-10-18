@@ -363,10 +363,6 @@ public class MainActivity extends AppCompatActivity
 
                     applyTheme(selectedTheme);
                     dialog.dismiss();
-                })
-                .setNegativeButton(android.R.string.cancel, (dialog, id) -> {
-                    // User cancelled the dialog
-                    dialog.dismiss();
                 });
 
         return builder.create();
