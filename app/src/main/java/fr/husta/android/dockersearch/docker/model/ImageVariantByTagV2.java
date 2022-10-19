@@ -1,5 +1,8 @@
 package fr.husta.android.dockersearch.docker.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import java.time.ZonedDateTime;
@@ -8,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 @JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, setterVisibility = NONE)
-public class ImageVariantByTagV2
+public class ImageVariantByTagV2 implements Parcelable
 {
 
     /**
@@ -48,6 +51,39 @@ public class ImageVariantByTagV2
     public ImageVariantByTagV2()
     {
     }
+
+    protected ImageVariantByTagV2(Parcel in)
+    {
+        digest = in.readString();
+        os = in.readString();
+        osVersion = in.readString();
+        architecture = in.readString();
+        variant = in.readString();
+//        if (in.readByte() == 0)
+//        {
+//            size = null;
+//        }
+//        else
+//        {
+//            size = in.readLong();
+//        }
+        // status = in.readString();
+    }
+
+    public static final Creator<ImageVariantByTagV2> CREATOR = new Creator<ImageVariantByTagV2>()
+    {
+        @Override
+        public ImageVariantByTagV2 createFromParcel(Parcel in)
+        {
+            return new ImageVariantByTagV2(in);
+        }
+
+        @Override
+        public ImageVariantByTagV2[] newArray(int size)
+        {
+            return new ImageVariantByTagV2[size];
+        }
+    };
 
     public String getDigest()
     {
@@ -127,5 +163,22 @@ public class ImageVariantByTagV2
     public void setLastPushed(ZonedDateTime lastPushed)
     {
         this.lastPushed = lastPushed;
+    }
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeString(this.digest);
+        dest.writeString(this.os);
+        dest.writeString(this.osVersion);
+        dest.writeString(this.architecture);
+        dest.writeString(this.variant);
+        // dest.writeLong(this.size);
     }
 }

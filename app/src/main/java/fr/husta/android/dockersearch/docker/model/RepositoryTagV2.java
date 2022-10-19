@@ -27,10 +27,8 @@ public class RepositoryTagV2
      */
     private ZonedDateTime lastUpdated;
 
-    // java.time.Instant, java.time.* -> from Android O
-
     @JsonProperty("images")
-    private List<ImageVariantByTagV2> images = new ArrayList<>();
+    private List<ImageVariantByTagV2> imageVariants = new ArrayList<>();
 
     public RepositoryTagV2()
     {
@@ -66,13 +64,13 @@ public class RepositoryTagV2
         this.lastUpdated = lastUpdated;
     }
 
-    public List<ImageVariantByTagV2> getImages()
+    public List<ImageVariantByTagV2> getImageVariants()
     {
-        return images;
+        return imageVariants;
     }
 
-    public void setImages(List<ImageVariantByTagV2> images)
+    public void setImageVariants(List<ImageVariantByTagV2> imageVariants)
     {
-        this.images = images;
+        this.imageVariants = imageVariants;
     }
 }

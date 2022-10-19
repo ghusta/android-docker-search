@@ -1,6 +1,7 @@
 package fr.husta.android.dockersearch;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -85,13 +87,14 @@ public class TagListActivity extends AppCompatActivity
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             RepositoryTagV2 item = (RepositoryTagV2) listView.getItemAtPosition(i);
-//            String archList = "";
-//            for (ImageVariantByTagV2 image : item.getImages())
-//            {
-//                archList += image.getArchitecture() + " - ";
-//            }
-            int count = item.getImages().size();
-            Snackbar.make(view, getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count), Snackbar.LENGTH_SHORT)
+            int count = item.getImageVariants().size();
+            Snackbar.make(fabNextPage, getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count), Snackbar.LENGTH_SHORT)
+                    //.setAnchorView(fabNextPage)
+                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
+                    .setAction("Details", view1 -> {
+                        Log.d(TAG, "Tag : " + item.getName());
+                        startActivityTagDetails(this, item);
+                    })
                     .show();
         });
 
@@ -100,6 +103,14 @@ public class TagListActivity extends AppCompatActivity
         swipeRefreshLayout.setOnRefreshListener(this);
 
         requestTagsList(imageName, 1);
+    }
+
+    public void startActivityTagDetails(Context context, RepositoryTagV2 data)
+    {
+        Intent starter = new Intent(context, TagDetailsActivity.class);
+        starter.putExtra(TagDetailsActivity.DATA_TAG_NAME, data.getName());
+        starter.putParcelableArrayListExtra(TagDetailsActivity.DATA_IMG_VARIANT_ARRAY, new ArrayList<>(data.getImageVariants()));
+        startActivity(starter);
     }
 
     private void requestTagsList(String imgName, final int pageNumber)
