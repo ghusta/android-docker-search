@@ -1,4 +1,9 @@
 <resources>
+    <plurals name="msg_count_tag_images">
+        <item quantity="one">%d image found.</item>
+        <item quantity="other">%d images found.</item>
+    </plurals>
+
     <string name="app_name" translatable="false">Docker Search</string>
 
     <string name="search_title">Search</string>
@@ -34,9 +39,9 @@
     <string name="choice_light_mode">Light</string>
     <string name="choice_dark_mode">Dark</string>
     <string name="choice_system_mode">Set by Battery Saver</string>
+    <string name="title_activity_tag_details" translatable="false">TagDetailsActivity</string>
 
-    <plurals name="msg_count_tag_images">
-        <item quantity="one">%d image found.</item>
-        <item quantity="other">%d images found.</item>
-    </plurals>
+    <string name="lbl_header_digest">Digest</string>
+    <string name="lbl_header_osarch" translatable="false">OS/Arch</string>
+
 </resources>

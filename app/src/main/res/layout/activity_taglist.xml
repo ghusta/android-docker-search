@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="0dp"
-            android:paddingRight="0dp"></ListView>
+            android:paddingRight="0dp" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

@@ -12,23 +12,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:exported="true">
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.SEARCH" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <action android:name="android.intent.action.SEARCH"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+                android:resource="@xml/searchable" />
         </activity>
-
         <activity
             android:name=".TagListActivity"
             android:parentActivityName=".MainActivity">
@@ -36,13 +35,23 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".TagDetailsActivity"
+            android:parentActivityName=".TagListActivity"
+            android:exported="false"
+            android:label="@string/title_activity_tag_details">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".TagListActivity" />
         </activity>
 
         <provider
             android:name=".search.RecentSearchProvider"
             android:authorities="${applicationId}.search.RecentSearchProvider" />
-
     </application>
 
 </manifest>
