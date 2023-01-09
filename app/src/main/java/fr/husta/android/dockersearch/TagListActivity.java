@@ -31,6 +31,8 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
+
 public class TagListActivity extends AppCompatActivity
         implements SwipeRefreshLayout.OnRefreshListener
 {
@@ -88,8 +90,8 @@ public class TagListActivity extends AppCompatActivity
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             RepositoryTagV2 item = (RepositoryTagV2) listView.getItemAtPosition(i);
             int count = item.getImageVariants().size();
-            Snackbar.make(fabNextPage, getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count), Snackbar.LENGTH_SHORT)
-                    //.setAnchorView(fabNextPage)
+            Snackbar.make(listView, getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count), LENGTH_SHORT)
+                    .setAnchorView(fabNextPage.isOrWillBeShown() ? fabNextPage : null)
                     .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
                     .setAction("Details", view1 -> {
                         Log.d(TAG, "Tag : " + item.getName());
