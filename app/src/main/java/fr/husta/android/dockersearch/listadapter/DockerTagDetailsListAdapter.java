@@ -67,7 +67,9 @@ public class DockerTagDetailsListAdapter extends ArrayAdapter<ImageVariantByTagV
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.append(String.format("%s/%s", item.getOs(), item.getArchitecture()));
+            sb.append(String.format("%s/%s",
+                    StringUtils.defaultIfEmpty(item.getOs(), "--"),
+                    StringUtils.defaultIfEmpty(item.getArchitecture(), "--")));
             if (StringUtils.isNotBlank(item.getVariant()))
             {
                 sb.append("/").append(item.getVariant());
