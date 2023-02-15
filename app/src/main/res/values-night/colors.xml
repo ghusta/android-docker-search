@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#2F3D46</color>
-    <color name="colorPrimaryDark">#191B1B</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorPrimaryVariant">#191B1B</color>
 
-    <!-- bg color for FAB -->
-    <color name="colorAccent">#157CAD</color>
-    <color name="colorSecondary">#DFA031</color>
+    <color name="colorPrimaryInverse">#1593cd</color>
+
+    <!-- default color for FAB or radio button, or link href... -->
+    <color name="colorSecondary">#1593cd</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+
+    <color name="colorSurface">@color/colorPrimary</color>
+    <color name="colorOnSurface">#FFFFFF</color>
+
+    <color name="colorSurfaceInverse">@color/m3_sys_color_dark_inverse_surface</color>
+    <color name="colorOnSurfaceInverse">@color/m3_sys_color_dark_inverse_on_surface</color>
 
     <color name="textColorPrimary">#FF1593CD</color>
-
-    <color name="secondaryTextColor">#66FFFFFF</color>
+    <color name="textColorSecondary">#66FFFFFF</color>
 </resources>

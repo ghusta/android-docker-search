@@ -22,6 +22,9 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <!--
+        Colors used by FAB : https://github.com/material-components/material-components-android/blob/1.7.0/lib/java/com/google/android/material/floatingactionbutton/res/values/styles.xml#L40
+    -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_tags_next_page"
         android:layout_width="wrap_content"
@@ -30,6 +33,7 @@
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone"
+        app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_more_white_24dp" />

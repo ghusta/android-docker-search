@@ -1,14 +1,49 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="AppTheme" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+
+        <item name="colorSurface">@color/colorSurface</item>
+<!--        <item name="colorOnSurface">?attr/colorOnSurface</item>-->
 
         <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
 
+        <!-- See layout in file : mtrl_layout_snackbar -->
+        <item name="snackbarStyle">@style/Custom.Snackbar</item>
+        <!-- See layout in file : mtrl_layout_snackbar_include -->
+        <item name="snackbarTextViewStyle">@style/Custom.SnackbarText</item>
+        <item name="snackbarButtonStyle">@style/Custom.SnackbarButton</item>
+    </style>
+
+    <!-- See : https://stackoverflow.com/questions/32425191/style-snackbar-in-theme-app#58607153 -->
+    <style name="Custom.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <!-- Default attr with M3 : ?attr/colorSurfaceInverse -->
+        <item name="backgroundTint">@color/colorSurfaceInverse</item>
+    </style>
+
+    <style name="Custom.SnackbarText" parent="Widget.MaterialComponents.Snackbar.TextView">
+        <!-- Default attr with M3 : ?attr/colorOnSurfaceInverse -->
+        <item name="android:textColor">@color/colorOnSurfaceInverse</item>
+    </style>
+
+    <style name="Custom.SnackbarButton" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <!-- Default attr with M3 : ?attr/colorPrimaryInverse -->
+        <item name="android:textColor">@color/colorPrimaryInverse</item>
+    </style>
+
+    <style name="Custom.ThemeOverlay.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/Custom.Widget.Button.Dialog</item>
+    </style>
+
+    <style name="Custom.Widget.Button.Dialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorPrimaryInverse</item>
     </style>
 
 </resources>

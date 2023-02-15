@@ -19,8 +19,8 @@
             android:autoLink="web"
             android:paddingTop="20dip"
             android:text="@string/msg_about_credits"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="?android:attr/textColorPrimary" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -36,8 +36,8 @@
             android:autoLink="web"
             android:paddingTop="20dip"
             android:text="@string/msg_about_docker_website"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="?android:attr/textColorPrimary" />
 
         <TextView
             android:id="@+id/about_version"
@@ -45,8 +45,9 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:text="Version : "
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp" />
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
 

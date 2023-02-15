@@ -18,7 +18,7 @@
         android:text="@string/lbl_header_digest"
         android:textAlignment="textStart"
         android:textAllCaps="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:textColor="@color/textColorPrimary"
         android:textStyle="bold"
         tools:text="Digest" />
@@ -30,7 +30,7 @@
         android:text="@string/lbl_header_osarch"
         android:textAlignment="textStart"
         android:textAllCaps="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:textColor="@color/textColorPrimary"
         android:textStyle="bold"
         tools:text="OS/Arch" />

@@ -8,37 +8,37 @@
               android:gravity="center_vertical|center_horizontal"
               android:orientation="horizontal">
 
+    <!-- See : https://m2.material.io/components/buttons/android#text-button -->
     <ImageButton
         android:id="@+id/btn_image_tags"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         app:srcCompat="@drawable/ic_tag_black_24dp"
-        app:tint="@android:color/white"
-        android:text="Tags"
-        android:textColor="@android:color/white"/>
+        app:tint="?attr/colorOnPrimary"
+        tools:ignore="HardcodedText" />
 
     <ImageButton
         android:id="@+id/btn_image_hub_page"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         app:srcCompat="@drawable/ic_public_black_24dp"
-        app:tint="@android:color/white"
+        app:tint="?attr/colorOnPrimary"
         android:text="Docker Hub Page"
-        android:textColor="@android:color/white"/>
+        tools:ignore="HardcodedText" />
 
     <ImageButton
         android:id="@+id/btn_image_share"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         app:srcCompat="@drawable/ic_share_black_24dp"
-        app:tint="@android:color/white"
+        app:tint="?attr/colorOnPrimary"
         android:text="Share"
-        android:textColor="@android:color/white"/>
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>

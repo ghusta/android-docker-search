@@ -24,6 +24,8 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
@@ -411,16 +413,16 @@ public class MainActivity extends AppCompatActivity
                 applicationVersion
         ));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         ApplicationInfo applicationInfo = getApplicationInfo();
         PackageManager packageManager = getPackageManager();
         Drawable icon = packageManager.getApplicationIcon(applicationInfo);
-        builder.setIcon(icon);
-        builder.setTitle(R.string.app_name);
-        builder.setView(messageView);
-        builder.setPositiveButton(android.R.string.ok, null);
-        builder.create();
-        builder.show();
+        new MaterialAlertDialogBuilder(this, R.style.Custom_ThemeOverlay_MaterialAlertDialog)
+                .setIcon(icon)
+                .setTitle(R.string.app_name)
+                .setView(messageView)
+                .setPositiveButton(android.R.string.ok, null)
+                .create()
+                .show();
     }
 
     public void clickSubmitIssue(MenuItem item)

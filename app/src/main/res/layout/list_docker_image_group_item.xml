@@ -13,7 +13,7 @@
         android:layout_marginEnd="2dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textColor="@color/textColorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/listitem_image_desc"
         app:layout_constraintEnd_toStartOf="@id/barrier_1"
@@ -30,6 +30,8 @@
         android:layout_marginBottom="2dp"
         android:ellipsize="end"
         android:maxLines="2"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:textColor="@color/textColorSecondary"
         app:layout_constraintEnd_toStartOf="@id/barrier_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listitem_image_name"
@@ -55,7 +57,7 @@
         app:layout_constraintStart_toStartOf="@+id/listitem_image_stars"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_star_24dp"
-        app:tint="@color/secondaryTextColor"
+        app:tint="@color/textColorSecondary"
         tools:ignore="ContentDescription"
         tools:layout_gravity="center" />
 
@@ -88,7 +90,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/listitem_image_stars"
         app:srcCompat="@drawable/ic_official_image"
-        app:tint="@color/secondaryTextColor"
+        app:tint="@color/textColorSecondary"
         tools:ignore="ContentDescription"
         tools:layout_gravity="center" />
 
