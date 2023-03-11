@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="AppTheme" parent="@style/Theme.Material3.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
@@ -23,29 +23,29 @@
     </style>
 
     <!-- See : https://stackoverflow.com/questions/32425191/style-snackbar-in-theme-app#58607153 -->
-    <style name="Custom.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+    <style name="Custom.Snackbar" parent="Widget.Material3.Snackbar">
         <!-- Default attr with M2 : ?attr/colorOnSurface + colorSurface (https://github.com/material-components/material-components-android/blob/1.4.0/docs/components/Snackbar.md#container-attributes) -->
         <!-- Default attr with M3 : ?attr/colorSurfaceInverse (https://github.com/material-components/material-components-android/blob/1.5.0/docs/components/Snackbar.md#container-attributes) -->
         <item name="backgroundTint">@color/colorSurfaceInverse</item>
     </style>
 
-    <style name="Custom.SnackbarText" parent="Widget.MaterialComponents.Snackbar.TextView">
+    <style name="Custom.SnackbarText" parent="Widget.Material3.Snackbar.TextView">
         <!-- Default attr with M2 : ?attr/colorSurface (https://github.com/material-components/material-components-android/blob/1.4.0/docs/components/Snackbar.md#text-label-attributes) -->
         <!-- Default attr with M3 : ?attr/colorOnSurfaceInverse (https://github.com/material-components/material-components-android/blob/1.5.0/docs/components/Snackbar.md#text-label-attributes) -->
         <item name="android:textColor">@color/colorOnSurfaceInverse</item>
     </style>
 
-    <style name="Custom.SnackbarButton" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
+    <style name="Custom.SnackbarButton" parent="Widget.Material3.Button.TextButton.Snackbar">
         <!-- Default attr with M2 : ?attr/colorPrimary (https://github.com/material-components/material-components-android/blob/1.4.0/docs/components/Snackbar.md#action-attributes) -->
         <!-- Default attr with M3 : ?attr/colorPrimaryInverse (https://github.com/material-components/material-components-android/blob/1.5.0/docs/components/Snackbar.md#action-attributes) -->
         <item name="android:textColor">@color/colorPrimaryInverse</item>
     </style>
 
-    <style name="Custom.ThemeOverlay.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="Custom.ThemeOverlay.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="buttonBarPositiveButtonStyle">@style/Custom.Widget.Button.Dialog</item>
     </style>
 
-    <style name="Custom.Widget.Button.Dialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <style name="Custom.Widget.Button.Dialog" parent="Widget.Material3.Button.TextButton.Dialog">
         <item name="android:textColor">@color/colorPrimaryInverse</item>
     </style>
 
