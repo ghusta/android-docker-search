@@ -8,9 +8,6 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  ENABLE_OWASP_DEPENDENCY_CHECK: 0
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,24 +33,3 @@ jobs:
         with:
           name: app-debug-apk
           path: app/build/outputs/apk/debug/*.apk
-
-  owasp-dependency-check:
-    if: ${{ env.ENABLE_OWASP_DEPENDENCY_CHECK == '1' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'gradle'
-
-      - name: OWASP Dependency Check
-        run: ./gradlew app:dependencyCheckAnalyze
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: dependency-check-report
-          path: app/build/reports/dependency-check-report.html
