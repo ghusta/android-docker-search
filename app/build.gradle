@@ -1,20 +1,24 @@
-apply plugin: 'com.android.application'
-apply plugin: 'org.owasp.dependencycheck'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion '33.0.0'
     namespace 'fr.husta.android.dockersearch'
+    compileSdk 33
+    buildToolsVersion '33.0.0'
+
     defaultConfig {
         applicationId "fr.husta.android.dockersearch"
-        minSdkVersion 26 // O 8.0
-        targetSdkVersion 33 // Android 13
+        minSdk 26 // O 8.0
+        targetSdk 33 // Android 13
         versionCode 102
         versionName "1.15.1"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "android-docker-search-$versionName")
         vectorDrawables.useSupportLibrary = true
     }
+
     compileOptions {
         // Flag to enable support for the new language APIs
         // See : https://developer.android.com/studio/write/java8-support#library-desugaring
@@ -23,8 +27,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    signingConfigs {
+
+    buildFeatures {
+        viewBinding true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -35,11 +42,6 @@ android {
         resources {
             excludes += ['META-INF/DEPENDENCIES.txt', 'META-INF/LICENSE.txt', 'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/DEPENDENCIES', 'META-INF/notice.txt', 'META-INF/license.txt', 'META-INF/dependencies.txt', 'META-INF/LGPL2.1']
         }
-    }
-    productFlavors {
-    }
-    buildFeatures {
-        viewBinding true
     }
 }
 
@@ -72,7 +74,6 @@ if (keystorePropertiesFile.exists()) {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.browser:browser:1.5.0'
