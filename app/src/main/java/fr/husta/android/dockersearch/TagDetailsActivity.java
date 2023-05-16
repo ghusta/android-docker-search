@@ -73,7 +73,6 @@ public class TagDetailsActivity extends AppCompatActivity
     private static Predicate<ImageVariantByTagV2> isUnknownOrEmptyValue()
     {
         return variant -> variant.getArchitecture().equals("unknown")
-                || variant.getArchitecture().equals("")
                 || variant.getArchitecture().isEmpty()
                 || variant.getOs().equals("unknown");
     }
