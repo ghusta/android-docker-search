@@ -8,11 +8,15 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import androidx.appcompat.app.AppCompatActivity;
 import fr.husta.android.dockersearch.databinding.ActivityTagDetailsBinding;
 import fr.husta.android.dockersearch.docker.model.ImageVariantByTagV2;
 import fr.husta.android.dockersearch.listadapter.DockerTagDetailsListAdapter;
+
+import static java.util.function.Predicate.not;
 
 public class TagDetailsActivity extends AppCompatActivity
 {
@@ -39,6 +43,8 @@ public class TagDetailsActivity extends AppCompatActivity
         Log.d("TAG_DETAILS", "Tag : " + tagName);
         List<ImageVariantByTagV2> imageVariants = intent.getParcelableArrayListExtra(DATA_IMG_VARIANT_ARRAY);
         Log.d("TAG_DETAILS", "List<ImageVariantByTagV2> # = " + imageVariants.size());
+        // filter ImageVariantByTagV2 list to hide "unknown" value
+        List<ImageVariantByTagV2> imageVariantsFiltered = filterShownVariants(imageVariants);
 
         // setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null)
@@ -54,7 +60,22 @@ public class TagDetailsActivity extends AppCompatActivity
 
         dockerTagDetailsListAdapter = new DockerTagDetailsListAdapter(TagDetailsActivity.this, new ArrayList<>());
         listView.setAdapter(dockerTagDetailsListAdapter);
-        dockerTagDetailsListAdapter.addAll(imageVariants);
+        dockerTagDetailsListAdapter.addAll(imageVariantsFiltered);
+    }
+
+    public static List<ImageVariantByTagV2> filterShownVariants(List<ImageVariantByTagV2> imageVariants)
+    {
+        return imageVariants.stream()
+                .filter(not(isUnknownOrEmptyValue()))
+                .collect(Collectors.toList());
+    }
+
+    private static Predicate<ImageVariantByTagV2> isUnknownOrEmptyValue()
+    {
+        return variant -> variant.getArchitecture().equals("unknown")
+                || variant.getArchitecture().equals("")
+                || variant.getArchitecture().isEmpty()
+                || variant.getOs().equals("unknown");
     }
 
 }

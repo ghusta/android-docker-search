@@ -89,7 +89,7 @@ public class TagListActivity extends AppCompatActivity
 
         listView.setOnItemClickListener((adapterView, view, i, l) -> {
             RepositoryTagV2 item = (RepositoryTagV2) listView.getItemAtPosition(i);
-            int count = item.getImageVariants().size();
+            int count = TagDetailsActivity.filterShownVariants(item.getImageVariants()).size();
             Snackbar.make(listView, getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count), LENGTH_SHORT)
                     .setAnchorView(fabNextPage.isOrWillBeShown() ? fabNextPage : null)
                     .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
