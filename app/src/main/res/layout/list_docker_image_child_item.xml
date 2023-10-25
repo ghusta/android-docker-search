@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:srcCompat="@drawable/ic_public_black_24dp"
+        app:srcCompat="@drawable/ic_open_in_browser_24"
         app:tint="?attr/colorOnPrimary"
         android:text="Docker Hub Page"
         tools:ignore="HardcodedText" />
