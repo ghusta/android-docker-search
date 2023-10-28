@@ -10,8 +10,8 @@ android {
         applicationId "fr.husta.android.dockersearch"
         minSdk 26 // O 8.0
         targetSdk 34 // Android 14
-        versionCode 112
-        versionName "1.16.1"
+        versionCode 114
+        versionName "1.16.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "android-docker-search-$versionName")
