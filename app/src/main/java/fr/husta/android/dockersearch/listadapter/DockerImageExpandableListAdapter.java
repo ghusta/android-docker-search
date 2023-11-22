@@ -210,7 +210,7 @@ public class DockerImageExpandableListAdapter
                     intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.colorPrimary));
                 }
                 intentBuilder.setShowTitle(true); // affiche title page au dessus URL
-                intentBuilder.addDefaultShareMenuItem();
+                intentBuilder.setShareState(CustomTabsIntent.SHARE_STATE_ON);
 
                 // Setting a custom back button
                 Bitmap iconArrow = BitmapFactory.decodeResource(hostActivity.getResources(),
