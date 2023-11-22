@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:srcCompat="@drawable/ic_share_black_24dp"
+        app:srcCompat="@drawable/ic_outline_share_24"
         app:tint="?attr/colorOnPrimary"
         android:text="Share"
         tools:ignore="HardcodedText" />
