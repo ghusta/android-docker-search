@@ -23,8 +23,8 @@ android {
         // See : https://developer.android.com/studio/write/java8-support#library-desugaring
         coreLibraryDesugaringEnabled true
         // See : https://developer.android.com/studio/write/java8-support.html
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     buildFeatures {
