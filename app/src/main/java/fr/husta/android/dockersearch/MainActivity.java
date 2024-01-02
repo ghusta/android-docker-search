@@ -27,7 +27,6 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
 import androidx.appcompat.app.AlertDialog;
@@ -276,7 +275,7 @@ public class MainActivity extends AppCompatActivity
                 .doOnSubscribe(data -> progressBar.show())
                 .subscribe(data -> {
                             Log.d(TAG, "searchImagesAsync.onResponse: returned " + data.getResults().size() + " out of " + data.getNumResults());
-                            Collections.sort(data.getResults(), new DefaultImageSearchComparator());
+                            data.getResults().sort(new DefaultImageSearchComparator());
 
                             dockerImageExpandableListAdapter.notifyDataSetInvalidated(); // necessaire ?
                             // Collapse all

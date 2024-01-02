@@ -3,13 +3,11 @@ package fr.husta.android.dockersearch.docker.model.comparator;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 public class DefaultImageSearchComparatorTest
 {
@@ -35,7 +33,7 @@ public class DefaultImageSearchComparatorTest
         ImageSearchResult elt5 = new ImageSearchResult("elt5", "elt5", false, 2);
         list.add(elt5);
 
-        Collections.sort(list, comparator);
+        list.sort(comparator);
         assertThat(list).isNotEmpty();
         // #1 => elt3
         assertThat(list.get(0)).isSameInstanceAs(elt3);
