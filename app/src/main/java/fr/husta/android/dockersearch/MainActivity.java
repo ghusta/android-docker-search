@@ -272,7 +272,8 @@ public class MainActivity extends AppCompatActivity
         Disposable disposable = dockerRegistryClient.searchImagesAsync(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(data -> progressBar.show())
+                .doOnSubscribe(disp1 -> progressBar.show())
+                .doOnTerminate(() -> progressBar.hide())
                 .subscribe(data -> {
                             Log.d(TAG, "searchImagesAsync.onResponse: returned " + data.getResults().size() + " out of " + data.getNumResults());
                             data.getResults().sort(new DefaultImageSearchComparator());
@@ -291,10 +292,8 @@ public class MainActivity extends AppCompatActivity
                         },
                         throwable -> {
                             Log.e(TAG, throwable.getMessage(), throwable);
-                            progressBar.hide();
                             Toast.makeText(MainActivity.this, getString(R.string.msg_error, throwable.getMessage()), Toast.LENGTH_LONG).show();
-                        },
-                        () -> progressBar.hide());
+                        });
         disposables.add(disposable);
 
         // fermer le clavier de saisie
