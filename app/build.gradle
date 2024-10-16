@@ -14,7 +14,6 @@ android {
         versionName "1.19.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "android-docker-search-$versionName")
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -42,6 +41,9 @@ android {
             excludes += ['META-INF/DEPENDENCIES.txt', 'META-INF/LICENSE.txt', 'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/DEPENDENCIES', 'META-INF/notice.txt', 'META-INF/license.txt', 'META-INF/dependencies.txt', 'META-INF/LGPL2.1']
         }
     }
+}
+base {
+    archivesName = "android-docker-search-${android.defaultConfig.versionName}"
 }
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
