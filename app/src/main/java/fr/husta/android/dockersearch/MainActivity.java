@@ -20,6 +20,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,6 +104,8 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onCreate : " + this.getLocalClassName());
         setContentView(R.layout.activity_main);
 
+        hideNavigationBars(getWindow());
+
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
 
         themeChooserDialog = initThemeChooserAlertDialog();
@@ -151,6 +156,26 @@ public class MainActivity extends AppCompatActivity
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_images);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorSecondary);
         swipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private void hideNavigationBars(Window window)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+        {
+            WindowInsetsController insetsController = window.getInsetsController();
+            if (insetsController != null)
+            {
+                // Hide system bars
+                // insetsController.hide(WindowInsets.Type.systemBars());
+                // Hide nav bars
+                insetsController.hide(WindowInsets.Type.navigationBars());
+
+                // Set the behavior to transient bars by swipe
+                insetsController.setSystemBarsBehavior(
+                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                );
+            }
+        }
     }
 
     @Override
