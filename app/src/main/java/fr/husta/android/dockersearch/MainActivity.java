@@ -1,5 +1,6 @@
 package fr.husta.android.dockersearch;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
@@ -29,6 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -255,6 +257,51 @@ public class MainActivity extends AppCompatActivity
                 searchManager.getSearchableInfo(getComponentName()));
 
         return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
+        return switch (item.getItemId())
+        {
+            case R.id.menu_clear_search_history ->
+            {
+                clickClearSearchHistory(item);
+                yield true;
+            }
+            case R.id.menu_choose_theme ->
+            {
+                clickChooseTheme(item);
+                yield true;
+            }
+            case R.id.menu_submit_issue ->
+            {
+                clickSubmitIssue(item);
+                yield true;
+            }
+            case R.id.menu_contribute ->
+            {
+                clickContribute(item);
+                yield true;
+            }
+            case R.id.menu_check_latest_release ->
+            {
+                clickCheckLatestRelease(item);
+                yield true;
+            }
+            case R.id.menu_note_app ->
+            {
+                clickNoteApp(item);
+                yield true;
+            }
+            case R.id.menu_about ->
+            {
+                clickAbout(item);
+                yield true;
+            }
+            default -> super.onOptionsItemSelected(item);
+        };
     }
 
     @Override

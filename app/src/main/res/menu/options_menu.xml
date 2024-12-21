@@ -12,31 +12,26 @@
     <item
         android:id="@+id/menu_clear_search_history"
         android:icon="@android:drawable/ic_menu_delete"
-        android:onClick="clickClearSearchHistory"
         android:title="@string/clear_search_history" />
 
     <item
         android:id="@+id/menu_choose_theme"
-        android:onClick="clickChooseTheme"
         android:title="@string/choose_theme" />
 
     <item
         android:id="@+id/menu_submit_issue"
         android:icon="@android:drawable/ic_menu_send"
-        android:onClick="clickSubmitIssue"
         android:title="@string/action_report_issue"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_contribute"
         android:icon="@android:drawable/ic_menu_edit"
-        android:onClick="clickContribute"
         android:title="@string/action_contribute"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_check_latest_release"
-        android:onClick="clickCheckLatestRelease"
         android:title="@string/action_check_latest_release"
         app:showAsAction="never" />
 
@@ -44,7 +39,6 @@
         android:id="@+id/menu_note_app"
         android:enabled="false"
         android:icon="@android:drawable/star_big_on"
-        android:onClick="clickNoteApp"
         android:title="@string/action_rate_app"
         android:visible="false"
         app:showAsAction="never" />
@@ -53,7 +47,6 @@
         android:id="@+id/menu_about"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_info_details"
-        android:onClick="clickAbout"
         android:title="@string/about"
         app:showAsAction="never" />
 
