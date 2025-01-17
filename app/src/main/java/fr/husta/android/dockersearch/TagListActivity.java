@@ -23,6 +23,8 @@ import java.util.List;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import fr.husta.android.dockersearch.databinding.ActivityTaglistBinding;
+import fr.husta.android.dockersearch.databinding.DialogWarningTaglistBinding;
 import fr.husta.android.dockersearch.docker.DockerRegistryClient;
 import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
 import fr.husta.android.dockersearch.listadapter.DockerTagListAdapter;
@@ -40,6 +42,9 @@ public class TagListActivity extends AppCompatActivity
     private static final String TAG = "TAG_LIST";
 
     public static final String DATA_IMG_NAME = "DATA_IMG_NAME";
+
+    private ActivityTaglistBinding binding;
+    private DialogWarningTaglistBinding dialogWarningTaglistBinding;
 
     private DockerTagListAdapter dockerTagListAdapter;
 
@@ -60,7 +65,9 @@ public class TagListActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         Log.d("MAIN_DEBUG", "onCreate : " + this.getLocalClassName());
-        setContentView(R.layout.activity_taglist);
+        binding = ActivityTaglistBinding.inflate(getLayoutInflater());
+        dialogWarningTaglistBinding = DialogWarningTaglistBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         Intent intent = getIntent();
         imageName = intent.getStringExtra(DATA_IMG_NAME);
@@ -80,8 +87,8 @@ public class TagListActivity extends AppCompatActivity
         progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressBar.setMessage(getString(R.string.msg_searching));
 
-        listView = findViewById(R.id.tags_listview);
-        fabNextPage = findViewById(R.id.fab_tags_next_page);
+        listView = binding.tagsListview;
+        fabNextPage = binding.fabTagsNextPage;
         fabNextPage.setOnClickListener(view -> loadNextPage(view));
 
         dockerTagListAdapter = new DockerTagListAdapter(TagListActivity.this, new ArrayList<>());
@@ -100,7 +107,7 @@ public class TagListActivity extends AppCompatActivity
                     .show();
         });
 
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_tags);
+        SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshTags;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorSecondary);
         swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -208,9 +215,9 @@ public class TagListActivity extends AppCompatActivity
     public void clickWarning(MenuItem item)
     {
         // Inflate the about message contents
-        View messageView = getLayoutInflater().inflate(R.layout.dialog_warning_taglist, null, false);
+        View messageView = dialogWarningTaglistBinding.getRoot();
 
-        TextView textView = messageView.findViewById(R.id.txt_warning_taglist);
+        TextView textView = dialogWarningTaglistBinding.txtWarningTaglist;
         textView.setText(
                 "Tag list may not be up to date. \n" +
                         "See bug #687 ( https://github.com/docker/hub-feedback/issues/687 )");
@@ -234,7 +241,7 @@ public class TagListActivity extends AppCompatActivity
     @Override
     public void onRefresh()
     {
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_tags);
+        SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshTags;
         swipeRefreshLayout.setRefreshing(false);
         dockerTagListAdapter.clear();
         requestTagsList(imageName, 1);
