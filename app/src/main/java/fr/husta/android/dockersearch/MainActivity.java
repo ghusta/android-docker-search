@@ -36,6 +36,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import fr.husta.android.dockersearch.databinding.ActivityMainBinding;
+import fr.husta.android.dockersearch.databinding.DialogAboutBinding;
 import fr.husta.android.dockersearch.docker.DockerRegistryClient;
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.comparator.DefaultImageSearchComparator;
@@ -71,6 +73,9 @@ public class MainActivity extends AppCompatActivity
      */
     public static String APP_PACKAGE_NAME;
 
+    private ActivityMainBinding binding;
+    private DialogAboutBinding dialogAboutBinding;
+
     private SearchView searchView;
 
     private ExpandableListView listView;
@@ -101,7 +106,9 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate : " + this.getLocalClassName());
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        dialogAboutBinding = DialogAboutBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
 
@@ -120,7 +127,7 @@ public class MainActivity extends AppCompatActivity
 
         checkInternetConnection();
 
-        listView = findViewById(R.id.listView);
+        listView = binding.listView;
         if (savedInstanceState == null)
         {
             dockerImageExpandableListAdapter = new DockerImageExpandableListAdapter(MainActivity.this,
@@ -150,7 +157,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_images);
+        SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorSecondary);
         swipeRefreshLayout.setOnRefreshListener(this);
     }
@@ -360,7 +367,7 @@ public class MainActivity extends AppCompatActivity
     public void onRefresh()
     {
         Log.d(TAG, "Swipe : refresh requested");
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_images);
+        SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
         swipeRefreshLayout.setRefreshing(false);
         CharSequence query = searchView.getQuery();
         searchView.setQuery(lastSearchQuery == null ? "" : lastSearchQuery, true);
@@ -442,17 +449,17 @@ public class MainActivity extends AppCompatActivity
     public void clickAbout(MenuItem item)
     {
         // Inflate the about message contents
-        View messageView = getLayoutInflater().inflate(R.layout.dialog_about, null, false);
+        View messageView = dialogAboutBinding.getRoot();
 
         String applicationVersion = AppInfo.getApplicationVersion(this);
 
         // When linking text, force to always use default color. This works
         // around a pressed color state bug.
-        TextView textView = messageView.findViewById(R.id.about_credits);
+        TextView textView = dialogAboutBinding.aboutCredits;
         int defaultColor = textView.getTextColors().getDefaultColor();
         textView.setTextColor(defaultColor);
 
-        TextView textViewVersion = messageView.findViewById(R.id.about_version);
+        TextView textViewVersion = dialogAboutBinding.aboutVersion;
         textViewVersion.setText(String.format(
                 getString(R.string.msg_about_version),
                 applicationVersion
