@@ -48,6 +48,7 @@ base {
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // keystore.properties file, in the rootProject folder.
+// See: https://developer.android.com/studio/publish/app-signing#secure-shared-keystore
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 
 if (keystorePropertiesFile.exists()) {
