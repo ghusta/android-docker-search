@@ -35,6 +35,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.husta.android.dockersearch.databinding.ActivityMainBinding;
 import fr.husta.android.dockersearch.databinding.DialogAboutBinding;
@@ -108,6 +111,10 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onCreate : " + this.getLocalClassName());
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         dialogAboutBinding = DialogAboutBinding.inflate(getLayoutInflater());
+
+        // Make the status bar transparent and content go edge-to-edge
+//        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         setContentView(binding.getRoot());
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
