@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+
+        <item name="colorSurface">@color/colorSurface</item>
+        <!--        <item name="colorOnSurface">?attr/colorOnSurface</item>-->
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="29">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="29">true</item>
+
+        <!-- See layout in file : mtrl_layout_snackbar -->
+        <item name="snackbarStyle">@style/Custom.Snackbar</item>
+        <!-- See layout in file : mtrl_layout_snackbar_include -->
+        <item name="snackbarTextViewStyle">@style/Custom.SnackbarText</item>
+        <item name="snackbarButtonStyle">@style/Custom.SnackbarButton</item>
+    </style>
+</resources>
