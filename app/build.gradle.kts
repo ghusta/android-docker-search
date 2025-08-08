@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "fr.husta.android.dockersearch"
         minSdk = 26 // O 8.0
-        targetSdk = 34 // Android 14
+        targetSdk = 35 // Android 15
         versionCode = 134
         versionName = "1.22.3"
 
