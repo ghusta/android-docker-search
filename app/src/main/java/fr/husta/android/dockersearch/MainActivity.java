@@ -448,18 +448,16 @@ public class MainActivity extends AppCompatActivity
 
     public void clickAbout(MenuItem item)
     {
-        // Inflate the about message contents
-        View messageView = dialogAboutBinding.getRoot();
-
+        DialogAboutBinding binding = DialogAboutBinding.inflate(getLayoutInflater());
         String applicationVersion = AppInfo.getApplicationVersion(this);
 
         // When linking text, force to always use default color. This works
         // around a pressed color state bug.
-        TextView textView = dialogAboutBinding.aboutCredits;
+        TextView textView = binding.aboutCredits;
         int defaultColor = textView.getTextColors().getDefaultColor();
         textView.setTextColor(defaultColor);
 
-        TextView textViewVersion = dialogAboutBinding.aboutVersion;
+        TextView textViewVersion = binding.aboutVersion;
         textViewVersion.setText(String.format(
                 getString(R.string.msg_about_version),
                 applicationVersion
@@ -471,7 +469,7 @@ public class MainActivity extends AppCompatActivity
         new MaterialAlertDialogBuilder(this, R.style.Custom_ThemeOverlay_MaterialAlertDialog)
                 .setIcon(icon)
                 .setTitle(R.string.app_name)
-                .setView(messageView)
+                .setView(binding.getRoot())
                 .setPositiveButton(android.R.string.ok, null)
                 .create()
                 .show();
