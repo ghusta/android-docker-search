@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity
     public static String APP_PACKAGE_NAME;
 
     private ActivityMainBinding binding;
-    private DialogAboutBinding dialogAboutBinding;
 
     private SearchView searchView;
 
@@ -107,7 +106,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate : " + this.getLocalClassName());
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        dialogAboutBinding = DialogAboutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
