@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setSupportActionBar(binding.topAppBar);
+
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
 
         themeChooserDialog = initThemeChooserAlertDialog();
@@ -143,6 +145,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
+        binding.topAppBar.setOnMenuItemClickListener(this::onOptionsItemSelected);
 
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorSecondary);

@@ -65,6 +65,8 @@ public class TagListActivity extends AppCompatActivity
         dialogWarningTaglistBinding = DialogWarningTaglistBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setSupportActionBar(binding.topAppBar);
+
         Intent intent = getIntent();
         imageName = intent.getStringExtra(DATA_IMG_NAME);
 
