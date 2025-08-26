@@ -38,6 +38,8 @@ public class TagDetailsActivity extends AppCompatActivity
         binding = ActivityTagDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setSupportActionBar(binding.topAppBar);
+
         Intent intent = getIntent();
         String tagName = intent.getStringExtra(DATA_TAG_NAME);
         Log.d("TAG_DETAILS", "Tag : " + tagName);
