@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity
                 .doOnTerminate(onEnd::run)
                 .subscribe(data -> {
                             Log.d(TAG, "searchImagesAsync.onResponse: returned " + data.getResults().size() + " out of " + data.getNumResults());
-                            data.getResults().sort(new DefaultImageSearchComparator());
+                            data.getResults().sort(DefaultImageSearchComparator.defaultComparator());
 
                             dockerImageExpandableListAdapter.notifyDataSetInvalidated(); // necessaire ?
                             // Collapse all
