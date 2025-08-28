@@ -51,8 +51,6 @@ public class TagListActivity extends AppCompatActivity
     private ListView listView;
     private FloatingActionButton fabNextPage;
 
-    private ProgressDialog progressBar;
-
     private int currentPage = -1;
     private boolean hasNextPage = false;
     private String imageName;
@@ -80,12 +78,6 @@ public class TagListActivity extends AppCompatActivity
             getSupportActionBar().setTitle("Tags");
             getSupportActionBar().setSubtitle("Image : " + imageName);
         }
-
-        progressBar = new ProgressDialog(this);
-        progressBar.setIndeterminate(true);
-        progressBar.setCancelable(false);
-        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressBar.setMessage(getString(R.string.msg_searching));
 
         listView = binding.tagsListview;
         fabNextPage = binding.fabTagsNextPage;
@@ -128,7 +120,7 @@ public class TagListActivity extends AppCompatActivity
         Disposable disposable = dockerRegistryClient.listTagsV2(imageNameToRepository(imgName), pageNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(data -> progressBar.show())
+                .doOnSubscribe(data -> binding.progressIndicator.show())
                 .subscribe(data -> {
                             List<RepositoryTagV2> listTags = data.getTags();
                             int count = data.getTotalCount();
@@ -154,9 +146,9 @@ public class TagListActivity extends AppCompatActivity
                                 fabNextPage.hide();
                             }
                         }, throwable -> {
-                            progressBar.hide();
+                            binding.progressIndicator.hide();
                             Toast.makeText(TagListActivity.this, getString(R.string.msg_error, throwable.getMessage()), Toast.LENGTH_LONG).show();
-                        }, () -> progressBar.hide()
+                        }, () -> binding.progressIndicator.hide()
                 );
         disposables.add(disposable);
     }
@@ -251,10 +243,6 @@ public class TagListActivity extends AppCompatActivity
     protected void onPause()
     {
         super.onPause();
-        if (progressBar != null)
-        {
-            progressBar.dismiss();
-        }
     }
 
     @Override
@@ -262,9 +250,5 @@ public class TagListActivity extends AppCompatActivity
     {
         super.onDestroy();
         this.disposables.clear();
-        if (progressBar != null)
-        {
-            progressBar.dismiss();
-        }
     }
 }

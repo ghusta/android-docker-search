@@ -79,8 +79,6 @@ public class MainActivity extends AppCompatActivity
 
     private ExpandableListView listView;
 
-    private ProgressDialog progressBar;
-
     private DockerImageExpandableListAdapter dockerImageExpandableListAdapter;
 
     private SharedPreferences preferences;
@@ -116,12 +114,6 @@ public class MainActivity extends AppCompatActivity
         {
             handleIntent(getIntent());
         }
-
-        progressBar = new ProgressDialog(this);
-        progressBar.setIndeterminate(true);
-        progressBar.setCancelable(false);
-        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressBar.setMessage(getString(R.string.msg_searching));
 
         checkInternetConnection();
 
@@ -324,8 +316,8 @@ public class MainActivity extends AppCompatActivity
         Disposable disposable = dockerRegistryClient.searchImagesAsync(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disp1 -> progressBar.show())
-                .doOnTerminate(() -> progressBar.hide())
+                .doOnSubscribe(disp1 -> binding.progressIndicator.show() )
+                .doOnTerminate(() -> binding.progressIndicator.hide())
                 .subscribe(data -> {
                             Log.d(TAG, "searchImagesAsync.onResponse: returned " + data.getResults().size() + " out of " + data.getNumResults());
                             data.getResults().sort(new DefaultImageSearchComparator());
