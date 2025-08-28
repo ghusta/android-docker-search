@@ -1,7 +1,6 @@
 package fr.husta.android.dockersearch;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -20,7 +19,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +53,6 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
 public class MainActivity extends AppCompatActivity
-        implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener
 {
 
     public static final String PROJECT_GITHUB_URL = "https://github.com/ghusta/android-docker-search";
@@ -149,7 +146,7 @@ public class MainActivity extends AppCompatActivity
 
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorSecondary);
-        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this::onSwipeRefresh);
     }
 
     @Override
@@ -175,7 +172,9 @@ public class MainActivity extends AppCompatActivity
             // si clic sur suggestion, zone saisie = suggestion
             searchView.setQuery(query, false);
 
-            onQueryTextSubmit(query);
+            onQueryTextSubmitCustom(query,
+                    () -> binding.progressIndicator.show(),
+                    () -> binding.progressIndicator.hide());
         }
     }
 
@@ -243,7 +242,22 @@ public class MainActivity extends AppCompatActivity
 
         MenuItem searchItem = menu.findItem(R.id.menu_search);
         searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(this);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return onQueryTextSubmitCustom(query,
+                        () -> binding.progressIndicator.show(),
+                        () -> binding.progressIndicator.hide());
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                return false;
+            }
+        });
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
@@ -301,8 +315,7 @@ public class MainActivity extends AppCompatActivity
         };
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query)
+    private boolean onQueryTextSubmitCustom(String query, Runnable onStart, Runnable onEnd)
     {
         Log.d(TAG, "onQueryTextSubmit : " + query);
         this.lastSearchQuery = query;
@@ -316,8 +329,8 @@ public class MainActivity extends AppCompatActivity
         Disposable disposable = dockerRegistryClient.searchImagesAsync(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disp1 -> binding.progressIndicator.show() )
-                .doOnTerminate(() -> binding.progressIndicator.hide())
+                .doOnSubscribe(disp1 -> onStart.run())
+                .doOnTerminate(onEnd::run)
                 .subscribe(data -> {
                             Log.d(TAG, "searchImagesAsync.onResponse: returned " + data.getResults().size() + " out of " + data.getNumResults());
                             data.getResults().sort(new DefaultImageSearchComparator());
@@ -346,21 +359,15 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onQueryTextChange(String newText)
-    {
-        // User changed the text
-        return false;
-    }
-
-    @Override
-    public void onRefresh()
+    public void onSwipeRefresh()
     {
         Log.d(TAG, "Swipe : refresh requested");
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
-        swipeRefreshLayout.setRefreshing(false);
-        CharSequence query = searchView.getQuery();
-        searchView.setQuery(lastSearchQuery == null ? "" : lastSearchQuery, true);
+        searchView.setQuery(lastSearchQuery == null ? "" : lastSearchQuery, false);
+        onQueryTextSubmitCustom(searchView.getQuery().toString(),
+                () -> {
+                },
+                () -> swipeRefreshLayout.setRefreshing(false));
     }
 
     public void startActivityTagList(Context context, ImageSearchResult data)

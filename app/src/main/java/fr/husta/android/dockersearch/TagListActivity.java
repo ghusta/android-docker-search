@@ -1,6 +1,5 @@
 package fr.husta.android.dockersearch;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,7 +35,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 
 public class TagListActivity extends AppCompatActivity
-        implements SwipeRefreshLayout.OnRefreshListener
 {
 
     private static final String TAG = "TAG_LIST";
@@ -101,9 +99,14 @@ public class TagListActivity extends AppCompatActivity
 
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshTags;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorSecondary);
-        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this::onSwipeRefresh);
 
-        requestTagsList(imageName, 1);
+        requestTagsList(imageName, 1,
+                () -> {
+                    dockerTagListAdapter.clear();
+                    binding.progressIndicator.show();
+                },
+                () -> binding.progressIndicator.hide());
     }
 
     public void startActivityTagDetails(Context context, RepositoryTagV2 data)
@@ -114,17 +117,17 @@ public class TagListActivity extends AppCompatActivity
         startActivity(starter);
     }
 
-    private void requestTagsList(String imgName, final int pageNumber)
+    private void requestTagsList(String imgName, final int pageNumber,
+                                 Runnable onStart, Runnable onEnd)
     {
         // Fetch list tags (first page)
         Disposable disposable = dockerRegistryClient.listTagsV2(imageNameToRepository(imgName), pageNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(data -> binding.progressIndicator.show())
+                .doOnSubscribe(data -> onStart.run())
                 .subscribe(data -> {
                             List<RepositoryTagV2> listTags = data.getTags();
                             int count = data.getTotalCount();
-
                             dockerTagListAdapter.addAll(listTags);
                             // dockerTagListAdapter.notifyDataSetChanged();
 
@@ -146,9 +149,9 @@ public class TagListActivity extends AppCompatActivity
                                 fabNextPage.hide();
                             }
                         }, throwable -> {
-                            binding.progressIndicator.hide();
+                            onEnd.run();
                             Toast.makeText(TagListActivity.this, getString(R.string.msg_error, throwable.getMessage()), Toast.LENGTH_LONG).show();
-                        }, () -> binding.progressIndicator.hide()
+                        }, onEnd::run
                 );
         disposables.add(disposable);
     }
@@ -226,17 +229,18 @@ public class TagListActivity extends AppCompatActivity
     {
         if (hasNextPage)
         {
-            requestTagsList(imageName, currentPage + 1);
+            requestTagsList(imageName, currentPage + 1,
+                    () -> binding.progressIndicator.show(),
+                    () -> binding.progressIndicator.hide());
         }
     }
 
-    @Override
-    public void onRefresh()
+    public void onSwipeRefresh()
     {
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshTags;
-        swipeRefreshLayout.setRefreshing(false);
-        dockerTagListAdapter.clear();
-        requestTagsList(imageName, 1);
+        requestTagsList(imageName, 1,
+                () -> dockerTagListAdapter.clear(),
+                () -> swipeRefreshLayout.setRefreshing(false));
     }
 
     @Override
