@@ -11,7 +11,7 @@
     <!-- See : https://m2.material.io/components/buttons/android#text-button -->
     <ImageButton
         android:id="@+id/btn_image_tags"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -22,7 +22,7 @@
 
     <ImageButton
         android:id="@+id/btn_image_hub_page"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -33,7 +33,7 @@
 
     <ImageButton
         android:id="@+id/btn_image_share"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
