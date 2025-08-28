@@ -467,7 +467,7 @@ public class MainActivity extends AppCompatActivity
         ApplicationInfo applicationInfo = getApplicationInfo();
         PackageManager packageManager = getPackageManager();
         Drawable icon = packageManager.getApplicationIcon(applicationInfo);
-        new MaterialAlertDialogBuilder(this, R.style.Custom_ThemeOverlay_MaterialAlertDialog)
+        new MaterialAlertDialogBuilder(this)
                 .setIcon(icon)
                 .setTitle(R.string.app_name)
                 .setView(binding.getRoot())
