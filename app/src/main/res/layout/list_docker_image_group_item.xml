@@ -3,18 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <ImageView
+        android:id="@+id/listitem_image_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="24dp"
+        android:paddingBottom="2dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="0dp"
+        android:tintMode="src_in"
+        android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+        app:layout_constraintEnd_toEndOf="@+id/listitem_image_stars"
+        app:layout_constraintStart_toStartOf="@+id/listitem_image_stars"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_star_outline_24"
+        app:tint="?attr/colorOnSurface"
+        tools:ignore="ContentDescription"
+        tools:layout_gravity="center" />
+
+    <ImageView
+        android:id="@+id/listitem_image_official"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="24dp"
+        android:paddingBottom="2dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="0dp"
+        android:tintMode="src_in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/listitem_image_stars"
+        app:srcCompat="@drawable/ic_editor_choice_24px"
+        app:tint="@color/md_theme_onSurface"
+        tools:ignore="ContentDescription"
+        tools:layout_gravity="center" />
 
     <TextView
         android:id="@+id/listitem_image_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft"
         android:layout_marginEnd="2dp"
+        android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        android:textColor="@color/textColorPrimary"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/listitem_image_desc"
         app:layout_constraintEnd_toStartOf="@id/barrier_1"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,16 +58,32 @@
         tools:text="Image Name" />
 
     <TextView
+        android:id="@+id/listitem_image_stars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="1"
+        android:minWidth="30dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="0dp"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="@+id/listitem_image_official"
+        app:layout_constraintStart_toStartOf="@+id/listitem_image_official"
+        app:layout_constraintTop_toBottomOf="@id/listitem_image_star"
+        tools:gravity="center"
+        tools:text="1234" />
+
+    <TextView
         android:id="@+id/listitem_image_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:layout_marginEnd="2dp"
         android:layout_marginBottom="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-        android:textColor="@color/textColorSecondary"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
         app:layout_constraintEnd_toStartOf="@id/barrier_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listitem_image_name"
@@ -43,55 +95,5 @@
         android:layout_height="wrap_content"
         app:barrierDirection="left"
         app:constraint_referenced_ids="listitem_image_star,listitem_image_stars,listitem_image_official" />
-
-    <ImageView
-        android:id="@+id/listitem_image_star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="24dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="2dp"
-        android:tintMode="src_in"
-        app:layout_constraintEnd_toEndOf="@+id/listitem_image_stars"
-        app:layout_constraintStart_toStartOf="@+id/listitem_image_stars"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_star_outline_24"
-        app:tint="@color/textColorSecondary"
-        tools:ignore="ContentDescription"
-        tools:layout_gravity="center" />
-
-    <TextView
-        android:id="@+id/listitem_image_stars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="1"
-        android:minWidth="30dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="10dp"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/listitem_image_official"
-        app:layout_constraintStart_toStartOf="@+id/listitem_image_official"
-        app:layout_constraintTop_toBottomOf="@id/listitem_image_star"
-        tools:gravity="center"
-        tools:text="1234" />
-
-    <ImageView
-        android:id="@+id/listitem_image_official"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="24dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="2dp"
-        android:tintMode="src_in"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listitem_image_stars"
-        app:srcCompat="@drawable/ic_editor_choice_24px"
-        app:tint="@color/textColorSecondary"
-        tools:ignore="ContentDescription"
-        tools:layout_gravity="center" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
