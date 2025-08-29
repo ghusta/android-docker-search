@@ -402,21 +402,21 @@ public class MainActivity extends AppCompatActivity
 
     private AlertDialog initThemeChooserAlertDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.choose_theme)
+        return new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.choose_theme)
                 // list : 'Light', 'Dark', 'Set by Battery Saver / System'
                 // See RECO : https://developer.android.com/guide/topics/ui/look-and-feel/darktheme#changing_themes_in-app
-                .setSingleChoiceItems(R.array.themes_list, selectedTheme, (dialog, which) -> {
-                    selectedTheme = which;
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt(KEY_PREF_SAVED_DARK_MODE, selectedTheme);
-                    editor.apply();
+                .setSingleChoiceItems(R.array.themes_list, selectedTheme,
+                        (dialog, which) -> {
+                            selectedTheme = which;
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putInt(KEY_PREF_SAVED_DARK_MODE, selectedTheme);
+                            editor.apply();
 
-                    applyTheme(selectedTheme);
-                    dialog.dismiss();
-                });
-
-        return builder.create();
+                            applyTheme(selectedTheme);
+                            dialog.dismiss();
+                        })
+                .create();
     }
 
     private void applyTheme(int selectedTheme)
