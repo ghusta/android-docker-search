@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin">
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:background="?attr/colorSurface">
 
     <!-- Voir : https://developer.android.com/develop/ui/views/layout/linear#equal-weight -->
 
@@ -18,8 +19,8 @@
         android:text="@string/lbl_header_digest"
         android:textAlignment="textStart"
         android:textAllCaps="true"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:textColor="@color/textColorPrimary"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
         tools:text="Digest" />
 
@@ -30,8 +31,8 @@
         android:text="@string/lbl_header_osarch"
         android:textAlignment="textStart"
         android:textAllCaps="true"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:textColor="@color/textColorPrimary"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
         tools:text="OS/Arch" />
 

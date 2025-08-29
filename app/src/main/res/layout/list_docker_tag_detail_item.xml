@@ -17,8 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textAlignment="textStart"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:textColor="@color/textColorPrimary"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textColor="?attr/colorPrimary"
         tools:text="sha256" />
 
     <TextView
@@ -27,8 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textAlignment="textStart"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:textColor="@color/textColorPrimary"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textColor="?attr/colorPrimary"
         tools:text="linux/amd64" />
 
 </LinearLayout>
