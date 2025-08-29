@@ -51,7 +51,7 @@
         app:fabSize="auto"
         app:layout_anchor="@id/tags_listview"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_more_white_24dp" />
+        android:src="@drawable/ic_more_white_24dp" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressIndicator"
