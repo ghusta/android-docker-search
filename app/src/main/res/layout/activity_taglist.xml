@@ -34,9 +34,10 @@
         android:focusable="true"
         android:visibility="gone"
         app:fabSize="auto"
+        style="@style/ThemeOverlay.Material3.FloatingActionButton.Primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_more_white_24dp" />
+        android:src="@drawable/ic_more_white_24dp" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressIndicator"
