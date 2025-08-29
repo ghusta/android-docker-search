@@ -203,11 +203,11 @@ public class DockerImageExpandableListAdapter
                 CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder(customTabsSession);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                 {
-                    intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.colorPrimary, context.getTheme()));
+                    intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.md_theme_primary, context.getTheme()));
                 }
                 else
                 {
-                    intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.colorPrimary));
+                    intentBuilder.setToolbarColor(parent.getResources().getColor(R.color.md_theme_primary));
                 }
                 intentBuilder.setShowTitle(true); // affiche title page au dessus URL
                 intentBuilder.setShareState(CustomTabsIntent.SHARE_STATE_ON);
