@@ -41,4 +41,7 @@
         <item quantity="other">%d images trouvées.</item>
     </plurals>
     <string name="snackbar_action_details">Détails</string>
+    <string name="tooltip_tags">Tags</string>
+    <string name="tooltip_open_dockerhub_page">Ouvrir sur Docker Hub</string>
+    <string name="tooltip_share">Partager</string>
 </resources>

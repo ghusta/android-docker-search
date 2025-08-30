@@ -17,6 +17,7 @@
         android:layout_weight="1"
         app:srcCompat="@drawable/ic_outline_sell_24"
         app:tint="?attr/colorOnPrimary"
+        android:tooltipText="@string/tooltip_tags"
         tools:ignore="HardcodedText" />
 
     <ImageButton
@@ -27,7 +28,7 @@
         android:layout_weight="1"
         app:srcCompat="@drawable/ic_open_in_browser_24"
         app:tint="?attr/colorOnPrimary"
-        android:text="Docker Hub Page"
+        android:tooltipText="@string/tooltip_open_dockerhub_page"
         tools:ignore="HardcodedText" />
 
     <ImageButton
@@ -38,7 +39,7 @@
         android:layout_weight="1"
         app:srcCompat="@drawable/ic_outline_share_24"
         app:tint="?attr/colorOnPrimary"
-        android:text="Share"
+        android:tooltipText="@string/tooltip_share"
         tools:ignore="HardcodedText" />
 
 </LinearLayout>

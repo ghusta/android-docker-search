@@ -44,5 +44,8 @@
     <string name="lbl_header_digest">Digest</string>
     <string name="lbl_header_osarch" translatable="false">OS/Arch</string>
     <string name="snackbar_action_details">Details</string>
+    <string name="tooltip_tags">Tags</string>
+    <string name="tooltip_open_dockerhub_page">Open on Docker Hub</string>
+    <string name="tooltip_share">Share</string>
 
 </resources>
