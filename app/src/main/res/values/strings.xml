@@ -43,5 +43,6 @@
 
     <string name="lbl_header_digest">Digest</string>
     <string name="lbl_header_osarch" translatable="false">OS/Arch</string>
+    <string name="snackbar_action_details">Details</string>
 
 </resources>

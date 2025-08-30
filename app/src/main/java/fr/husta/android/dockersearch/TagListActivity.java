@@ -90,7 +90,7 @@ public class TagListActivity extends AppCompatActivity
             Snackbar.make(listView, getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count), LENGTH_SHORT)
                     .setAnchorView(fabNextPage.isOrWillBeShown() ? fabNextPage : null)
                     .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
-                    .setAction("Details", view1 -> {
+                    .setAction(R.string.snackbar_action_details, view1 -> {
                         Log.d(TAG, "Tag : " + item.getName());
                         startActivityTagDetails(this, item);
                     })

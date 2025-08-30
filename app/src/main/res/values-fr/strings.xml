@@ -40,4 +40,5 @@
         <item quantity="many">%d images trouvées.</item>
         <item quantity="other">%d images trouvées.</item>
     </plurals>
+    <string name="snackbar_action_details">Détails</string>
 </resources>
