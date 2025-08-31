@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import fr.husta.android.dockersearch.databinding.ActivityTagDetailsBinding;
 import fr.husta.android.dockersearch.docker.model.ImageVariantByTagV2;
 import fr.husta.android.dockersearch.listadapter.DockerTagDetailsListAdapter;
@@ -57,6 +58,7 @@ public class TagDetailsActivity extends AppCompatActivity
         }
 
         listView = binding.tagDetailsListview;
+        ViewCompat.setNestedScrollingEnabled(listView, true);
         View headerView = getLayoutInflater().inflate(R.layout.list_docker_tag_detail_headers, listView, false);
         listView.addHeaderView(headerView, null, false);
 

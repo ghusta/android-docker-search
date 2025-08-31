@@ -33,6 +33,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.ViewCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.husta.android.dockersearch.databinding.ActivityMainBinding;
 import fr.husta.android.dockersearch.databinding.DialogAboutBinding;
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity
         checkInternetConnection();
 
         listView = binding.listView;
+        ViewCompat.setNestedScrollingEnabled(listView, true);
         if (savedInstanceState == null)
         {
             dockerImageExpandableListAdapter = new DockerImageExpandableListAdapter(MainActivity.this,

@@ -21,6 +21,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.husta.android.dockersearch.databinding.ActivityTaglistBinding;
 import fr.husta.android.dockersearch.databinding.DialogWarningTaglistBinding;
@@ -80,6 +81,7 @@ public class TagListActivity extends AppCompatActivity
         }
 
         listView = binding.tagsListview;
+        ViewCompat.setNestedScrollingEnabled(listView, true);
         fabNextPage = binding.fabTagsNextPage;
         fabNextPage.setOnClickListener(view -> loadNextPage(view));
 
