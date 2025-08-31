@@ -18,4 +18,7 @@
 
     <color name="textColorPrimary">#FF1593CD</color>
     <color name="textColorSecondary">#66FFFFFF</color>
+
+    <color name="search_view_edit_text_color">@color/colorOnPrimary</color>
+    <color name="search_view_hint_color">#66FFFFFF</color>
 </resources>

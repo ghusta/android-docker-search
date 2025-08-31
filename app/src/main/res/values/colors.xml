@@ -21,4 +21,7 @@
 
     <!-- unused colors -->
     <color name="altColorSecondary">#DFA031</color>
+
+    <color name="search_view_edit_text_color">@color/colorOnPrimary</color>
+    <color name="search_view_hint_color">#99DDDDDD</color>
 </resources>

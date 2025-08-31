@@ -22,6 +22,26 @@
         <item name="snackbarButtonStyle">@style/Custom.SnackbarButton</item>
     </style>
 
+    <!-- Style for the Toolbar -->
+    <style name="AppToolbarStyle.Primary" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <!-- Use a theme overlay to style elements within the Toolbar, including SearchView -->
+        <item name="android:theme">@style/AppToolbarThemeOverlay</item>
+        <item name="popupTheme">@style/AppToolbarPopupThemeOverlay</item>
+    </style>
+
+    <!-- Theme Overlay for the Toolbar (affects elements like title, icons, SearchView) -->
+    <style name="AppToolbarThemeOverlay" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <!-- Specific style for SearchView within this Toolbar theme overlay -->
+        <!--        <item name="searchViewStyle">@style/AppSearchViewStyle</item>-->
+
+        <!-- You can also try to influence the EditText inside the SearchView -->
+        <item name="android:editTextColor">@color/search_view_edit_text_color</item>
+        <item name="android:textColorHint">@color/search_view_hint_color</item>
+    </style>
+
+    <!-- Popup Theme Overlay for menus originating from the Toolbar -->
+    <style name="AppToolbarPopupThemeOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
     <!-- See : https://stackoverflow.com/questions/32425191/style-snackbar-in-theme-app#58607153 -->
     <style name="Custom.Snackbar" parent="Widget.MaterialComponents.Snackbar">
         <!-- Default attr with M2 : ?attr/colorOnSurface + colorSurface (https://github.com/material-components/material-components-android/blob/1.4.0/docs/components/Snackbar.md#container-attributes) -->
