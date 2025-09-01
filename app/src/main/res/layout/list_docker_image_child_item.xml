@@ -31,7 +31,7 @@
 
         <Button
             android:id="@+id/btn_image_hub_page"
-            style="?attr/materialIconButtonFilledStyle"
+            style="?attr/materialIconButtonFilledTonalStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:tooltipText="@string/tooltip_open_dockerhub_page"
@@ -44,7 +44,7 @@
 
         <Button
             android:id="@+id/btn_image_share"
-            style="?attr/materialIconButtonFilledStyle"
+            style="?attr/materialIconButtonFilledTonalStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:tooltipText="@string/tooltip_share"
