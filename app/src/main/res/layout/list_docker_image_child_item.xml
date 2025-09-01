@@ -1,45 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/md_theme_primaryContainer"
-              android:gravity="center_vertical|center_horizontal"
-              android:orientation="horizontal">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?android:attr/buttonBarStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-    <!-- See : https://m2.material.io/components/buttons/android#text-button -->
-    <ImageButton
-        android:id="@+id/btn_image_tags"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/ic_outline_sell_24"
-        app:tint="?attr/colorOnPrimary"
-        android:tooltipText="@string/tooltip_tags"
-        tools:ignore="HardcodedText" />
+        android:paddingVertical="4dp">
 
-    <ImageButton
-        android:id="@+id/btn_image_hub_page"
-        style="@style/Widget.Material3.Button.TextButton"
+        <!-- See : https://m2.material.io/components/buttons/android#text-button -->
+        <Button
+            android:id="@+id/btn_image_tags"
+            style="?attr/materialIconButtonFilledStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tooltipText="@string/tooltip_tags"
+            app:icon="@drawable/ic_outline_sell_24"
+            app:layout_constraintEnd_toStartOf="@id/btn_image_hub_page"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnPrimaryContainer"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/btn_image_hub_page"
+            style="?attr/materialIconButtonFilledStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tooltipText="@string/tooltip_open_dockerhub_page"
+            app:icon="@drawable/ic_open_in_browser_24"
+            app:layout_constraintEnd_toStartOf="@id/btn_image_share"
+            app:layout_constraintStart_toEndOf="@id/btn_image_tags"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnPrimaryContainer"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/btn_image_share"
+            style="?attr/materialIconButtonFilledStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tooltipText="@string/tooltip_share"
+            app:icon="@drawable/ic_outline_share_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_image_hub_page"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnPrimaryContainer"
+            tools:ignore="HardcodedText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/ic_open_in_browser_24"
-        app:tint="?attr/colorOnPrimary"
-        android:tooltipText="@string/tooltip_open_dockerhub_page"
-        tools:ignore="HardcodedText" />
-
-    <ImageButton
-        android:id="@+id/btn_image_share"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/ic_outline_share_24"
-        app:tint="?attr/colorOnPrimary"
-        android:tooltipText="@string/tooltip_share"
-        tools:ignore="HardcodedText" />
-
+        android:layout_height="wrap_content" />
 </LinearLayout>
