@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageButton;
+import android.widget.Button;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -174,7 +174,7 @@ public class DockerImageExpandableListAdapter
 
         final ImageSearchResult item = getGroup(groupPosition);
 
-        ImageButton btnTags = convertView.findViewById(R.id.btn_image_tags);
+        Button btnTags = convertView.findViewById(R.id.btn_image_tags);
         btnTags.setOnClickListener(view ->
         {
             Intent starter = new Intent(context, TagListActivity.class);
@@ -183,7 +183,7 @@ public class DockerImageExpandableListAdapter
             activity.startActivity(starter);
         });
 
-        ImageButton btnViewPage = convertView.findViewById(R.id.btn_image_hub_page);
+        Button btnViewPage = convertView.findViewById(R.id.btn_image_hub_page);
         btnViewPage.setOnClickListener(view ->
         {
             Uri uri;
@@ -232,7 +232,7 @@ public class DockerImageExpandableListAdapter
             }
         });
 
-        ImageButton btnShare = convertView.findViewById(R.id.btn_image_share);
+        Button btnShare = convertView.findViewById(R.id.btn_image_share);
         btnShare.setOnClickListener(view ->
         {
             Uri uri;
