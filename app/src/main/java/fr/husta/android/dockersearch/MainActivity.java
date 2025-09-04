@@ -81,9 +81,8 @@ public class MainActivity extends AppCompatActivity
 
     private SharedPreferences preferences;
 
-    private AlertDialog themeChooserDialog;
-
     private int selectedTheme;
+    private int selectedDialogOption;
 
     private String lastSearchQuery;
 
@@ -96,6 +95,7 @@ public class MainActivity extends AppCompatActivity
         // read preferences at start
         preferences = getPreferences(MODE_PRIVATE);
         selectedTheme = preferences.getInt(KEY_PREF_SAVED_DARK_MODE, 2);
+        selectedDialogOption = selectedTheme;
         // ensure correct theme is applied
         applyTheme(selectedTheme);
 
@@ -107,8 +107,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(binding.topAppBar);
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
-
-        themeChooserDialog = initThemeChooserAlertDialog();
 
         if (getIntent() != null)
         {
@@ -403,25 +401,28 @@ public class MainActivity extends AppCompatActivity
 
     public void clickChooseTheme(MenuItem item)
     {
-        themeChooserDialog.show();
+        createThemeChooserAlertDialog().show();
     }
 
-    private AlertDialog initThemeChooserAlertDialog()
+    private AlertDialog createThemeChooserAlertDialog()
     {
         return new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.choose_theme)
                 // list : 'Light', 'Dark', 'Set by Battery Saver / System'
                 // See RECO : https://developer.android.com/guide/topics/ui/look-and-feel/darktheme#changing_themes_in-app
                 .setSingleChoiceItems(R.array.themes_list, selectedTheme,
+                        (dialog, which) -> selectedDialogOption = which)
+                .setPositiveButton(android.R.string.ok,
                         (dialog, which) -> {
-                            selectedTheme = which;
+                            selectedTheme = selectedDialogOption;
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putInt(KEY_PREF_SAVED_DARK_MODE, selectedTheme);
                             editor.apply();
-
                             applyTheme(selectedTheme);
                             dialog.dismiss();
                         })
+                .setNegativeButton(android.R.string.cancel,
+                        (dialog, which) -> dialog.dismiss())
                 .create();
     }
 
