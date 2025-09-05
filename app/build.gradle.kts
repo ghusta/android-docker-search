@@ -81,7 +81,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.browser:browser:1.9.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("com.google.android.material:material:1.13.0")
+    implementation("com.google.android.material:material:1.14.0-alpha05")
 
     implementation("org.apache.commons:commons-lang3:3.19.0")
     implementation("io.reactivex.rxjava3:rxjava:3.1.12")
