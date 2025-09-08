@@ -47,5 +47,7 @@
     <string name="tooltip_tags">Tags</string>
     <string name="tooltip_open_dockerhub_page">Open on Docker Hub</string>
     <string name="tooltip_share">Share</string>
+    <string name="msg_delete_search_from_history">Delete this search from your history?</string>
+    <string name="text_delete_search_from_history">Are you sure you want to delete the item &lt;b&gt;%1$s&lt;/b&gt; from your history?</string>
 
 </resources>

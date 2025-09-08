@@ -15,6 +15,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,15 +34,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SearchView;
+import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import fr.husta.android.dockersearch.databinding.ActivityMainBinding;
 import fr.husta.android.dockersearch.databinding.DialogAboutBinding;
 import fr.husta.android.dockersearch.docker.DockerRegistryClient;
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.comparator.DefaultImageSearchComparator;
 import fr.husta.android.dockersearch.listadapter.DockerImageExpandableListAdapter;
+import fr.husta.android.dockersearch.listadapter.SuggestionAdapter;
+import fr.husta.android.dockersearch.search.CustomSearchRecentSuggestions;
 import fr.husta.android.dockersearch.search.RecentSearchProvider;
 import fr.husta.android.dockersearch.utils.AppInfo;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -53,8 +59,7 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 
     public static final String PROJECT_GITHUB_URL = "https://github.com/ghusta/android-docker-search";
 
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity
 
     private ActivityMainBinding binding;
 
-    private SearchView searchView;
+//    private SearchView searchView;
 
     private ExpandableListView listView;
 
@@ -86,12 +91,13 @@ public class MainActivity extends AppCompatActivity
 
     private String lastSearchQuery;
 
+    private SuggestionAdapter suggestionAdapter;
+
     private CompositeDisposable disposables = new CompositeDisposable();
     private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         // read preferences at start
         preferences = getPreferences(MODE_PRIVATE);
         selectedTheme = preferences.getInt(KEY_PREF_SAVED_DARK_MODE, 2);
@@ -104,12 +110,11 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.topAppBar);
+//        setSupportActionBar(binding.searchBar);
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
 
-        if (getIntent() != null)
-        {
+        if (getIntent() != null) {
             handleIntent(getIntent());
         }
 
@@ -117,13 +122,10 @@ public class MainActivity extends AppCompatActivity
 
         listView = binding.listView;
         ViewCompat.setNestedScrollingEnabled(listView, true);
-        if (savedInstanceState == null)
-        {
+        if (savedInstanceState == null) {
             dockerImageExpandableListAdapter = new DockerImageExpandableListAdapter(MainActivity.this,
                     new ArrayList<>());
-        }
-        else
-        {
+        } else {
             Log.d(TAG, "onCreate: state to be restored ?");
             ArrayList<ImageSearchResult> savedArrayList = savedInstanceState.getParcelableArrayList(KEY_IMAGE_LIST_ADAPTER);
             dockerImageExpandableListAdapter = new DockerImageExpandableListAdapter(MainActivity.this, savedArrayList);
@@ -137,16 +139,87 @@ public class MainActivity extends AppCompatActivity
         {
             int groupCount = listView.getExpandableListAdapter().getGroupCount();
 
-            for (int i = 0; i < groupCount; i++)
-            {
-                if (groupPosition != i && listView.isGroupExpanded(i))
-                {
+            for (int i = 0; i < groupCount; i++) {
+                if (groupPosition != i && listView.isGroupExpanded(i)) {
                     listView.collapseGroup(i);
                 }
             }
         });
 
-        binding.topAppBar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        binding.searchBar.inflateMenu(R.menu.options_menu);
+        binding.searchBar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+
+        CustomSearchRecentSuggestions searchRecentSuggestions = new CustomSearchRecentSuggestions(this);
+
+        suggestionAdapter = new SuggestionAdapter(
+                searchRecentSuggestions.getRecentSearches(),
+                text -> {
+                    binding.searchBar.setText(text);
+                    binding.searchView.hide();
+
+                    onQueryTextSubmitCustom(text,
+                            () -> {
+                                suggestionAdapter.removeItem(text);
+                                suggestionAdapter.addItem(text);
+                                binding.progressIndicator.show();
+                            },
+                            () -> binding.progressIndicator.hide());
+                },
+                text -> {
+                    String message = getString(R.string.text_delete_search_from_history, text);
+                    new MaterialAlertDialogBuilder(this)
+                            .setTitle(R.string.msg_delete_search_from_history)
+                            .setMessage(HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY))
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                searchRecentSuggestions.removeSuggestion(text);
+                                suggestionAdapter.removeItem(text);
+                            })
+                            .setNegativeButton(android.R.string.cancel, (dialog, which) ->
+                                    dialog.dismiss())
+                            .show();
+                });
+
+        binding.suggestionsList.setLayoutManager(new LinearLayoutManager(this));
+        binding.suggestionsList.setAdapter(suggestionAdapter);
+
+        binding.searchView
+                .getEditText()
+                // When user presses enter
+                .setOnEditorActionListener(
+                        (v, actionId, event) -> {
+                            binding.searchBar.setText(binding.searchView.getText());
+                            binding.searchView.hide();
+
+                            onQueryTextSubmitCustom(v.getText().toString(),
+                                    () -> {
+                                        suggestionAdapter.removeItem(v.getText().toString());
+                                        suggestionAdapter.addItem(v.getText().toString());
+                                        binding.progressIndicator.show();
+                                    },
+                                    () -> binding.progressIndicator.hide());
+
+                            return false;
+                        });
+
+        // Pour le filtrage en temps réel des suggestions
+        binding.searchView
+                .getEditText()
+                .addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged: " + s.toString());
+                        // Appelle la méthode de filtrage de l'adapter avec le nouveau texte
+                        suggestionAdapter.filter(s.toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
 
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
         swipeRefreshLayout.setColorSchemeResources(R.color.md_theme_primary, R.color.md_theme_primary);
@@ -154,16 +227,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
-    {
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         handleIntent(intent);
     }
 
-    private void handleIntent(Intent intent)
-    {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction()))
-        {
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             // SearchManager.QUERY is the key that a SearchManager will use to send a query string
             // to an Activity.
             String query = intent.getStringExtra(SearchManager.QUERY);
@@ -174,7 +244,7 @@ public class MainActivity extends AppCompatActivity
 //            suggestions.saveRecentQuery(query, null);
 
             // si clic sur suggestion, zone saisie = suggestion
-            searchView.setQuery(query, false);
+            // searchView.setQuery(query, false);
 
             onQueryTextSubmitCustom(query,
                     () -> binding.progressIndicator.show(),
@@ -183,29 +253,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
+    protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState (1): " + this.getLocalClassName());
         Log.d(TAG, "onSaveInstanceState: listView => " + listView.getAdapter().getCount());
         outState.putParcelableArrayList(KEY_IMAGE_LIST_ADAPTER, dockerImageExpandableListAdapter.getGroupList());
-        if (lastSearchQuery != null)
-        {
+        if (lastSearchQuery != null) {
             outState.putString(KEY_LAST_SEARCH, lastSearchQuery);
         }
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         Log.d(TAG, "onRestoreInstanceState : " + this.getLocalClassName());
         lastSearchQuery = savedInstanceState.getString(KEY_LAST_SEARCH, "");
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         // read preferences at start
         preferences = getPreferences(MODE_PRIVATE);
         selectedTheme = preferences.getInt(KEY_PREF_SAVED_DARK_MODE, 2);
@@ -217,10 +283,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onNightModeChanged(int mode)
-    {
-        switch (mode)
-        {
+    protected void onNightModeChanged(int mode) {
+        switch (mode) {
             case MODE_NIGHT_NO:
                 Log.d(TAG, String.format("onNightModeChanged : mode = %s", "MODE_NIGHT_NO"));
                 break;
@@ -239,79 +303,69 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.menu_search);
-        searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
-        {
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                return onQueryTextSubmitCustom(query,
-                        () -> binding.progressIndicator.show(),
-                        () -> binding.progressIndicator.hide());
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText)
-            {
-                return false;
-            }
-        });
-
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
+//        MenuItem searchItem = menu.findItem(R.id.menu_search);
+//        searchView = (SearchView) searchItem.getActionView();
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+//        {
+//            @Override
+//            public boolean onQueryTextSubmit(String query)
+//            {
+//                return onQueryTextSubmitCustom(query,
+//                        () -> binding.progressIndicator.show(),
+//                        () -> binding.progressIndicator.hide());
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText)
+//            {
+//                return false;
+//            }
+//        });
+//
+//        // Associate searchable configuration with the SearchView
+//        SearchManager searchManager =
+//                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        SearchView searchView =
+//                (SearchView) menu.findItem(R.id.menu_search).getActionView();
+//        searchView.setSearchableInfo(
+//                searchManager.getSearchableInfo(getComponentName()));
 
         return true;
     }
 
     @SuppressLint("NonConstantResourceId")
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item)
-    {
-        return switch (item.getItemId())
-        {
-            case R.id.menu_clear_search_history ->
-            {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return switch (item.getItemId()) {
+            case R.id.menu_clear_search_history -> {
                 clickClearSearchHistory(item);
                 yield true;
             }
-            case R.id.menu_choose_theme ->
-            {
+            case R.id.menu_choose_theme -> {
                 clickChooseTheme(item);
                 yield true;
             }
-            case R.id.menu_submit_issue ->
-            {
+            case R.id.menu_submit_issue -> {
                 clickSubmitIssue(item);
                 yield true;
             }
-            case R.id.menu_contribute ->
-            {
+            case R.id.menu_contribute -> {
                 clickContribute(item);
                 yield true;
             }
-            case R.id.menu_check_latest_release ->
-            {
+            case R.id.menu_check_latest_release -> {
                 clickCheckLatestRelease(item);
                 yield true;
             }
-            case R.id.menu_note_app ->
-            {
+            case R.id.menu_note_app -> {
                 clickNoteApp(item);
                 yield true;
             }
-            case R.id.menu_about ->
-            {
+            case R.id.menu_about -> {
                 clickAbout(item);
                 yield true;
             }
@@ -319,8 +373,7 @@ public class MainActivity extends AppCompatActivity
         };
     }
 
-    private boolean onQueryTextSubmitCustom(String query, Runnable onStart, Runnable onEnd)
-    {
+    private boolean onQueryTextSubmitCustom(String query, Runnable onStart, Runnable onEnd) {
         Log.d(TAG, "onQueryTextSubmit : " + query);
         this.lastSearchQuery = query;
 
@@ -341,8 +394,7 @@ public class MainActivity extends AppCompatActivity
 
                             dockerImageExpandableListAdapter.notifyDataSetInvalidated(); // necessaire ?
                             // Collapse all
-                            for (int i = 0; i < dockerImageExpandableListAdapter.getGroupCount(); i++)
-                            {
+                            for (int i = 0; i < dockerImageExpandableListAdapter.getGroupCount(); i++) {
                                 listView.collapseGroup(i);
                             }
 
@@ -358,54 +410,48 @@ public class MainActivity extends AppCompatActivity
         disposables.add(disposable);
 
         // fermer le clavier de saisie
-        searchView.clearFocus();
+        binding.searchView.clearFocus();
 
         return true;
     }
 
-    public void onSwipeRefresh()
-    {
+    public void onSwipeRefresh() {
         Log.d(TAG, "Swipe : refresh requested");
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
-        searchView.setQuery(lastSearchQuery == null ? "" : lastSearchQuery, false);
-        onQueryTextSubmitCustom(searchView.getQuery().toString(),
+        binding.searchView.getEditText().setText(lastSearchQuery == null ? "" : lastSearchQuery);
+        onQueryTextSubmitCustom(binding.searchView.getEditText().getText().toString(),
                 () -> {
                 },
                 () -> swipeRefreshLayout.setRefreshing(false));
     }
 
-    public void startActivityTagList(Context context, ImageSearchResult data)
-    {
+    public void startActivityTagList(Context context, ImageSearchResult data) {
         Intent starter = new Intent(context, TagListActivity.class);
         starter.putExtra(TagListActivity.DATA_IMG_NAME, data.getName());
         startActivity(starter);
     }
 
-    public void checkInternetConnection()
-    {
-        if (!isDeviceOnline())
-        {
+    public void checkInternetConnection() {
+        if (!isDeviceOnline()) {
             // display error
             Toast.makeText(this, R.string.msg_no_network_connection, Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void clickClearSearchHistory(MenuItem item)
-    {
+    public void clickClearSearchHistory(MenuItem item) {
         SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                 RecentSearchProvider.AUTHORITY, RecentSearchProvider.MODE);
         suggestions.clearHistory();
+        suggestionAdapter.clear();
 
         Toast.makeText(this, R.string.msg_cleared_search_history, Toast.LENGTH_SHORT).show();
     }
 
-    public void clickChooseTheme(MenuItem item)
-    {
+    public void clickChooseTheme(MenuItem item) {
         createThemeChooserAlertDialog().show();
     }
 
-    private AlertDialog createThemeChooserAlertDialog()
-    {
+    private AlertDialog createThemeChooserAlertDialog() {
         return new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.choose_theme)
                 // list : 'Light', 'Dark', 'Set by Battery Saver / System'
@@ -423,11 +469,9 @@ public class MainActivity extends AppCompatActivity
                 .create();
     }
 
-    private void applyTheme(int selectedTheme)
-    {
+    private void applyTheme(int selectedTheme) {
         // See https://developer.android.com/guide/topics/ui/look-and-feel/darktheme#changing_themes_in-app
-        switch (selectedTheme)
-        {
+        switch (selectedTheme) {
             case 0:
                 AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO);
                 break;
@@ -435,11 +479,9 @@ public class MainActivity extends AppCompatActivity
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
             case 2:
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)
-                {
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
-                }
-                else // API 29+
+                } else // API 29+
                 {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
                 }
@@ -447,8 +489,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void clickAbout(MenuItem item)
-    {
+    public void clickAbout(MenuItem item) {
         DialogAboutBinding binding = DialogAboutBinding.inflate(getLayoutInflater());
         String applicationVersion = AppInfo.getApplicationVersion(this);
 
@@ -476,23 +517,19 @@ public class MainActivity extends AppCompatActivity
                 .show();
     }
 
-    public void clickSubmitIssue(MenuItem item)
-    {
+    public void clickSubmitIssue(MenuItem item) {
         openUrlInBrowser(Uri.parse(PROJECT_GITHUB_URL + "/issues"));
     }
 
-    public void clickContribute(MenuItem item)
-    {
+    public void clickContribute(MenuItem item) {
         openUrlInBrowser(Uri.parse(PROJECT_GITHUB_URL));
     }
 
-    public void clickCheckLatestRelease(MenuItem item)
-    {
+    public void clickCheckLatestRelease(MenuItem item) {
         openUrlInBrowser(Uri.parse(PROJECT_GITHUB_URL + "/releases/latest"));
     }
 
-    public void clickNoteApp(MenuItem item)
-    {
+    public void clickNoteApp(MenuItem item) {
         // https://developer.android.com/distribute/tools/promote/linking.html#android-app
         // Ex : details?id=com.google.android.apps.maps
 
@@ -503,8 +540,7 @@ public class MainActivity extends AppCompatActivity
         openInMarket(Uri.parse("market://details?id=" + appPackageName));
     }
 
-    public void openUrlInBrowser(Uri uri)
-    {
+    public void openUrlInBrowser(Uri uri) {
         Objects.requireNonNull(uri);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
@@ -516,18 +552,15 @@ public class MainActivity extends AppCompatActivity
      *
      * @param uri
      */
-    public void openInMarket(Uri uri)
-    {
+    public void openInMarket(Uri uri) {
         Objects.requireNonNull(uri);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
-        try
-        {
+        try {
             startActivity(
                     //Intent.createChooser(
                     intent);
-        } catch (ActivityNotFoundException e)
-        {
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(this, R.string.msg_err_playstore_not_installed, Toast.LENGTH_SHORT).show();
         }
     }
@@ -537,8 +570,7 @@ public class MainActivity extends AppCompatActivity
      *
      * @return true if the device has a network connection, false otherwise.
      */
-    private boolean isDeviceOnline()
-    {
+    private boolean isDeviceOnline() {
         ConnectivityManager connMgr =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -562,8 +594,7 @@ public class MainActivity extends AppCompatActivity
 //    }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         this.disposables.clear();
     }
