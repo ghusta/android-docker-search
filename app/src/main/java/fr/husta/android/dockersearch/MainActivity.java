@@ -32,8 +32,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SearchView;
+import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.husta.android.dockersearch.databinding.ActivityMainBinding;
 import fr.husta.android.dockersearch.databinding.DialogAboutBinding;
@@ -41,6 +42,8 @@ import fr.husta.android.dockersearch.docker.DockerRegistryClient;
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.comparator.DefaultImageSearchComparator;
 import fr.husta.android.dockersearch.listadapter.DockerImageExpandableListAdapter;
+import fr.husta.android.dockersearch.listadapter.SuggestionAdapter;
+import fr.husta.android.dockersearch.search.CustomSearchRecentSuggestions;
 import fr.husta.android.dockersearch.search.RecentSearchProvider;
 import fr.husta.android.dockersearch.utils.AppInfo;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity
 
     private ActivityMainBinding binding;
 
-    private SearchView searchView;
+//    private SearchView searchView;
 
     private ExpandableListView listView;
 
@@ -85,6 +88,8 @@ public class MainActivity extends AppCompatActivity
     private int selectedDialogOption;
 
     private String lastSearchQuery;
+
+    private SuggestionAdapter suggestionAdapter;
 
     private CompositeDisposable disposables = new CompositeDisposable();
     private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
@@ -104,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.topAppBar);
+//        setSupportActionBar(binding.searchBar);
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
 
@@ -146,7 +151,60 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        binding.topAppBar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        binding.searchBar.inflateMenu(R.menu.options_menu);
+        binding.searchBar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+
+        CustomSearchRecentSuggestions searchRecentSuggestions = new CustomSearchRecentSuggestions(this);
+
+        suggestionAdapter = new SuggestionAdapter(
+                searchRecentSuggestions.getRecentSearches(),
+                text -> {
+                    binding.searchBar.setText(text);
+                    binding.searchView.hide();
+
+                    onQueryTextSubmitCustom(text,
+                            () -> {
+                                suggestionAdapter.removeItem(text);
+                                suggestionAdapter.addItem(text);
+                                binding.progressIndicator.show();
+                            },
+                            () -> binding.progressIndicator.hide());
+                },
+                text -> {
+                    String message = getString(R.string.text_delete_search_from_history, text);
+                    new MaterialAlertDialogBuilder(this)
+                            .setTitle(R.string.msg_delete_search_from_history)
+                            .setMessage(HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY))
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                searchRecentSuggestions.removeSuggestion(text);
+                                suggestionAdapter.removeItem(text);
+                            })
+                            .setNegativeButton(android.R.string.cancel, (dialog, which) ->
+                                    dialog.dismiss())
+                            .show();
+                });
+
+        binding.suggestionsList.setLayoutManager(new LinearLayoutManager(this));
+        binding.suggestionsList.setAdapter(suggestionAdapter);
+
+        binding.searchView
+                .getEditText()
+                // When user presses enter
+                .setOnEditorActionListener(
+                        (v, actionId, event) -> {
+                            binding.searchBar.setText(binding.searchView.getText());
+                            binding.searchView.hide();
+
+                            onQueryTextSubmitCustom(v.getText().toString(),
+                                    () -> {
+                                        suggestionAdapter.removeItem(v.getText().toString());
+                                        suggestionAdapter.addItem(v.getText().toString());
+                                        binding.progressIndicator.show();
+                                    },
+                                    () -> binding.progressIndicator.hide());
+
+                            return false;
+                        });
 
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
         swipeRefreshLayout.setColorSchemeResources(R.color.md_theme_primary, R.color.md_theme_primary);
@@ -174,7 +232,7 @@ public class MainActivity extends AppCompatActivity
 //            suggestions.saveRecentQuery(query, null);
 
             // si clic sur suggestion, zone saisie = suggestion
-            searchView.setQuery(query, false);
+            // searchView.setQuery(query, false);
 
             onQueryTextSubmitCustom(query,
                     () -> binding.progressIndicator.show(),
@@ -244,32 +302,32 @@ public class MainActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.menu_search);
-        searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
-        {
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                return onQueryTextSubmitCustom(query,
-                        () -> binding.progressIndicator.show(),
-                        () -> binding.progressIndicator.hide());
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText)
-            {
-                return false;
-            }
-        });
-
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
+//        MenuItem searchItem = menu.findItem(R.id.menu_search);
+//        searchView = (SearchView) searchItem.getActionView();
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+//        {
+//            @Override
+//            public boolean onQueryTextSubmit(String query)
+//            {
+//                return onQueryTextSubmitCustom(query,
+//                        () -> binding.progressIndicator.show(),
+//                        () -> binding.progressIndicator.hide());
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText)
+//            {
+//                return false;
+//            }
+//        });
+//
+//        // Associate searchable configuration with the SearchView
+//        SearchManager searchManager =
+//                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        SearchView searchView =
+//                (SearchView) menu.findItem(R.id.menu_search).getActionView();
+//        searchView.setSearchableInfo(
+//                searchManager.getSearchableInfo(getComponentName()));
 
         return true;
     }
@@ -358,7 +416,7 @@ public class MainActivity extends AppCompatActivity
         disposables.add(disposable);
 
         // fermer le clavier de saisie
-        searchView.clearFocus();
+        binding.searchView.clearFocus();
 
         return true;
     }
@@ -367,8 +425,8 @@ public class MainActivity extends AppCompatActivity
     {
         Log.d(TAG, "Swipe : refresh requested");
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
-        searchView.setQuery(lastSearchQuery == null ? "" : lastSearchQuery, false);
-        onQueryTextSubmitCustom(searchView.getQuery().toString(),
+        binding.searchView.getEditText().setText(lastSearchQuery == null ? "" : lastSearchQuery);
+        onQueryTextSubmitCustom(binding.searchView.getEditText().getText().toString(),
                 () -> {
                 },
                 () -> swipeRefreshLayout.setRefreshing(false));
@@ -395,6 +453,7 @@ public class MainActivity extends AppCompatActivity
         SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                 RecentSearchProvider.AUTHORITY, RecentSearchProvider.MODE);
         suggestions.clearHistory();
+        suggestionAdapter.clear();
 
         Toast.makeText(this, R.string.msg_cleared_search_history, Toast.LENGTH_SHORT).show();
     }
