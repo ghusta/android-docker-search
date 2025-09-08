@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,8 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -34,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.husta.android.dockersearch.databinding.ActivityMainBinding;
 import fr.husta.android.dockersearch.databinding.DialogAboutBinding;
@@ -41,6 +45,7 @@ import fr.husta.android.dockersearch.docker.DockerRegistryClient;
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.comparator.DefaultImageSearchComparator;
 import fr.husta.android.dockersearch.listadapter.DockerImageExpandableListAdapter;
+import fr.husta.android.dockersearch.listadapter.SuggestionAdapter;
 import fr.husta.android.dockersearch.search.RecentSearchProvider;
 import fr.husta.android.dockersearch.utils.AppInfo;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity
 
     private ActivityMainBinding binding;
 
-    private SearchView searchView;
+//    private SearchView searchView;
 
     private ExpandableListView listView;
 
@@ -104,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.topAppBar);
+//        setSupportActionBar(binding.searchBar);
 
         APP_PACKAGE_NAME = getApplicationContext().getPackageName();
 
@@ -146,7 +151,40 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        binding.topAppBar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        binding.searchBar.inflateMenu(R.menu.options_menu);
+        binding.searchBar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+
+        binding.suggestionsList.setLayoutManager(new LinearLayoutManager(this));
+        binding.suggestionsList.setAdapter(new SuggestionAdapter(
+                getRecentSearches(this).toArray(new String[]{}),
+                text -> {
+                    binding.searchBar.setText(text);
+                    binding.searchView.hide();
+
+                    onQueryTextSubmitCustom(text,
+                            () -> binding.progressIndicator.show(),
+                            () -> binding.progressIndicator.hide());
+                },
+                text -> {
+                    Snackbar.make(binding.getRoot(), "onItemLongClick: " + text, Snackbar.LENGTH_SHORT).show();
+                    Log.d(TAG, "onItemLongClick: " + text);
+                })
+        );
+
+        binding.searchView
+                .getEditText()
+                // When user presses enter
+                .setOnEditorActionListener(
+                        (v, actionId, event) -> {
+                            binding.searchBar.setText(binding.searchView.getText());
+                            binding.searchView.hide();
+
+                            onQueryTextSubmitCustom(v.getText().toString(),
+                                    () -> binding.progressIndicator.show(),
+                                    () -> binding.progressIndicator.hide());
+
+                            return false;
+                        });
 
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
         swipeRefreshLayout.setColorSchemeResources(R.color.md_theme_primary, R.color.md_theme_primary);
@@ -174,7 +212,7 @@ public class MainActivity extends AppCompatActivity
 //            suggestions.saveRecentQuery(query, null);
 
             // si clic sur suggestion, zone saisie = suggestion
-            searchView.setQuery(query, false);
+            // searchView.setQuery(query, false);
 
             onQueryTextSubmitCustom(query,
                     () -> binding.progressIndicator.show(),
@@ -244,32 +282,32 @@ public class MainActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.menu_search);
-        searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
-        {
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                return onQueryTextSubmitCustom(query,
-                        () -> binding.progressIndicator.show(),
-                        () -> binding.progressIndicator.hide());
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText)
-            {
-                return false;
-            }
-        });
-
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
+//        MenuItem searchItem = menu.findItem(R.id.menu_search);
+//        searchView = (SearchView) searchItem.getActionView();
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+//        {
+//            @Override
+//            public boolean onQueryTextSubmit(String query)
+//            {
+//                return onQueryTextSubmitCustom(query,
+//                        () -> binding.progressIndicator.show(),
+//                        () -> binding.progressIndicator.hide());
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText)
+//            {
+//                return false;
+//            }
+//        });
+//
+//        // Associate searchable configuration with the SearchView
+//        SearchManager searchManager =
+//                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        SearchView searchView =
+//                (SearchView) menu.findItem(R.id.menu_search).getActionView();
+//        searchView.setSearchableInfo(
+//                searchManager.getSearchableInfo(getComponentName()));
 
         return true;
     }
@@ -319,6 +357,35 @@ public class MainActivity extends AppCompatActivity
         };
     }
 
+    private List<String> getRecentSearches(Context context)
+    {
+        List<String> list = new ArrayList<>();
+
+        Uri uri = Uri.parse("content://" + RecentSearchProvider.AUTHORITY + "/suggestions");
+
+        Cursor cursor = context.getContentResolver().query(
+                uri,
+                new String[]{"query"},   // projection
+                null,                    // selection
+                null,                    // selectionArgs
+                "date DESC"              // sort order (latest first)
+        );
+
+        if (cursor != null)
+        {
+            try (cursor)
+            {
+                while (cursor.moveToNext())
+                {
+                    list.add(cursor.getString(0)); // column "query"
+                }
+            }
+        }
+
+        return list;
+    }
+
+
     private boolean onQueryTextSubmitCustom(String query, Runnable onStart, Runnable onEnd)
     {
         Log.d(TAG, "onQueryTextSubmit : " + query);
@@ -358,7 +425,7 @@ public class MainActivity extends AppCompatActivity
         disposables.add(disposable);
 
         // fermer le clavier de saisie
-        searchView.clearFocus();
+        binding.searchView.clearFocus();
 
         return true;
     }
@@ -367,8 +434,8 @@ public class MainActivity extends AppCompatActivity
     {
         Log.d(TAG, "Swipe : refresh requested");
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshImages;
-        searchView.setQuery(lastSearchQuery == null ? "" : lastSearchQuery, false);
-        onQueryTextSubmitCustom(searchView.getQuery().toString(),
+        binding.searchView.getEditText().setText(lastSearchQuery == null ? "" : lastSearchQuery);
+        onQueryTextSubmitCustom(binding.searchView.getEditText().getText().toString(),
                 () -> {
                 },
                 () -> swipeRefreshLayout.setRefreshing(false));
