@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Android Docker Search"
-include ':app'
+include(":app")
