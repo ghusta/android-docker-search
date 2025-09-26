@@ -83,7 +83,7 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.13.0")
 
-    implementation("org.apache.commons:commons-lang3:3.18.0")
+    implementation("org.apache.commons:commons-lang3:3.19.0")
     implementation("io.reactivex.rxjava3:rxjava:3.1.11")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
