@@ -4,11 +4,15 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SearchRecentSuggestionsProvider;
 import android.net.Uri;
+import android.provider.SearchRecentSuggestions;
 
 import java.util.Objects;
 
 /**
  * Custom SearchRecentSuggestionsProvider for Docker Search.
+ * <p>
+ * To be used with {@link SearchRecentSuggestions}.
+ * </p>
  */
 public class RecentSearchProvider
         extends SearchRecentSuggestionsProvider {
