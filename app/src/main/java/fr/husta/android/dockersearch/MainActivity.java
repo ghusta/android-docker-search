@@ -411,17 +411,14 @@ public class MainActivity extends AppCompatActivity
                 // list : 'Light', 'Dark', 'Set by Battery Saver / System'
                 // See RECO : https://developer.android.com/guide/topics/ui/look-and-feel/darktheme#changing_themes_in-app
                 .setSingleChoiceItems(R.array.themes_list, selectedTheme,
-                        (dialog, which) -> selectedDialogOption = which)
-                .setPositiveButton(android.R.string.ok,
                         (dialog, which) -> {
-                            selectedTheme = selectedDialogOption;
+                            selectedTheme = which;
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putInt(KEY_PREF_SAVED_DARK_MODE, selectedTheme);
                             editor.apply();
-                            applyTheme(selectedTheme);
-                            dialog.dismiss();
+                            applyTheme(selectedTheme); // forces dismiss dialog
                         })
-                .setNegativeButton(android.R.string.cancel,
+                .setPositiveButton(android.R.string.ok,
                         (dialog, which) -> dialog.dismiss())
                 .create();
     }
