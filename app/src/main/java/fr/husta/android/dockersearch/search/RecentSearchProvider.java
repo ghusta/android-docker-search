@@ -1,12 +1,7 @@
 package fr.husta.android.dockersearch.search;
 
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.SearchRecentSuggestionsProvider;
-import android.net.Uri;
 import android.provider.SearchRecentSuggestions;
-
-import java.util.Objects;
 
 /**
  * Custom SearchRecentSuggestionsProvider for Docker Search.
@@ -14,7 +9,7 @@ import java.util.Objects;
  * To be used with {@link SearchRecentSuggestions}.
  * </p>
  */
-public class RecentSearchProvider
+public final class RecentSearchProvider
         extends SearchRecentSuggestionsProvider {
 
     public static final String AUTHORITY = RecentSearchProvider.class.getName();
@@ -22,20 +17,6 @@ public class RecentSearchProvider
 
     public RecentSearchProvider() {
         setupSuggestions(AUTHORITY, MODE);
-    }
-
-    /**
-     * Removes a specific suggestion, using {@link ContentResolver}.
-     *
-     * @param context    {@link Context}
-     * @param suggestion Query to delete
-     * @see SearchRecentSuggestionsProvider#delete(Uri, String, String[])
-     */
-    public static void removeSuggestion(Context context, String suggestion) {
-        Objects.requireNonNull(suggestion);
-        ContentResolver resolver = context.getContentResolver();
-        Uri suggestionsUri = Uri.parse("content://" + AUTHORITY + "/suggestions");
-        resolver.delete(suggestionsUri, "display1 = ?", new String[]{suggestion});
     }
 
 }
