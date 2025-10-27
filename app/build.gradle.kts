@@ -75,37 +75,37 @@ if (keystorePropertiesFile.exists()) {
 }
 
 dependencies {
-    implementation("androidx.core:core:1.17.0")
-    implementation("androidx.activity:activity:1.11.0")
-    implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("androidx.browser:browser:1.9.0")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("com.google.android.material:material:1.13.0")
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.browser)
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.material)
 
-    implementation("org.apache.commons:commons-lang3:3.19.0")
-    implementation("io.reactivex.rxjava3:rxjava:3.1.12")
-    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.retrofit2:converter-jackson:3.0.0")
-    implementation("com.squareup.retrofit2:adapter-rxjava3:3.0.0")
-    implementation("com.squareup.okhttp3:okhttp:5.2.1")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.20.0")
+    implementation(libs.commons.lang3)
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.jackson)
+    implementation(libs.retrofit.adapter.rxjava3)
+    implementation(libs.okhttp)
+    implementation(libs.jackson.databind)
+    implementation(libs.jackson.datatype.jsr310)
 
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.truth:truth:1.4.5")
+    testImplementation(libs.junit)
+    testImplementation(libs.truth)
 
     // https://developer.android.com/training/testing/set-up-project#android-test-dependencies
     // Core library
-    androidTestImplementation("androidx.test:core:1.7.0")
+    androidTestImplementation(libs.androidx.test.core)
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation("androidx.test:runner:1.7.0")
-    androidTestImplementation("androidx.test:rules:1.7.0")
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
     // Assertions
-    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation(libs.androidx.test.ext.junit)
     // Espresso dependencies
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    androidTestImplementation(libs.espresso.core)
 }
