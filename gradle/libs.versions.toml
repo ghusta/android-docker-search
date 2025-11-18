@@ -20,7 +20,7 @@ rxjava = "3.1.12"
 rxandroid = "3.0.2"
 
 # Utility
-commonsLang3 = "3.19.0"
+commonsLang3 = "3.20.0"
 
 # Desugaring
 desugarJdkLibs = "2.1.5"
