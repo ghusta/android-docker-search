@@ -3,7 +3,7 @@ agp = "8.13.1"
 
 # AndroidX & Material
 androidxCore = "1.17.0"
-androidxActivity = "1.11.0"
+androidxActivity = "1.12.0"
 appcompat = "1.7.1"
 constraintlayout = "2.2.1"
 browser = "1.9.0"
