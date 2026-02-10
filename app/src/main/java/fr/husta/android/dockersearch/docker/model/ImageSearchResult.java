@@ -18,8 +18,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 public class ImageSearchResult implements Parcelable
 {
 
+    @JsonProperty("name")
     private String name;
 
+    @JsonProperty("description")
     private String description;
 
     @JsonProperty("is_official")
@@ -31,6 +33,7 @@ public class ImageSearchResult implements Parcelable
     @JsonProperty("is_trusted")
     private boolean trusted;
 
+    @JsonProperty("star_count")
     private int starCount;
 
     /**
