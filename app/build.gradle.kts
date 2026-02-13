@@ -13,8 +13,8 @@ android {
         applicationId = "fr.husta.android.dockersearch"
         minSdk = 26 // O 8.0
         targetSdk = 34 // Android 14
-        versionCode = 142
-        versionName = "1.23.1"
+        versionCode = 144
+        versionName = "1.23.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
