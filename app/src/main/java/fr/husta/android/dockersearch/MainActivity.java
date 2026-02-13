@@ -337,40 +337,34 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return switch (item.getItemId()) {
-            case R.id.menu_clear_search_history -> {
-                clickClearSearchHistory(item);
-                yield true;
-            }
-            case R.id.menu_choose_theme -> {
-                clickChooseTheme(item);
-                yield true;
-            }
-            case R.id.menu_submit_issue -> {
-                clickSubmitIssue(item);
-                yield true;
-            }
-            case R.id.menu_contribute -> {
-                clickContribute(item);
-                yield true;
-            }
-            case R.id.menu_check_latest_release -> {
-                clickCheckLatestRelease(item);
-                yield true;
-            }
-            case R.id.menu_note_app -> {
-                clickNoteApp(item);
-                yield true;
-            }
-            case R.id.menu_about -> {
-                clickAbout(item);
-                yield true;
-            }
-            default -> super.onOptionsItemSelected(item);
-        };
+        int id = item.getItemId();
+
+        if (id == R.id.menu_clear_search_history) {
+            clickClearSearchHistory(item);
+            return true;
+        } else if (id == R.id.menu_choose_theme) {
+            clickChooseTheme(item);
+            return true;
+        } else if (id == R.id.menu_submit_issue) {
+            clickSubmitIssue(item);
+            return true;
+        } else if (id == R.id.menu_contribute) {
+            clickContribute(item);
+            return true;
+        } else if (id == R.id.menu_check_latest_release) {
+            clickCheckLatestRelease(item);
+            return true;
+        } else if (id == R.id.menu_note_app) {
+            clickNoteApp(item);
+            return true;
+        } else if (id == R.id.menu_about) {
+            clickAbout(item);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private boolean onQueryTextSubmitCustom(String query, Runnable onStart, Runnable onEnd) {

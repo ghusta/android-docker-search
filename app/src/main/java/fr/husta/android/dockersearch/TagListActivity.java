@@ -188,22 +188,16 @@ public class TagListActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        boolean ret;
-        switch (item.getItemId())
-        {
-            case R.id.menu_warning_taglist:
-                // Toast.makeText(this, "Warning... Tag list not up to date", Toast.LENGTH_SHORT).show();
-                clickWarning(item);
-                ret = true;
-                break;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-            default:
-                ret = false;
+        if (id == R.id.menu_warning_taglist) {
+            // Toast.makeText(this, "Warning... Tag list not up to date", Toast.LENGTH_SHORT).show();
+            clickWarning(item);
+            return true;
         }
 
-        return ret;
+        return false;
     }
 
     /**
