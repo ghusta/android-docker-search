@@ -8,6 +8,7 @@ plugins {
 android {
     namespace = "fr.husta.android.dockersearch"
     compileSdk = 36
+    compileSdkMinor = 1
 
     defaultConfig {
         applicationId = "fr.husta.android.dockersearch"
@@ -76,6 +77,7 @@ if (keystorePropertiesFile.exists()) {
 
 dependencies {
     implementation(libs.androidx.core)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)

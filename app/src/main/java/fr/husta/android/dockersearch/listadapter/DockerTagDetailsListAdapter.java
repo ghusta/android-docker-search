@@ -43,8 +43,8 @@ public class DockerTagDetailsListAdapter extends ArrayAdapter<ImageVariantByTagV
         if (viewHolder == null)
         {
             viewHolder = new DockerTagDetailViewHolder();
-            viewHolder.setDigest(convertView.findViewById(R.id.listitem_tag_variant_digest));
-            viewHolder.setDescription(convertView.findViewById(R.id.listitem_tag_variant_desc));
+            viewHolder.digest = convertView.findViewById(R.id.listitem_tag_variant_digest);
+            viewHolder.description = convertView.findViewById(R.id.listitem_tag_variant_desc);
         }
 
         ImageVariantByTagV2 item = getItem(position);
@@ -58,11 +58,11 @@ public class DockerTagDetailsListAdapter extends ArrayAdapter<ImageVariantByTagV
                 }
                 if (dig.length() > 12)
                 {
-                    viewHolder.getDigest().setText(dig.substring(0, 12));
+                    viewHolder.digest.setText(dig.substring(0, 12));
                 }
                 else
                 {
-                    viewHolder.getDigest().setText(dig);
+                    viewHolder.digest.setText(dig);
                 }
             }
 
@@ -74,7 +74,7 @@ public class DockerTagDetailsListAdapter extends ArrayAdapter<ImageVariantByTagV
             {
                 sb.append("/").append(item.getVariant());
             }
-            viewHolder.getDescription().setText(sb.toString());
+            viewHolder.description.setText(sb.toString());
         }
 
         return convertView;
