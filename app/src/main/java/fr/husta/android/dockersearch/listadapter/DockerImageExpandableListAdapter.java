@@ -109,26 +109,26 @@ public class DockerImageExpandableListAdapter
         if (viewHolder == null)
         {
             viewHolder = new DockerImageViewHolder();
-            viewHolder.setName(convertView.findViewById(R.id.listitem_image_name));
-            viewHolder.setDescription(convertView.findViewById(R.id.listitem_image_desc));
-            viewHolder.setStars(convertView.findViewById(R.id.listitem_image_stars));
-            viewHolder.setOfficial(convertView.findViewById(R.id.listitem_image_official));
+            viewHolder.name = convertView.findViewById(R.id.listitem_image_name);
+            viewHolder.description = convertView.findViewById(R.id.listitem_image_desc);
+            viewHolder.stars = convertView.findViewById(R.id.listitem_image_stars);
+            viewHolder.official = convertView.findViewById(R.id.listitem_image_official);
         }
 
         ImageSearchResult item = getGroup(groupPosition);
         if (item != null)
         {
-            viewHolder.getName().setText(item.getName());
-            viewHolder.getDescription().setText(item.getDescription());
+            viewHolder.name.setText(item.getName());
+            viewHolder.description.setText(item.getDescription());
             String formattedStarCount = formatCompactNumber(item.getStarCount());
-            viewHolder.getStars().setText(formattedStarCount);
+            viewHolder.stars.setText(formattedStarCount);
             if (item.isOfficial())
             {
-                viewHolder.getOfficial().setVisibility(View.VISIBLE);
+                viewHolder.official.setVisibility(View.VISIBLE);
             }
             else
             {
-                viewHolder.getOfficial().setVisibility(View.INVISIBLE);
+                viewHolder.official.setVisibility(View.INVISIBLE);
             }
         }
 
