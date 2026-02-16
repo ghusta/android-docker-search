@@ -3,12 +3,12 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
     namespace = "fr.husta.android.dockersearch"
     compileSdk = 36
-    compileSdkMinor = 1
 
     defaultConfig {
         applicationId = "fr.husta.android.dockersearch"
@@ -37,7 +37,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
