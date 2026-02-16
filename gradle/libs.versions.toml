@@ -74,3 +74,4 @@ espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref =
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize" }
