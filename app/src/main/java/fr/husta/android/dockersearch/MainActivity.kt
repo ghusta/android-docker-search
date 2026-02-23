@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private var listView: ExpandableListView? = null
+    private lateinit var listView: ExpandableListView
 
     private var dockerImageExpandableListAdapter: DockerImageExpandableListAdapter? = null
 
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         checkInternetConnection()
 
         listView = binding.listView
-        ViewCompat.setNestedScrollingEnabled(listView!!, true)
+        ViewCompat.setNestedScrollingEnabled(listView, true)
         if (savedInstanceState == null) {
             dockerImageExpandableListAdapter = DockerImageExpandableListAdapter(
                 this@MainActivity,
@@ -104,15 +104,15 @@ class MainActivity : AppCompatActivity() {
             dockerImageExpandableListAdapter =
                 DockerImageExpandableListAdapter(this@MainActivity, savedArrayList)
         }
-        listView!!.setAdapter(dockerImageExpandableListAdapter)
+        listView.setAdapter(dockerImageExpandableListAdapter)
 
         // listView.setOnGroupClickListener( );
         // listView.setOnChildClickListener( );
-        listView!!.setOnGroupExpandListener { groupPosition: Int ->
-            val groupCount = listView!!.expandableListAdapter.groupCount
+        listView.setOnGroupExpandListener { groupPosition: Int ->
+            val groupCount = listView.expandableListAdapter.groupCount
             for (i in 0..<groupCount) {
-                if (groupPosition != i && listView!!.isGroupExpanded(i)) {
-                    listView!!.collapseGroup(i)
+                if (groupPosition != i && listView.isGroupExpanded(i)) {
+                    listView.collapseGroup(i)
                 }
             }
         }
@@ -235,10 +235,10 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         Log.d(TAG, "onSaveInstanceState (1): " + this.getLocalClassName())
-        Log.d(TAG, "onSaveInstanceState: listView => " + listView!!.getAdapter().getCount())
+        Log.d(TAG, "onSaveInstanceState: listView => " + listView.adapter.count)
         outState.putParcelableArrayList(
             KEY_IMAGE_LIST_ADAPTER,
-            dockerImageExpandableListAdapter!!.getGroupList()
+            dockerImageExpandableListAdapter!!.groupList
         )
         if (lastSearchQuery != null) {
             outState.putString(KEY_LAST_SEARCH, lastSearchQuery)
@@ -382,7 +382,7 @@ class MainActivity : AppCompatActivity() {
                     dockerImageExpandableListAdapter!!.notifyDataSetInvalidated() // necessaire ?
                     // Collapse all
                     for (i in 0..<dockerImageExpandableListAdapter!!.getGroupCount()) {
-                        listView!!.collapseGroup(i)
+                        listView.collapseGroup(i)
                     }
 
                     // dockerImageExpandableListAdapter.setNotifyOnChange(false);
