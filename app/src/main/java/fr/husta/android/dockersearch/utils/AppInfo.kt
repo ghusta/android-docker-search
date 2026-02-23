@@ -1,46 +1,38 @@
-package fr.husta.android.dockersearch.utils;
+package fr.husta.android.dockersearch.utils
 
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.util.Log;
-
-import fr.husta.android.dockersearch.R;
+import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import android.util.Log
+import fr.husta.android.dockersearch.R
 
 /**
  * @see android.content.pm.ApplicationInfo
  */
-public class AppInfo
-{
-
+object AppInfo {
     /**
      * Returns application name ('app_name' in res/values/strings.xml).
-     *
+     * 
      * @param context
      * @return
      */
-    public static String getApplicationName(Context context)
-    {
-        return context.getString(R.string.app_name);
+    fun getApplicationName(context: Context): String {
+        return context.getString(R.string.app_name)
     }
 
     /**
      * Returns application version (app/build.gradle: versionName).
-     *
+     * 
      * @param context
      * @return
      */
-    public static String getApplicationVersion(Context context)
-    {
-        PackageInfo pInfo = null;
-        try
-        {
-            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e)
-        {
-            Log.e(AppInfo.class.getSimpleName(), e.getMessage(), e);
+    fun getApplicationVersion(context: Context): String? {
+        var pInfo: PackageInfo? = null
+        try {
+            pInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.e(AppInfo::class.java.getSimpleName(), e.message, e)
         }
-        return pInfo.versionName;
+        return pInfo?.versionName
     }
-
 }
