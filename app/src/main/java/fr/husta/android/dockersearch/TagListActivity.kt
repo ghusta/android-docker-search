@@ -33,11 +33,11 @@ class TagListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTaglistBinding
 
-    private var dialogWarningTaglistBinding: DialogWarningTaglistBinding? = null
+    private lateinit var dialogWarningTaglistBinding: DialogWarningTaglistBinding
 
     private var dockerTagListAdapter: DockerTagListAdapter? = null
 
-    private var listView: ListView? = null
+    private lateinit var listView: ListView
     private var fabNextPage: FloatingActionButton? = null
 
     private var currentPage = -1
@@ -68,19 +68,19 @@ class TagListActivity : AppCompatActivity() {
         }
 
         listView = binding.tagsListview
-        ViewCompat.setNestedScrollingEnabled(listView!!, true)
+        ViewCompat.setNestedScrollingEnabled(listView, true)
         fabNextPage = binding.fabTagsNextPage
         fabNextPage!!.setOnClickListener { view: View? -> loadNextPage(view) }
 
         dockerTagListAdapter =
             DockerTagListAdapter(this@TagListActivity, ArrayList<RepositoryTagV2?>())
-        listView!!.setAdapter(dockerTagListAdapter)
+        listView.setAdapter(dockerTagListAdapter)
 
-        listView!!.setOnItemClickListener { adapterView: AdapterView<*>?, view: View?, i: Int, l: Long ->
-            val item = listView!!.getItemAtPosition(i) as RepositoryTagV2
+        listView.setOnItemClickListener { adapterView: AdapterView<*>?, view: View?, i: Int, l: Long ->
+            val item = listView.getItemAtPosition(i) as RepositoryTagV2
             val count = TagDetailsActivity.filterShownVariants(item.getImageVariants()).size
             Snackbar.make(
-                listView!!,
+                listView,
                 getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count),
                 BaseTransientBottomBar.LENGTH_SHORT
             )
@@ -186,9 +186,9 @@ class TagListActivity : AppCompatActivity() {
      */
     fun clickWarning(item: MenuItem?) {
         // Inflate the about message contents
-        val messageView: View = dialogWarningTaglistBinding!!.getRoot()
+        val messageView: View = dialogWarningTaglistBinding.getRoot()
 
-        val textView = dialogWarningTaglistBinding!!.txtWarningTaglist
+        val textView = dialogWarningTaglistBinding.txtWarningTaglist
         textView.setText(
             "Tag list may not be up to date. \n" +
                     "See bug #687 ( https://github.com/docker/hub-feedback/issues/687 )"
