@@ -17,8 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-public class DockerRegistryClient
-{
+public class DockerRegistryClient {
 
     /**
      * @deprecated HTTP 301 with "Location: https://registry.hub.docker.com/"
@@ -36,55 +35,49 @@ public class DockerRegistryClient
      */
     private final Retrofit retrofitRxJava3;
 
-    public DockerRegistryClient()
-    {
+    public DockerRegistryClient() {
         ObjectMapper objectMapper = JsonMapper.builder()
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .addModule(new JavaTimeModule())
                 .build();
 
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
+
         retrofitDockerIndex = new Retrofit.Builder()
                 .baseUrl(BASE_URI)
-                .client(new OkHttpClient.Builder()
-                        .connectTimeout(5, TimeUnit.SECONDS)
-                        .readTimeout(30, TimeUnit.SECONDS)
-                        .build())
+                .client(okHttpClient)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
 
         retrofitRxJava3 = new Retrofit.Builder()
                 .baseUrl(BASE_REGISTRY_URI)
-                .client(new OkHttpClient.Builder()
-                        .connectTimeout(5, TimeUnit.SECONDS)
-                        .readTimeout(30, TimeUnit.SECONDS)
-                        .build())
+                .client(okHttpClient)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
     }
 
-    public Observable<ContainerImageSearchResult> searchImagesAsync(String term)
-    {
+    public Observable<ContainerImageSearchResult> searchImagesAsync(String term) {
         final int pageSize = AppConstants.IMAGE_SEARCH_PAGE_SIZE;
 
         DockerSearchRestService dockerSearchService = retrofitDockerIndex.create(DockerSearchRestService.class);
         return dockerSearchService.searchImages(term, pageSize);
     }
 
-    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository)
-    {
+    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository) {
         return listTagsV2(repository, 1);
     }
 
-    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page)
-    {
+    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page) {
         return listTagsV2(repository, page, AppConstants.TAG_LIST_PAGE_SIZE);
     }
 
-    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page, int pageSize)
-    {
+    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page, int pageSize) {
         DockerSearchRestService dockerSearchService = retrofitRxJava3.create(DockerSearchRestService.class);
         return dockerSearchService.listTagsV2(repository, page, pageSize);
     }
