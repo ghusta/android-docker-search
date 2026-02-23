@@ -1,72 +1,55 @@
-package fr.husta.android.dockersearch.search;
+package fr.husta.android.dockersearch.search
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.SearchRecentSuggestions;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import android.content.ContentResolver
+import android.content.Context
+import android.net.Uri
+import android.provider.SearchRecentSuggestions
+import androidx.core.net.toUri
+import java.util.Objects
 
 /**
- * Custom extension of {@link SearchRecentSuggestions}.
- * Initialized with data from {@link RecentSearchProvider}.
+ * Custom extension of [SearchRecentSuggestions].
+ * Initialized with data from [RecentSearchProvider].
  */
-public class CustomSearchRecentSuggestions extends SearchRecentSuggestions
-{
-
-    private final Context context;
-    private final Uri suggestionsUri;
-
-    public CustomSearchRecentSuggestions(Context context)
-    {
-        super(context, RecentSearchProvider.AUTHORITY, RecentSearchProvider.MODE);
-        this.context = context;
-        this.suggestionsUri = Uri.parse("content://" + RecentSearchProvider.AUTHORITY + "/suggestions");
-    }
+class CustomSearchRecentSuggestions(private val context: Context) : SearchRecentSuggestions(
+    context, RecentSearchProvider.AUTHORITY, RecentSearchProvider.MODE
+) {
+    private val suggestionsUri =
+        ("content://" + RecentSearchProvider.AUTHORITY + "/suggestions").toUri()
 
     /**
-     * Removes a specific suggestion, using {@link ContentResolver}.
-     *
+     * Removes a specific suggestion, using [ContentResolver].
+     * 
      * @param suggestion Query to delete
-     * @see ContentResolver#delete(Uri, String, String[])
+     * @see ContentResolver.delete
      */
-    public void removeSuggestion(String suggestion)
-    {
-        Objects.requireNonNull(suggestion);
-        ContentResolver resolver = context.getContentResolver();
-        resolver.delete(suggestionsUri, "display1 = ?", new String[]{suggestion});
+    fun removeSuggestion(suggestion: String) {
+        Objects.requireNonNull(suggestion)
+        val resolver = context.contentResolver
+        resolver.delete(suggestionsUri, "display1 = ?", arrayOf(suggestion))
     }
 
-    /**
-     * List of recent searches.
-     */
-    public List<String> getRecentSearches()
-    {
-        List<String> list = new ArrayList<>();
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(
+    val recentSearches: MutableList<String?>
+        /**
+         * List of recent searches.
+         */
+        get() {
+            val list: MutableList<String?> = ArrayList()
+            val resolver = context.contentResolver
+            val cursor = resolver.query(
                 suggestionsUri,
-                new String[]{"query"},   // projection
-                null,                    // selection
-                null,                    // selectionArgs
-                "date DESC"              // sort order (latest first)
-        );
+                arrayOf<String>("query"),  // projection
+                null,  // selection
+                null,  // selectionArgs
+                "date DESC" // sort order (latest first)
+            )
 
-        if (cursor != null)
-        {
-            try (cursor)
-            {
-                while (cursor.moveToNext())
-                {
-                    list.add(cursor.getString(0)); // column "query"
+            cursor?.use {
+                while (cursor.moveToNext()) {
+                    list.add(cursor.getString(0)) // column "query"
                 }
             }
+
+            return list
         }
-
-        return list;
-    }
-
 }

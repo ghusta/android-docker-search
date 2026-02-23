@@ -1,22 +1,25 @@
-package fr.husta.android.dockersearch.search;
+package fr.husta.android.dockersearch.search
 
-import android.content.SearchRecentSuggestionsProvider;
-import android.provider.SearchRecentSuggestions;
+import android.content.SearchRecentSuggestionsProvider
 
 /**
  * Custom SearchRecentSuggestionsProvider for Docker Search.
- * <p>
- * To be used with {@link SearchRecentSuggestions}.
- * </p>
+ * 
+ * 
+ * To be used with [SearchRecentSuggestions].
+ * 
  */
-public final class RecentSearchProvider
-        extends SearchRecentSuggestionsProvider {
+class RecentSearchProvider : SearchRecentSuggestionsProvider() {
 
-    public static final String AUTHORITY = RecentSearchProvider.class.getName();
-    public static final int MODE = DATABASE_MODE_QUERIES;
-
-    public RecentSearchProvider() {
-        setupSuggestions(AUTHORITY, MODE);
+    init {
+        setupSuggestions(AUTHORITY, MODE)
     }
 
+    companion object {
+        @JvmField
+        val AUTHORITY: String = RecentSearchProvider::class.java.getName()
+
+        @JvmField
+        val MODE: Int = DATABASE_MODE_QUERIES
+    }
 }
