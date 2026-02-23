@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.husta.android.dockersearch.R
-import java.util.Locale
 
 class SuggestionAdapter(
     dataSet: List<String>,
@@ -66,12 +65,11 @@ class SuggestionAdapter(
     }
 
     fun filter(text: String) {
-        if (text.isEmpty()) {
-            suggestionsFiltered = suggestions.toList()
+        suggestionsFiltered = if (text.isEmpty()) {
+            suggestions.toList()
         } else {
-            val lowerCaseQuery = text.lowercase(Locale.getDefault())
-            suggestionsFiltered = suggestions.filter {
-                it.lowercase().contains(lowerCaseQuery)
+            suggestions.filter {
+                it.contains(text, ignoreCase = true)
             }
         }
         notifyDataSetChanged() // Notifie l'adapter que les données ont changé
