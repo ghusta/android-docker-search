@@ -1,46 +1,45 @@
-package fr.husta.android.dockersearch.utils.format.unit;
+package fr.husta.android.dockersearch.utils.format.unit
 
-import android.content.Context;
+import android.content.Context
+import android.text.format.Formatter
+import java.util.Locale
+import kotlin.math.ln
+import kotlin.math.pow
 
-import java.util.Locale;
-
-public class ByteSizeFormatterUtils
-{
-
+object ByteSizeFormatterUtils {
     /**
-     * How to convert byte size into human readable format in java?
+     * How to convert byte size into human-readable format in java?
      * https://stackoverflow.com/questions/3758606/how-to-convert-byte-size-into-human-readable-format-in-java
      */
-    public static String humanReadableByteCount(long sizeBytes, boolean si)
-    {
-        int unit = si ? 1000 : 1024;
-        if (sizeBytes < unit)
-        {
-            return sizeBytes + " B";
+    fun humanReadableByteCount(sizeBytes: Long, si: Boolean): String {
+        val unit = if (si) 1000 else 1024
+        if (sizeBytes < unit) {
+            return "$sizeBytes B"
         }
-        int exp = (int) (Math.log(sizeBytes) / Math.log(unit));
-        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
-        return String.format(Locale.getDefault(), "%.1f %sB", sizeBytes / Math.pow(unit, exp), pre);
+        val exp = (ln(sizeBytes.toDouble()) / ln(unit.toDouble())).toInt()
+        val pre = (if (si) "kMGTPE" else "KMGTPE")[exp - 1].toString() + (if (si) "" else "i")
+        return String.format(
+            Locale.getDefault(),
+            "%.1f %sB",
+            sizeBytes / unit.toDouble().pow(exp.toDouble()),
+            pre
+        )
     }
 
-    public static class Android
-    {
-
+    object Android {
         /**
          * android.text.format.Formatter.formatShortFileSize(activityContext, bytes);
-         * <p></p>
+         * 
+         * 
          * android.text.format.Formatter.formatFileSize(activityContext, bytes);
          */
-        public static String formatSize(Context context, long sizeBytes)
-        {
-            return android.text.format.Formatter.formatFileSize(context, sizeBytes);
+        fun formatSize(context: Context?, sizeBytes: Long): String? {
+            return Formatter.formatFileSize(context, sizeBytes)
         }
 
-        public static String formatShortSize(Context context, long sizeBytes)
-        {
-            return android.text.format.Formatter.formatShortFileSize(context, sizeBytes);
+        @JvmStatic
+        fun formatShortSize(context: Context?, sizeBytes: Long): String? {
+            return Formatter.formatShortFileSize(context, sizeBytes)
         }
-
     }
-
 }

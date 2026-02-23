@@ -1,19 +1,12 @@
-package fr.husta.android.dockersearch.utils.ui;
+package fr.husta.android.dockersearch.utils.ui
 
-import android.content.res.Configuration;
+import android.content.res.Configuration
 
-import static android.content.res.Configuration.UI_MODE_NIGHT_MASK;
-import static android.content.res.Configuration.UI_MODE_NIGHT_YES;
-
-public class UiModeUtils
-{
-
+object UiModeUtils {
     /**
-     * @see Configuration#isNightModeActive()
+     * @see Configuration.isNightModeActive
      */
-    public static boolean isNightModeActive(Configuration configuration)
-    {
-        return (configuration.uiMode & UI_MODE_NIGHT_MASK) == UI_MODE_NIGHT_YES;
+    fun isNightModeActive(configuration: Configuration): Boolean {
+        return (configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
     }
-
 }
