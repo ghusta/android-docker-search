@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         val searchRecentSuggestions = CustomSearchRecentSuggestions(this)
 
         suggestionAdapter = SuggestionAdapter(
-            searchRecentSuggestions.getRecentSearches(),
+            searchRecentSuggestions.recentSearches,
             { text: String? ->
                 binding.searchBar.setText(text)
                 binding.searchView.hide()
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                     },
                     { binding.progressIndicator.hide() })
             },
-            { text: String? ->
+            { text: String ->
                 val message = getString(R.string.text_delete_search_from_history, text)
                 MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.msg_delete_search_from_history)
