@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
 
         suggestionAdapter = SuggestionAdapter(
             searchRecentSuggestions.recentSearches,
-            { text: String? ->
+            { text: String ->
                 binding.searchBar.setText(text)
                 binding.searchView.hide()
                 onQueryTextSubmitCustom(
