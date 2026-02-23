@@ -29,16 +29,16 @@ class CustomSearchRecentSuggestions(private val context: Context) : SearchRecent
         resolver.delete(suggestionsUri, "display1 = ?", arrayOf(suggestion))
     }
 
-    val recentSearches: MutableList<String?>
+    val recentSearches: MutableList<String>
         /**
          * List of recent searches.
          */
         get() {
-            val list: MutableList<String?> = ArrayList()
+            val list: MutableList<String> = mutableListOf()
             val resolver = context.contentResolver
             val cursor = resolver.query(
                 suggestionsUri,
-                arrayOf<String>("query"),  // projection
+                arrayOf("query"),  // projection
                 null,  // selection
                 null,  // selectionArgs
                 "date DESC" // sort order (latest first)
