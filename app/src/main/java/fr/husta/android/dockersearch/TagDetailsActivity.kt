@@ -17,7 +17,7 @@ class TagDetailsActivity : AppCompatActivity() {
 
     private var dockerTagDetailsListAdapter: DockerTagDetailsListAdapter? = null
 
-    private var listView: ListView? = null
+    private lateinit var listView: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,14 +45,14 @@ class TagDetailsActivity : AppCompatActivity() {
         }
 
         listView = binding.tagDetailsListview
-        ViewCompat.setNestedScrollingEnabled(listView!!, true)
+        ViewCompat.setNestedScrollingEnabled(listView, true)
         val headerView =
             getLayoutInflater().inflate(R.layout.list_docker_tag_detail_headers, listView, false)
-        listView!!.addHeaderView(headerView, null, false)
+        listView.addHeaderView(headerView, null, false)
 
         dockerTagDetailsListAdapter =
             DockerTagDetailsListAdapter(this@TagDetailsActivity, ArrayList<ImageVariantByTagV2?>())
-        listView!!.setAdapter(dockerTagDetailsListAdapter)
+        listView.setAdapter(dockerTagDetailsListAdapter)
         dockerTagDetailsListAdapter!!.addAll(imageVariantsFiltered)
     }
 

@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
     private var lastSearchQuery: String? = null
 
-    private var suggestionAdapter: SuggestionAdapter? = null
+    private lateinit var suggestionAdapter: SuggestionAdapter
 
     private val disposables = CompositeDisposable()
     private val dockerRegistryClient = DockerRegistryClient()
@@ -134,8 +134,8 @@ class MainActivity : AppCompatActivity() {
                 onQueryTextSubmitCustom(
                     text,
                     {
-                        suggestionAdapter!!.removeItem(text)
-                        suggestionAdapter!!.addItem(text)
+                        suggestionAdapter.removeItem(text)
+                        suggestionAdapter.addItem(text)
                         binding.progressIndicator.show()
                     },
                     { binding.progressIndicator.hide() })
@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
                         android.R.string.ok
                     ) { dialog: DialogInterface?, which: Int ->
                         searchRecentSuggestions.removeSuggestion(text)
-                        suggestionAdapter!!.removeItem(text)
+                        suggestionAdapter.removeItem(text)
                     }
                     .setNegativeButton(
                         android.R.string.cancel
@@ -169,8 +169,8 @@ class MainActivity : AppCompatActivity() {
                 onQueryTextSubmitCustom(
                     v!!.getText().toString(),
                     {
-                        suggestionAdapter!!.removeItem(v.getText().toString())
-                        suggestionAdapter!!.addItem(v.getText().toString())
+                        suggestionAdapter.removeItem(v.getText().toString())
+                        suggestionAdapter.addItem(v.getText().toString())
                         binding.progressIndicator.show()
                     },
                     { binding.progressIndicator.hide() })
@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                     Log.d(TAG, "onTextChanged: " + s.toString())
                     // Appelle la méthode de filtrage de l'adapter avec le nouveau texte
-                    suggestionAdapter!!.filter(s.toString())
+                    suggestionAdapter.filter(s.toString())
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -436,7 +436,7 @@ class MainActivity : AppCompatActivity() {
             RecentSearchProvider.AUTHORITY, RecentSearchProvider.MODE
         )
         suggestions.clearHistory()
-        suggestionAdapter!!.clear()
+        suggestionAdapter.clear()
 
         Toast.makeText(this, R.string.msg_cleared_search_history, Toast.LENGTH_SHORT).show()
     }

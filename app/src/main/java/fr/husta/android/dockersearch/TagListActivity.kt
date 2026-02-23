@@ -38,7 +38,7 @@ class TagListActivity : AppCompatActivity() {
     private var dockerTagListAdapter: DockerTagListAdapter? = null
 
     private lateinit var listView: ListView
-    private var fabNextPage: FloatingActionButton? = null
+    private lateinit var fabNextPage: FloatingActionButton
 
     private var currentPage = -1
     private var hasNextPage = false
@@ -70,7 +70,7 @@ class TagListActivity : AppCompatActivity() {
         listView = binding.tagsListview
         ViewCompat.setNestedScrollingEnabled(listView, true)
         fabNextPage = binding.fabTagsNextPage
-        fabNextPage!!.setOnClickListener { view: View? -> loadNextPage(view) }
+        fabNextPage.setOnClickListener { view: View? -> loadNextPage(view) }
 
         dockerTagListAdapter =
             DockerTagListAdapter(this@TagListActivity, ArrayList<RepositoryTagV2?>())
@@ -84,7 +84,7 @@ class TagListActivity : AppCompatActivity() {
                 getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count),
                 BaseTransientBottomBar.LENGTH_SHORT
             )
-                .setAnchorView(if (fabNextPage!!.isOrWillBeShown()) fabNextPage else null)
+                .setAnchorView(if (fabNextPage.isOrWillBeShown) fabNextPage else null)
                 .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
                 .setAction(R.string.snackbar_action_details) { view1: View? ->
                     Log.d(TAG, "Tag : " + item.getName())
@@ -143,9 +143,9 @@ class TagListActivity : AppCompatActivity() {
                 // the same library group (groupId=com.google.android.material) [RestrictedApi]
                 // See : https://stackoverflow.com/questions/50343634/android-p-visibilityawareimagebutton-setvisibility-can-only-be-called-from-the-s
                 if (hasNextPage) {
-                    fabNextPage!!.show()
+                    fabNextPage.show()
                 } else {
-                    fabNextPage!!.hide()
+                    fabNextPage.hide()
                 }
             }, Consumer { throwable: Throwable? ->
                 onEnd.run()
