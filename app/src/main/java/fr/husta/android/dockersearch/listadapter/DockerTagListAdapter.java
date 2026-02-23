@@ -42,34 +42,34 @@ public class DockerTagListAdapter extends ArrayAdapter<RepositoryTagV2>
         DockerTagViewHolder viewHolder = (DockerTagViewHolder) convertView.getTag();
         if (viewHolder == null)
         {
-            viewHolder = new DockerTagViewHolder();
-            viewHolder.name = convertView.findViewById(R.id.listitem_tag_name);
-            viewHolder.size = convertView.findViewById(R.id.listitem_tag_size);
-            viewHolder.lastUpdated = convertView.findViewById(R.id.listitem_tag_last_updated);
+            viewHolder = new DockerTagViewHolder(
+                    convertView.findViewById(R.id.listitem_tag_name),
+                    convertView.findViewById(R.id.listitem_tag_size),
+                    convertView.findViewById(R.id.listitem_tag_last_updated));
         }
 
         RepositoryTagV2 item = getItem(position);
         if (item != null)
         {
-            viewHolder.name.setText(item.getName());
+            viewHolder.getName().setText(item.getName());
             if (item.getFullSize() != null)
             {
-                viewHolder.size.setText(
+                viewHolder.getSize().setText(
                         ByteSizeFormatterUtils.Android.formatShortSize(convertView.getContext(), item.getFullSize()));
             }
             else
             {
-                viewHolder.size.setText("-");
+                viewHolder.getSize().setText("-");
             }
             if (item.getLastUpdated() != null)
             {
                 long elapsedMillis = System.currentTimeMillis() - item.getLastUpdated().toInstant().toEpochMilli();
-                viewHolder.lastUpdated.setText(
+                viewHolder.getLastUpdated().setText(
                         DateUtils.getRelativeTimeSpanString(item.getLastUpdated().toInstant().toEpochMilli()));
             }
             else
             {
-                viewHolder.lastUpdated.setText("-");
+                viewHolder.getLastUpdated().setText("-");
             }
         }
 
