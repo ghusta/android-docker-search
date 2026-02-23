@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 import fr.husta.android.dockersearch.AppConstants;
@@ -45,6 +46,7 @@ public class DockerRegistryClient {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
+                .proxy(Proxy.NO_PROXY)
                 .build();
 
         retrofitDockerIndex = new Retrofit.Builder()
