@@ -29,7 +29,7 @@ jobs:
         run: ls -lh app/build/outputs/apk/debug/*.apk
 
       - name: Archive Debug APK
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: app-debug-apk
           path: app/build/outputs/apk/debug/*.apk
