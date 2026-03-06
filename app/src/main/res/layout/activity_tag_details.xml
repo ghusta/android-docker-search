@@ -5,7 +5,7 @@
     android:id="@+id/activity_tagdetails"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:context=".TagDetailsActivity">
 
     <ListView
@@ -17,9 +17,10 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         app:liftOnScroll="true"
         app:liftOnScrollTargetViewId="@id/tag_details_listview">
 
