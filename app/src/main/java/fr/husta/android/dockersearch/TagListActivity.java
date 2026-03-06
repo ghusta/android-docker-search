@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,9 +20,12 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import fr.husta.android.dockersearch.databinding.ActivityTaglistBinding;
 import fr.husta.android.dockersearch.databinding.DialogWarningTaglistBinding;
@@ -62,9 +66,25 @@ public class TagListActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         Log.d("MAIN_DEBUG", "onCreate : " + this.getLocalClassName());
+        EdgeToEdge.enable(this);
         binding = ActivityTaglistBinding.inflate(getLayoutInflater());
         dialogWarningTaglistBinding = DialogWarningTaglistBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // edge-to-edge adjustments : FAB
+        int fabMarginPx = getResources().getDimensionPixelSize(R.dimen.fab_margin);
+        ViewCompat.setOnApplyWindowInsetsListener(binding.fabTagsNextPage, (view, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            mlp.leftMargin = insets.left + fabMarginPx;
+            mlp.rightMargin = insets.right + fabMarginPx;
+            mlp.bottomMargin = insets.bottom + fabMarginPx;
+            view.setLayoutParams(mlp);
+
+
+            return WindowInsetsCompat.CONSUMED;
+        });
 
         setSupportActionBar(binding.topAppBar);
 
