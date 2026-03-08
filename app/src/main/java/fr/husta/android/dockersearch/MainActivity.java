@@ -1,6 +1,5 @@
 package fr.husta.android.dockersearch;
 
-import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -25,19 +24,22 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.util.ArrayList;
-import java.util.Objects;
-
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 import fr.husta.android.dockersearch.databinding.ActivityMainBinding;
 import fr.husta.android.dockersearch.databinding.DialogAboutBinding;
@@ -107,8 +109,42 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate : " + this.getLocalClassName());
+        // 1. Enable edge-to-edge display
+        EdgeToEdge.enable(this);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // 2. Handle system insets (status bar, navigation bar, and display cutouts)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.activityMain, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets displayCutout = insets.getInsets(WindowInsetsCompat.Type.displayCutout());
+            int fabMarginPx = getResources().getDimensionPixelSize(R.dimen.fab_margin);
+
+            // Apply padding to the AppBarLayout to account for status bar and cutouts
+            binding.appBarLayout.setPadding(
+                    systemBars.left + displayCutout.left,
+                    systemBars.top,
+                    systemBars.right + displayCutout.right,
+                    binding.appBarLayout.getPaddingBottom());
+
+            // Pad the SwipeRefreshLayout container for the bottom navigation bar
+            binding.swipeRefreshImages.setPadding(
+                    systemBars.left + displayCutout.left,
+                    binding.swipeRefreshImages.getPaddingTop(),
+                    systemBars.right + displayCutout.right,
+                    systemBars.bottom);
+
+            // Also pad the SearchView content
+//            binding.searchView.setPadding(
+//                    Math.max(systemBars.left, displayCutout.left),
+//                    systemBars.top,
+//                    Math.max(systemBars.right, displayCutout.right),
+//                    systemBars.bottom
+//            );
+
+            return insets;
+        });
 
 //        setSupportActionBar(binding.searchBar);
 
