@@ -13,13 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +20,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.husta.android.dockersearch.databinding.ActivityTaglistBinding;
 import fr.husta.android.dockersearch.databinding.DialogWarningTaglistBinding;
 import fr.husta.android.dockersearch.docker.DockerRegistryClient;
@@ -39,8 +40,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 
-public class TagListActivity extends AppCompatActivity
-{
+public class TagListActivity extends AppCompatActivity {
 
     private static final String TAG = "TAG_LIST";
 
@@ -62,26 +62,52 @@ public class TagListActivity extends AppCompatActivity
     private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("MAIN_DEBUG", "onCreate : " + this.getLocalClassName());
+        // 1. Enable edge-to-edge display
         EdgeToEdge.enable(this);
+
         binding = ActivityTaglistBinding.inflate(getLayoutInflater());
         dialogWarningTaglistBinding = DialogWarningTaglistBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        ViewCompat.setOnApplyWindowInsetsListener(binding.activityTaglist, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets displayCutout = insets.getInsets(WindowInsetsCompat.Type.displayCutout());
+
+            // Apply padding to the AppBarLayout to account for status bar and cutouts
+            binding.appBarLayout.setPadding(
+                    systemBars.left + displayCutout.left,
+                    systemBars.top,
+                    systemBars.right + displayCutout.right,
+                    binding.appBarLayout.getPaddingBottom());
+
+            binding.tagsListview.setPadding(
+                    systemBars.left + displayCutout.left,
+                    binding.tagsListview.getPaddingTop(),
+                    systemBars.right + displayCutout.right,
+                    systemBars.bottom); // last item in listview is still clickable
+
+            // Pad the SwipeRefreshLayout container for the bottom navigation bar
+//            binding.swipeRefreshTags.setPadding(
+//                    0,
+//                    binding.swipeRefreshTags.getPaddingTop(),
+//                    0,
+//                    0);
+
+            return insets;
+        });
         // edge-to-edge adjustments : FAB
-        int fabMarginPx = getResources().getDimensionPixelSize(R.dimen.fab_margin);
         ViewCompat.setOnApplyWindowInsetsListener(binding.fabTagsNextPage, (view, windowInsets) -> {
             Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            int fabMarginPx = getResources().getDimensionPixelSize(R.dimen.fab_margin);
 
             ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
             mlp.leftMargin = insets.left + fabMarginPx;
             mlp.rightMargin = insets.right + fabMarginPx;
             mlp.bottomMargin = insets.bottom + fabMarginPx;
             view.setLayoutParams(mlp);
-
 
             return WindowInsetsCompat.CONSUMED;
         });
@@ -92,8 +118,7 @@ public class TagListActivity extends AppCompatActivity
         imageName = intent.getStringExtra(DATA_IMG_NAME);
 
         // https://developer.android.com/training/implementing-navigation/ancestral.html#up
-        if (getSupportActionBar() != null)
-        {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             Log.d(TAG, "SupportActionBar.title = " + getSupportActionBar().getTitle());
             getSupportActionBar().setTitle("Tags");
@@ -133,8 +158,7 @@ public class TagListActivity extends AppCompatActivity
                 () -> binding.progressIndicator.hide());
     }
 
-    public void startActivityTagDetails(Context context, RepositoryTagV2 data)
-    {
+    public void startActivityTagDetails(Context context, RepositoryTagV2 data) {
         Intent starter = new Intent(context, TagDetailsActivity.class);
         starter.putExtra(TagDetailsActivity.DATA_TAG_NAME, data.getName());
         starter.putParcelableArrayListExtra(TagDetailsActivity.DATA_IMG_VARIANT_ARRAY, new ArrayList<>(data.getImageVariants()));
@@ -142,8 +166,7 @@ public class TagListActivity extends AppCompatActivity
     }
 
     private void requestTagsList(String imgName, final int pageNumber,
-                                 Runnable onStart, Runnable onEnd)
-    {
+                                 Runnable onStart, Runnable onEnd) {
         // Fetch list tags (first page)
         Disposable disposable = dockerRegistryClient.listTagsV2(imageNameToRepository(imgName), pageNumber)
                 .subscribeOn(Schedulers.io())
@@ -164,12 +187,9 @@ public class TagListActivity extends AppCompatActivity
                             // Error: VisibilityAwareImageButton.setVisibility can only be called from within
                             // the same library group (groupId=com.google.android.material) [RestrictedApi]
                             // See : https://stackoverflow.com/questions/50343634/android-p-visibilityawareimagebutton-setvisibility-can-only-be-called-from-the-s
-                            if (hasNextPage)
-                            {
+                            if (hasNextPage) {
                                 fabNextPage.show();
-                            }
-                            else
-                            {
+                            } else {
                                 fabNextPage.hide();
                             }
                         }, throwable -> {
@@ -180,25 +200,19 @@ public class TagListActivity extends AppCompatActivity
         disposables.add(disposable);
     }
 
-    public static String imageNameToRepository(final String imageName)
-    {
-        if (imageName == null)
-        {
+    public static String imageNameToRepository(final String imageName) {
+        if (imageName == null) {
             throw new IllegalArgumentException();
         }
-        if (imageName.contains("/"))
-        {
+        if (imageName.contains("/")) {
             return imageName;
-        }
-        else
-        {
+        } else {
             return "library/" + imageName;
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu_tags, menu);
 
@@ -225,8 +239,7 @@ public class TagListActivity extends AppCompatActivity
      *
      * @param item
      */
-    public void clickWarning(MenuItem item)
-    {
+    public void clickWarning(MenuItem item) {
         // Inflate the about message contents
         View messageView = dialogWarningTaglistBinding.getRoot();
 
@@ -243,18 +256,15 @@ public class TagListActivity extends AppCompatActivity
         builder.show();
     }
 
-    public void loadNextPage(View view)
-    {
-        if (hasNextPage)
-        {
+    public void loadNextPage(View view) {
+        if (hasNextPage) {
             requestTagsList(imageName, currentPage + 1,
                     () -> binding.progressIndicator.show(),
                     () -> binding.progressIndicator.hide());
         }
     }
 
-    public void onSwipeRefresh()
-    {
+    public void onSwipeRefresh() {
         SwipeRefreshLayout swipeRefreshLayout = binding.swipeRefreshTags;
         requestTagsList(imageName, 1,
                 () -> dockerTagListAdapter.clear(),
@@ -262,14 +272,12 @@ public class TagListActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         this.disposables.clear();
     }

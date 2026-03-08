@@ -5,12 +5,14 @@
     android:id="@+id/activity_taglist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     tools:context=".TagListActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         app:liftOnScroll="true"
         app:liftOnScrollTargetViewId="@id/tags_listview">
 
@@ -33,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="8dp"
+            android:paddingBottom="16dp"
             android:clipToPadding="false"
             android:paddingLeft="0dp"
             android:paddingRight="0dp" />
