@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -119,14 +120,19 @@ public class MainActivity extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(binding.activityMain, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             Insets displayCutout = insets.getInsets(WindowInsetsCompat.Type.displayCutout());
-            int fabMarginPx = getResources().getDimensionPixelSize(R.dimen.fab_margin);
+            Insets mergedInsets = Insets.max(systemBars, displayCutout);
 
             // Apply padding to the AppBarLayout to account for status bar and cutouts
             binding.appBarLayout.setPadding(
                     systemBars.left + displayCutout.left,
-                    systemBars.top,
+                    0,
                     systemBars.right + displayCutout.right,
                     binding.appBarLayout.getPaddingBottom());
+
+            // On applique le décalage de la barre de statut en tant que MARGE
+            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) binding.searchBar.getLayoutParams();
+            mlp.topMargin = systemBars.top + (int) (8 * getResources().getDisplayMetrics().density); // 8dp
+            binding.searchBar.setLayoutParams(mlp);
 
             // Pad the ExpandableListView for the bottom navigation bar
             binding.listView.setPadding(
