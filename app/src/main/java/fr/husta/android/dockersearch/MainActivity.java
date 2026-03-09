@@ -128,12 +128,19 @@ public class MainActivity extends AppCompatActivity {
                     systemBars.right + displayCutout.right,
                     binding.appBarLayout.getPaddingBottom());
 
-            // Pad the SwipeRefreshLayout container for the bottom navigation bar
-            binding.swipeRefreshImages.setPadding(
+            // Pad the ExpandableListView for the bottom navigation bar
+            binding.listView.setPadding(
                     systemBars.left + displayCutout.left,
-                    binding.swipeRefreshImages.getPaddingTop(),
+                    binding.listView.getPaddingTop(),
                     systemBars.right + displayCutout.right,
                     systemBars.bottom);
+
+            // Reset SwipeRefreshLayout padding
+            binding.swipeRefreshImages.setPadding(
+                    0,
+                    binding.swipeRefreshImages.getPaddingTop(),
+                    0,
+                    0);
 
             // Also pad the SearchView content
 //            binding.searchView.setPadding(
