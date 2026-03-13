@@ -135,7 +135,7 @@ public class DockerImageExpandableListAdapter
         return convertView;
     }
 
-    private String formatCompactNumber(int inputNumber)
+    private static String formatCompactNumber(int inputNumber)
     {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
         {
