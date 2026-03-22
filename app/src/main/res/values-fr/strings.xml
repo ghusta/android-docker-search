@@ -46,4 +46,5 @@
     <string name="tooltip_share">Partager</string>
     <string name="msg_delete_search_from_history">Supprimer cette recherche de votre historique ?</string>
     <string name="text_delete_search_from_history">Etes-vous sûr de vouloir supprimer l\'entrée &lt;b&gt;%1$s&lt;/b&gt; de votre historique ?</string>
+    <string name="details_title">Détails</string>
 </resources>
