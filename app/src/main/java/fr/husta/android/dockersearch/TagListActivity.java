@@ -51,7 +51,6 @@ public class TagListActivity extends AppCompatActivity {
 
     private DockerTagListAdapter dockerTagListAdapter;
 
-    private ListView listView;
     private FloatingActionButton fabNextPage;
 
     private int currentPage = -1;
@@ -125,18 +124,17 @@ public class TagListActivity extends AppCompatActivity {
             getSupportActionBar().setSubtitle("Image : " + imageName);
         }
 
-        listView = binding.tagsListview;
-        ViewCompat.setNestedScrollingEnabled(listView, true);
+        ViewCompat.setNestedScrollingEnabled(binding.tagsListview, true);
         fabNextPage = binding.fabTagsNextPage;
         fabNextPage.setOnClickListener(view -> loadNextPage(view));
 
         dockerTagListAdapter = new DockerTagListAdapter(TagListActivity.this, new ArrayList<>());
-        listView.setAdapter(dockerTagListAdapter);
+        binding.tagsListview.setAdapter(dockerTagListAdapter);
 
-        listView.setOnItemClickListener((adapterView, view, i, l) -> {
-            RepositoryTagV2 item = (RepositoryTagV2) listView.getItemAtPosition(i);
+        binding.tagsListview.setOnItemClickListener((adapterView, view, i, l) -> {
+            RepositoryTagV2 item = (RepositoryTagV2) binding.tagsListview.getItemAtPosition(i);
             int count = TagDetailsActivity.filterShownVariants(item.getImageVariants()).size();
-            Snackbar.make(listView, getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count), LENGTH_SHORT)
+            Snackbar.make(binding.tagsListview, getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count), LENGTH_SHORT)
                     .setAnchorView(fabNextPage.isOrWillBeShown() ? fabNextPage : null)
                     .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
                     .setAction(R.string.snackbar_action_details, view1 -> {

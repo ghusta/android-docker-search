@@ -32,8 +32,6 @@ public class TagDetailsActivity extends AppCompatActivity {
 
     private DockerTagDetailsListAdapter dockerTagDetailsListAdapter;
 
-    private ListView listView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,13 +78,12 @@ public class TagDetailsActivity extends AppCompatActivity {
             getSupportActionBar().setSubtitle("Tag : " + tagName);
         }
 
-        listView = binding.tagDetailsListview;
-        ViewCompat.setNestedScrollingEnabled(listView, true);
-        View headerView = getLayoutInflater().inflate(R.layout.list_docker_tag_detail_headers, listView, false);
-        listView.addHeaderView(headerView, null, false);
+        ViewCompat.setNestedScrollingEnabled(binding.tagDetailsListview, true);
+        View headerView = getLayoutInflater().inflate(R.layout.list_docker_tag_detail_headers, binding.tagDetailsListview, false);
+        binding.tagDetailsListview.addHeaderView(headerView, null, false);
 
         dockerTagDetailsListAdapter = new DockerTagDetailsListAdapter(TagDetailsActivity.this, new ArrayList<>());
-        listView.setAdapter(dockerTagDetailsListAdapter);
+        binding.tagDetailsListview.setAdapter(dockerTagDetailsListAdapter);
         dockerTagDetailsListAdapter.addAll(imageVariantsFiltered);
     }
 
