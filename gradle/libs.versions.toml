@@ -2,7 +2,7 @@
 agp = "9.1.0"
 
 # AndroidX & Material
-androidxCore = "1.17.0"
+androidxCore = "1.18.0"
 androidxActivity = "1.12.4"
 appcompat = "1.7.1"
 constraintlayout = "2.2.1"
