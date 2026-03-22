@@ -76,13 +76,21 @@ public class TagDetailsActivity extends AppCompatActivity {
             getSupportActionBar().setSubtitle("Tag : " + tagName);
         }
 
-        ViewCompat.setNestedScrollingEnabled(binding.tagDetailsListview, true);
-        View headerView = getLayoutInflater().inflate(R.layout.list_docker_tag_detail_headers, binding.tagDetailsListview, false);
-        binding.tagDetailsListview.addHeaderView(headerView, null, false);
+        setupListView(imageVariantsFiltered);
+    }
 
-        DockerTagDetailsListAdapter dockerTagDetailsListAdapter = new DockerTagDetailsListAdapter(TagDetailsActivity.this, new ArrayList<>());
-        binding.tagDetailsListview.setAdapter(dockerTagDetailsListAdapter);
-        dockerTagDetailsListAdapter.addAll(imageVariantsFiltered);
+    private void setupListView(List<ImageVariantByTagV2> items) {
+        ListView listView = binding.tagDetailsListview;
+
+        // Header setup
+        View headerView = getLayoutInflater().inflate(R.layout.list_docker_tag_detail_headers, listView, false);
+        listView.addHeaderView(headerView, null, false);
+
+        // Adapter setup
+        DockerTagDetailsListAdapter adapter = new DockerTagDetailsListAdapter(this, items);
+        listView.setAdapter(adapter);
+
+        ViewCompat.setNestedScrollingEnabled(listView, true);
     }
 
     public static List<ImageVariantByTagV2> filterShownVariants(List<ImageVariantByTagV2> imageVariants) {
