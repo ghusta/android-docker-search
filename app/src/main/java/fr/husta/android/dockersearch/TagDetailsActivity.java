@@ -72,7 +72,7 @@ public class TagDetailsActivity extends AppCompatActivity {
         // setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            getSupportActionBar().setTitle(R.string.details_title); // Assuming R.string.details_title exists, or keep "Details"
+            getSupportActionBar().setTitle(R.string.details_title);
             getSupportActionBar().setSubtitle("Tag : " + tagName);
         }
 
