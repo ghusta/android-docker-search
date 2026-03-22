@@ -30,8 +30,6 @@ public class TagDetailsActivity extends AppCompatActivity {
 
     private ActivityTagDetailsBinding binding;
 
-    private DockerTagDetailsListAdapter dockerTagDetailsListAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +80,7 @@ public class TagDetailsActivity extends AppCompatActivity {
         View headerView = getLayoutInflater().inflate(R.layout.list_docker_tag_detail_headers, binding.tagDetailsListview, false);
         binding.tagDetailsListview.addHeaderView(headerView, null, false);
 
-        dockerTagDetailsListAdapter = new DockerTagDetailsListAdapter(TagDetailsActivity.this, new ArrayList<>());
+        DockerTagDetailsListAdapter dockerTagDetailsListAdapter = new DockerTagDetailsListAdapter(TagDetailsActivity.this, new ArrayList<>());
         binding.tagDetailsListview.setAdapter(dockerTagDetailsListAdapter);
         dockerTagDetailsListAdapter.addAll(imageVariantsFiltered);
     }
