@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +29,7 @@ import java.util.List;
 
 import fr.husta.android.dockersearch.databinding.ActivityTaglistBinding;
 import fr.husta.android.dockersearch.databinding.DialogWarningTaglistBinding;
-import fr.husta.android.dockersearch.docker.DockerRegistryClient;
+import fr.husta.android.dockersearch.docker.DockerRepository;
 import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
 import fr.husta.android.dockersearch.listadapter.DockerTagListAdapter;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -58,7 +57,7 @@ public class TagListActivity extends AppCompatActivity {
     private String imageName;
 
     private CompositeDisposable disposables = new CompositeDisposable();
-    private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
+    private DockerRepository dockerRepository = new DockerRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +165,7 @@ public class TagListActivity extends AppCompatActivity {
     private void requestTagsList(String imgName, final int pageNumber,
                                  Runnable onStart, Runnable onEnd) {
         // Fetch list tags (first page)
-        Disposable disposable = dockerRegistryClient.listTagsV2(imageNameToRepository(imgName), pageNumber)
+        Disposable disposable = dockerRepository.listTagsV2(imageNameToRepository(imgName), pageNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(data -> onStart.run())

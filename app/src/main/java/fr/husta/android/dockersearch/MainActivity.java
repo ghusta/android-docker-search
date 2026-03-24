@@ -44,7 +44,7 @@ import java.util.Objects;
 
 import fr.husta.android.dockersearch.databinding.ActivityMainBinding;
 import fr.husta.android.dockersearch.databinding.DialogAboutBinding;
-import fr.husta.android.dockersearch.docker.DockerRegistryClient;
+import fr.husta.android.dockersearch.docker.DockerRepository;
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.comparator.DefaultImageSearchComparator;
 import fr.husta.android.dockersearch.listadapter.DockerImageExpandableListAdapter;
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     private SuggestionAdapter suggestionAdapter;
 
     private CompositeDisposable disposables = new CompositeDisposable();
-    private DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
+    private DockerRepository dockerRepository = new DockerRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -426,7 +426,7 @@ public class MainActivity extends AppCompatActivity {
         suggestions.saveRecentQuery(query, null);
 
         // User pressed the search button
-        Disposable disposable = dockerRegistryClient.searchImagesAsync(query)
+        Disposable disposable = dockerRepository.searchImagesAsync(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disp1 -> onStart.run())
