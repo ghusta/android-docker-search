@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "fr.husta.android.dockersearch"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "fr.husta.android.dockersearch"
