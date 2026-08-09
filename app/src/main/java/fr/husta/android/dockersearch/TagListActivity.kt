@@ -110,13 +110,13 @@ class TagListActivity : AppCompatActivity() {
     }
 
     fun startActivityTagDetails(context: Context?, data: RepositoryTagV2) {
-        val starter = Intent(context, TagDetailsActivity::class.java)
-        starter.putExtra(TagDetailsActivity.DATA_TAG_NAME, data.name)
-        starter.putParcelableArrayListExtra(
+        val intent = Intent(context, TagDetailsActivity::class.java)
+        intent.putExtra(TagDetailsActivity.DATA_TAG_NAME, data.name)
+        intent.putParcelableArrayListExtra(
             TagDetailsActivity.DATA_IMG_VARIANT_ARRAY,
             ArrayList<ImageVariantByTagV2?>(data.imageVariants)
         )
-        startActivity(starter)
+        startActivity(intent)
     }
 
     private fun requestTagsList(
