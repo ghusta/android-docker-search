@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.RequiresApi;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.browser.customtabs.CustomTabsSession;
 import fr.husta.android.dockersearch.AppConstants;
@@ -135,20 +136,13 @@ public class DockerImageExpandableListAdapter
         return convertView;
     }
 
+    @RequiresApi(android.os.Build.VERSION_CODES.N)
     private String formatCompactNumber(int inputNumber)
     {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
-        {
-            CompactDecimalFormat compactDecimalFormat = CompactDecimalFormat.getInstance(Locale.getDefault(), CompactDecimalFormat.CompactStyle.SHORT);
+        CompactDecimalFormat compactDecimalFormat = CompactDecimalFormat.getInstance(Locale.getDefault(), CompactDecimalFormat.CompactStyle.SHORT);
 //            compactDecimalFormat.setMinimumSignificantDigits(1);
 //            compactDecimalFormat.setMaximumSignificantDigits(3);
-            return compactDecimalFormat.format(inputNumber);
-        }
-        else
-        {
-            // fallback to function
-            return formatCompactNumberBeforeNougat(inputNumber, Locale.getDefault());
-        }
+        return compactDecimalFormat.format(inputNumber);
     }
 
     public static String formatCompactNumberBeforeNougat(long count, Locale locale)
