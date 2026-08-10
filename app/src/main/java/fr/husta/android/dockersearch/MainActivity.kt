@@ -77,14 +77,14 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate : " + this.getLocalClassName())
-        binding = ActivityMainBinding.inflate(getLayoutInflater())
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.getRoot())
 
         //        setSupportActionBar(binding.searchBar);
-        APP_PACKAGE_NAME = getApplicationContext().getPackageName()
+        APP_PACKAGE_NAME = applicationContext.packageName
 
-        if (getIntent() != null) {
-            handleIntent(getIntent())
+        if (intent != null) {
+            handleIntent(intent)
         }
 
         checkInternetConnection()
@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity() {
         binding.searchView
             .getEditText() // When user presses enter
             .setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
-                binding.searchBar.setText(binding.searchView.getText())
+                binding.searchBar.setText(binding.searchView.text)
                 binding.searchView.hide()
 
                 onQueryTextSubmitCustom(
@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent) {
-        if (Intent.ACTION_SEARCH == intent.getAction()) {
+        if (Intent.ACTION_SEARCH == intent.action) {
             // SearchManager.QUERY is the key that a SearchManager will use to send a query string
             // to an Activity.
             val query = intent.getStringExtra(SearchManager.QUERY)
@@ -289,7 +289,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = getMenuInflater()
+        val inflater = menuInflater
         inflater.inflate(R.menu.options_menu, menu)
 
         //        MenuItem searchItem = menu.findItem(R.id.menu_search);
@@ -322,7 +322,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.getItemId()
+        val id = item.itemId
 
         if (id == R.id.menu_clear_search_history) {
             clickClearSearchHistory(item)
@@ -375,19 +375,19 @@ class MainActivity : AppCompatActivity() {
                 Consumer { data: ContainerImageSearchResult? ->
                     Log.d(
                         TAG,
-                        "searchImagesAsync.onResponse: returned " + data!!.getResults().size + " out of " + data.getNumResults()
+                        "searchImagesAsync.onResponse: returned " + data!!.results.size + " out of " + data.numResults
                     )
-                    data.getResults().sortWith(DefaultImageSearchComparator.defaultComparator())
+                    data.results.sortWith(DefaultImageSearchComparator.defaultComparator())
 
                     dockerImageExpandableListAdapter!!.notifyDataSetInvalidated() // necessaire ?
                     // Collapse all
-                    for (i in 0..<dockerImageExpandableListAdapter!!.getGroupCount()) {
+                    for (i in 0..<dockerImageExpandableListAdapter!!.groupCount) {
                         listView.collapseGroup(i)
                     }
 
                     // dockerImageExpandableListAdapter.setNotifyOnChange(false);
-                    dockerImageExpandableListAdapter!!.getGroupList().clear()
-                    dockerImageExpandableListAdapter!!.getGroupList().addAll(data.getResults())
+                    dockerImageExpandableListAdapter!!.groupList.clear()
+                    dockerImageExpandableListAdapter!!.groupList.addAll(data.results)
                     dockerImageExpandableListAdapter!!.notifyDataSetChanged()
                 },
                 Consumer { throwable: Throwable? ->
@@ -414,12 +414,12 @@ class MainActivity : AppCompatActivity() {
         onQueryTextSubmitCustom(
             binding.searchView.getEditText().getText().toString(),
             {},
-            { swipeRefreshLayout.setRefreshing(false) })
+            { swipeRefreshLayout.isRefreshing = false })
     }
 
     fun startActivityTagList(context: Context?, data: ImageSearchResult) {
         val starter = Intent(context, TagListActivity::class.java)
-        starter.putExtra(TagListActivity.DATA_IMG_NAME, data.getName())
+        starter.putExtra(TagListActivity.DATA_IMG_NAME, data.name)
         startActivity(starter)
     }
 
@@ -479,21 +479,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clickAbout(item: MenuItem?) {
-        val binding = DialogAboutBinding.inflate(getLayoutInflater())
+        val binding = DialogAboutBinding.inflate(layoutInflater)
         val applicationVersion = AppInfo.getApplicationVersion(this)
 
         // When linking text, force to always use default color. This works
         // around a pressed color state bug.
         val textView = binding.aboutCredits
-        val defaultColor = textView.getTextColors().getDefaultColor()
+        val defaultColor = textView.textColors.defaultColor
         textView.setTextColor(defaultColor)
 
         val textViewVersion = binding.aboutVersion
-        textViewVersion.setText(
-            String.format(
-                getString(R.string.msg_about_version),
-                applicationVersion
-            )
+        textViewVersion.text = String.format(
+            getString(R.string.msg_about_version),
+            applicationVersion
         )
 
         val applicationInfo = getApplicationInfo()
@@ -566,8 +564,8 @@ class MainActivity : AppCompatActivity() {
         get() {
             val connMgr =
                 getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-            val networkInfo = connMgr.getActiveNetworkInfo()
-            return (networkInfo != null && networkInfo.isConnected())
+            val networkInfo = connMgr.activeNetworkInfo
+            return (networkInfo != null && networkInfo.isConnected)
         }
 
     //    /**
