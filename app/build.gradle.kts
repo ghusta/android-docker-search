@@ -87,6 +87,9 @@ dependencies {
     implementation(libs.androidx.browser)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.material)
+    // Lifecycle : https://developer.android.com/jetpack/androidx/releases/lifecycle
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     implementation(libs.commons.lang3)
     implementation(libs.rxjava)
