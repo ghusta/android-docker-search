@@ -4,7 +4,7 @@ agp = "9.3.2"
 # AndroidX & Material
 androidxCore = "1.19.0"
 androidxActivity = "1.13.0"
-appcompat = "1.7.1"
+appcompat = "1.8.0"
 constraintlayout = "2.2.2"
 browser = "1.10.0"
 swiperefreshlayout = "1.2.0"
