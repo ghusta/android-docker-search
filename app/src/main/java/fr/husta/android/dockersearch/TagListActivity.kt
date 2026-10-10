@@ -50,8 +50,8 @@ class TagListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("MAIN_DEBUG", "onCreate : " + this.getLocalClassName())
-        binding = ActivityTaglistBinding.inflate(getLayoutInflater())
-        dialogWarningTaglistBinding = DialogWarningTaglistBinding.inflate(getLayoutInflater())
+        binding = ActivityTaglistBinding.inflate(layoutInflater)
+        dialogWarningTaglistBinding = DialogWarningTaglistBinding.inflate(layoutInflater)
         setContentView(binding.getRoot())
 
         setSupportActionBar(binding.topAppBar)
@@ -78,7 +78,7 @@ class TagListActivity : AppCompatActivity() {
 
         listView.setOnItemClickListener { adapterView: AdapterView<*>?, view: View?, i: Int, l: Long ->
             val item = listView.getItemAtPosition(i) as RepositoryTagV2
-            val count = TagDetailsActivity.filterShownVariants(item.getImageVariants()).size
+            val count = TagDetailsActivity.filterShownVariants(item.imageVariants).size
             Snackbar.make(
                 listView,
                 getResources().getQuantityString(R.plurals.msg_count_tag_images, count, count),
@@ -87,7 +87,7 @@ class TagListActivity : AppCompatActivity() {
                 .setAnchorView(if (fabNextPage.isOrWillBeShown) fabNextPage else null)
                 .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
                 .setAction(R.string.snackbar_action_details) { view1: View? ->
-                    Log.d(TAG, "Tag : " + item.getName())
+                    Log.d(TAG, "Tag : " + item.name)
                     startActivityTagDetails(this, item)
                 }
                 .show()
@@ -129,14 +129,14 @@ class TagListActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe(Consumer { data: Disposable? -> onStart.run() })
             .subscribe(Consumer { data: ContainerRepositoryTagV2? ->
-                val listTags = data!!.getTags()
+                val listTags = data!!.tags
                 dockerTagListAdapter!!.addAll(listTags)
 
                 // dockerTagListAdapter.notifyDataSetChanged();
                 currentPage = pageNumber
-                Log.d(TAG, "requestTagsList() - currentPage = " + currentPage)
-                hasNextPage = data.getNextUrl() != null
-                Log.d(TAG, "requestTagsList() - hasNextPage = " + hasNextPage)
+                Log.d(TAG, "requestTagsList() - currentPage = $currentPage")
+                hasNextPage = data.nextUrl != null
+                Log.d(TAG, "requestTagsList() - hasNextPage = $hasNextPage")
 
                 // Lint incorrectly reported :
                 // Error: VisibilityAwareImageButton.setVisibility can only be called from within
@@ -160,7 +160,7 @@ class TagListActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = getMenuInflater()
+        val inflater = menuInflater
         inflater.inflate(R.menu.options_menu_tags, menu)
 
         // MenuItem warningItem = menu.findItem(R.id.menu_warning_taglist);
@@ -168,7 +168,7 @@ class TagListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.getItemId()
+        val id = item.itemId
 
         if (id == R.id.menu_warning_taglist) {
             // Toast.makeText(this, "Warning... Tag list not up to date", Toast.LENGTH_SHORT).show();
