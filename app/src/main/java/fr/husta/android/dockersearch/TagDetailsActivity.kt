@@ -22,16 +22,16 @@ class TagDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityTagDetailsBinding.inflate(getLayoutInflater())
+        binding = ActivityTagDetailsBinding.inflate(layoutInflater)
         setContentView(binding.getRoot())
 
         setSupportActionBar(binding.topAppBar)
 
         val intent = getIntent()
         val tagName = intent.getStringExtra(DATA_TAG_NAME)
-        Log.d("TAG_DETAILS", "Tag : " + tagName)
+        Log.d("TAG_DETAILS", "Tag : $tagName")
         val imageVariants: MutableList<ImageVariantByTagV2?>? =
-            intent.getParcelableArrayListExtra<ImageVariantByTagV2?>(DATA_IMG_VARIANT_ARRAY)
+            intent.getParcelableArrayListExtra(DATA_IMG_VARIANT_ARRAY)
         Log.d("TAG_DETAILS", "List<ImageVariantByTagV2> # = " + imageVariants!!.size)
         // filter ImageVariantByTagV2 list to hide "unknown" value
         val imageVariantsFiltered: MutableList<ImageVariantByTagV2?> =
@@ -47,7 +47,7 @@ class TagDetailsActivity : AppCompatActivity() {
         listView = binding.tagDetailsListview
         ViewCompat.setNestedScrollingEnabled(listView, true)
         val headerView =
-            getLayoutInflater().inflate(R.layout.list_docker_tag_detail_headers, listView, false)
+            layoutInflater.inflate(R.layout.list_docker_tag_detail_headers, listView, false)
         listView.addHeaderView(headerView, null, false)
 
         dockerTagDetailsListAdapter =
@@ -62,15 +62,15 @@ class TagDetailsActivity : AppCompatActivity() {
 
         fun filterShownVariants(imageVariants: MutableList<ImageVariantByTagV2?>): MutableList<ImageVariantByTagV2?> {
             return imageVariants.stream()
-                .filter(Predicate.not<ImageVariantByTagV2?>(isUnknownOrEmptyValue))
+                .filter(Predicate.not(isUnknownOrEmptyValue))
                 .collect(Collectors.toList())
         }
 
         private val isUnknownOrEmptyValue: Predicate<ImageVariantByTagV2?>
             get() = Predicate { variant: ImageVariantByTagV2? ->
-                variant!!.getArchitecture() == "unknown"
-                        || variant.getArchitecture().isEmpty()
-                        || variant.getOs() == "unknown"
+                variant!!.architecture == "unknown"
+                        || variant.architecture.isEmpty()
+                        || variant.os == "unknown"
             }
     }
 }
