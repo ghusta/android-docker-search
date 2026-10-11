@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.squareup.moshi.Moshi;
 
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +18,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class DockerRegistryClient {
 
@@ -43,6 +45,9 @@ public class DockerRegistryClient {
                 .addModule(new JavaTimeModule())
                 .build();
 
+        Moshi moshi = new Moshi.Builder()
+                .build();
+
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
@@ -53,6 +58,7 @@ public class DockerRegistryClient {
                 .baseUrl(BASE_URI)
                 .client(okHttpClient)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
 
@@ -60,6 +66,7 @@ public class DockerRegistryClient {
                 .baseUrl(BASE_REGISTRY_URI)
                 .client(okHttpClient)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
     }
