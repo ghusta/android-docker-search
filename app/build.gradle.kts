@@ -96,6 +96,7 @@ dependencies {
     implementation(libs.rxandroid)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.jackson)
+    implementation(libs.retrofit.converter.moshi)
     implementation(libs.retrofit.adapter.rxjava3)
     implementation(libs.okhttp)
     implementation(libs.jackson.databind)
