@@ -16,6 +16,7 @@ material = "1.14.0"
 retrofit = "3.0.0"
 okhttp = "5.5.0"
 jackson = "2.22.3"
+moshi = "1.15.2"
 
 # Reactive
 rxjava = "3.1.12"
@@ -56,6 +57,8 @@ retrofit-adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", 
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
+moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
+moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 
 # Reactive
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }

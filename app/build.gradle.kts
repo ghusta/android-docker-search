@@ -103,6 +103,11 @@ dependencies {
     implementation(libs.jackson.databind)
     implementation(libs.jackson.datatype.jsr310)
 
+    implementation(libs.moshi.adapters)
+
+    // see https://kotlinlang.org/docs/ksp-quickstart.html
+    ksp(libs.moshi.kotlin.codegen)
+
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     testImplementation(libs.junit)
