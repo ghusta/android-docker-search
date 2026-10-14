@@ -27,14 +27,17 @@ import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.husta.android.dockersearch.databinding.ActivityMainBinding
 import fr.husta.android.dockersearch.databinding.DialogAboutBinding
 import fr.husta.android.dockersearch.docker.DockerRegistryClient
+import fr.husta.android.dockersearch.docker.DockerSearchApiClient
 import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult
 import fr.husta.android.dockersearch.docker.model.comparator.DefaultImageSearchComparator
+import fr.husta.android.dockersearch.docker.model.comparator.SearchItemComparators
 import fr.husta.android.dockersearch.listadapter.DockerImageExpandableListAdapter
 import fr.husta.android.dockersearch.listadapter.SuggestionAdapter
 import fr.husta.android.dockersearch.search.CustomSearchRecentSuggestions
@@ -45,7 +48,9 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import java.util.Objects
+import kotlin.coroutines.cancellation.CancellationException
 
 class MainActivity : AppCompatActivity() {
 
@@ -67,7 +72,12 @@ class MainActivity : AppCompatActivity() {
     private val disposables = CompositeDisposable()
     private val dockerRegistryClient = DockerRegistryClient()
 
+    private lateinit var dockerSearchApiClient: DockerSearchApiClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        // init Retrofit API
+        dockerSearchApiClient = DockerSearchApiClient()
+
         // read preferences at start
         preferences = getPreferences(MODE_PRIVATE)
         selectedTheme = preferences.getInt(KEY_PREF_SAVED_DARK_MODE, 2)
@@ -378,39 +388,91 @@ class MainActivity : AppCompatActivity() {
         suggestions.saveRecentQuery(query, null)
 
         // User pressed the search button
-        val disposable = dockerRegistryClient.searchImagesAsync(query)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe(Consumer { disp1: Disposable? -> onStart.run() })
-            .doOnTerminate { onEnd.run() }
-            .subscribe(
-                Consumer { data: ContainerImageSearchResult? ->
-                    Log.d(
-                        TAG,
-                        "searchImagesAsync.onResponse: returned " + data!!.results.size + " out of " + data.numResults
-                    )
-                    data.results.sortWith(DefaultImageSearchComparator.defaultComparator())
+        lifecycleScope.launch {
+            onStart.run()
 
-                    dockerImageExpandableListAdapter!!.notifyDataSetInvalidated() // necessaire ?
-                    // Collapse all
-                    for (i in 0..<dockerImageExpandableListAdapter!!.groupCount) {
+            try {
+                query?.let {
+                    val response = dockerSearchApiClient.api.searchImages(it)
+
+                    val sortedItems =
+                        response.results.sortedWith(SearchItemComparators.BY_OFFICIAL_AND_STARS)
+
+                    dockerImageExpandableListAdapter!!.notifyDataSetInvalidated()
+
+                    // Collapse all groups
+                    for (i in 0 until dockerImageExpandableListAdapter!!.groupCount) {
                         listView.collapseGroup(i)
                     }
 
-                    // dockerImageExpandableListAdapter.setNotifyOnChange(false);
                     dockerImageExpandableListAdapter!!.groupList.clear()
-                    dockerImageExpandableListAdapter!!.groupList.addAll(data.results)
+                    val firstItem = ImageSearchResult(
+                        sortedItems[0].name,
+                        sortedItems[0].description,
+                        sortedItems[0].isOfficial,
+                        sortedItems[0].starCount
+                    )
+                    val fakeItem = ImageSearchResult(
+                        "fake", "Fake...", false, 0
+                    )
+                    dockerImageExpandableListAdapter!!.groupList.add(firstItem)
+                    dockerImageExpandableListAdapter!!.groupList.add(fakeItem)
+//                    dockerImageExpandableListAdapter!!.groupList.addAll( sortedItems )
                     dockerImageExpandableListAdapter!!.notifyDataSetChanged()
-                },
-                Consumer { throwable: Throwable? ->
-                    Log.e(TAG, throwable!!.message, throwable)
-                    Toast.makeText(
-                        this@MainActivity,
-                        getString(R.string.msg_error, throwable.message),
-                        Toast.LENGTH_LONG
-                    ).show()
-                })
-        disposables.add(disposable)
+
+
+                }
+            } catch (e: CancellationException) {
+                // Important : ne pas intercepter silencieusement l'annulation d'une coroutine.
+                throw e
+
+            } catch (e: Exception) {
+                Log.e(TAG, e.message, e)
+
+                Toast.makeText(
+                    this@MainActivity,
+                    getString(R.string.msg_error, e.message),
+                    Toast.LENGTH_LONG
+                ).show()
+
+            } finally {
+                onEnd.run()
+            }
+        }
+
+//        val disposable = dockerRegistryClient.searchImagesAsync(query)
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .doOnSubscribe(Consumer { disp1: Disposable? -> onStart.run() })
+//            .doOnTerminate { onEnd.run() }
+//            .subscribe(
+//                Consumer { data: ContainerImageSearchResult? ->
+//                    Log.d(
+//                        TAG,
+//                        "searchImagesAsync.onResponse: returned " + data!!.results.size + " out of " + data.numResults
+//                    )
+//                    data.results.sortWith(DefaultImageSearchComparator.defaultComparator())
+//
+//                    dockerImageExpandableListAdapter!!.notifyDataSetInvalidated() // necessaire ?
+//                    // Collapse all
+//                    for (i in 0..<dockerImageExpandableListAdapter!!.groupCount) {
+//                        listView.collapseGroup(i)
+//                    }
+//
+//                    // dockerImageExpandableListAdapter.setNotifyOnChange(false);
+//                    dockerImageExpandableListAdapter!!.groupList.clear()
+//                    dockerImageExpandableListAdapter!!.groupList.addAll(data.results)
+//                    dockerImageExpandableListAdapter!!.notifyDataSetChanged()
+//                },
+//                Consumer { throwable: Throwable? ->
+//                    Log.e(TAG, throwable!!.message, throwable)
+//                    Toast.makeText(
+//                        this@MainActivity,
+//                        getString(R.string.msg_error, throwable.message),
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                })
+//        disposables.add(disposable)
 
         // fermer le clavier de saisie
         binding.searchView.clearFocus()

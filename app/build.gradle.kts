@@ -112,6 +112,7 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
 
     // https://developer.android.com/training/testing/set-up-project#android-test-dependencies
     // Core library
