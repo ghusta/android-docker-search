@@ -243,7 +243,7 @@ public class DockerImageExpandableListAdapter
             shareIntent.setType("text/plain");
             final String subject = "Docker Image : " + item.getName();
             String body = "";
-            if (item.getDescription() != null && item.getDescription().trim().length() != 0)
+            if (item.getDescription() != null && !item.getDescription().trim().isEmpty())
             {
                 body += item.getDescription() + "\n\n";
             }
