@@ -72,11 +72,8 @@ class MainActivity : AppCompatActivity() {
     private val disposables = CompositeDisposable()
     private val dockerRegistryClient = DockerRegistryClient()
 
-    private lateinit var dockerSearchApiClient: DockerSearchApiClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        // init Retrofit API
-        dockerSearchApiClient = DockerSearchApiClient()
+        // init Retrofit API -> done by Kotlin object
 
         // read preferences at start
         preferences = getPreferences(MODE_PRIVATE)
@@ -393,7 +390,7 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 query?.let {
-                    val response = dockerSearchApiClient.api.searchImages(it)
+                    val response = DockerSearchApiClient.api.searchImages(it)
 
                     val sortedItems =
                         response.results.sortedWith(SearchItemComparators.BY_OFFICIAL_AND_STARS)
