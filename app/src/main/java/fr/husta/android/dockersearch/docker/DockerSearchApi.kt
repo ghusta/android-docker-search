@@ -8,9 +8,21 @@ import retrofit2.http.Query
 
 interface DockerSearchApi {
 
+    /**
+     * @param term Term to search.
+     * @param size Between 1 and 100. Optional : 25 by default.
+     */
     @GET("v1/search")
-    suspend fun searchImages(@Query("q") term: String, @Query("n") size: Int = 25): SearchItemsResponse
+    suspend fun searchImages(
+        @Query("q") term: String,
+        @Query("n") size: Int = 25
+    ): SearchItemsResponse
 
+    /**
+     * @param repository Like 'library/centos' (param must be encoded because it may contain /)
+     * @param page       Ex 1
+     * @param pageSize   Ex 25
+     */
     @GET("v2/repositories/{repository}/tags")
     suspend fun listTags(
         @Path("repository", encoded = true) repository: String,
