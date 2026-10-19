@@ -1,5 +1,6 @@
 package fr.husta.android.dockersearch.docker
 
+import fr.husta.android.dockersearch.AppConstants
 import fr.husta.android.dockersearch.docker.model.RepositoryTagsResponse
 import fr.husta.android.dockersearch.docker.model.SearchItemsResponse
 import retrofit2.http.GET
@@ -27,7 +28,7 @@ interface DockerSearchApi {
     suspend fun listTags(
         @Path("repository", encoded = true) repository: String,
         @Query("page") page: Int = 1,
-        @Query("page_size") pageSize: Int = 25
+        @Query("page_size") pageSize: Int = AppConstants.TAG_LIST_PAGE_SIZE
     ): RepositoryTagsResponse
 
 }

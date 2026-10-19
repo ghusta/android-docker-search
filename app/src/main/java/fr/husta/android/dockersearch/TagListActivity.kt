@@ -13,14 +13,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import fr.husta.android.dockersearch.databinding.ActivityTaglistBinding
 import fr.husta.android.dockersearch.databinding.DialogWarningTaglistBinding
-import fr.husta.android.dockersearch.docker.DockerRegistryClient
+import fr.husta.android.dockersearch.docker.DockerSearchApiClient
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2
 import fr.husta.android.dockersearch.docker.model.ImageVariantByTagV2
+import fr.husta.android.dockersearch.docker.model.RepositoryTagKotlin
 import fr.husta.android.dockersearch.docker.model.RepositoryTagV2
 import fr.husta.android.dockersearch.listadapter.DockerTagListAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -28,6 +30,9 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.launch
+import java.time.ZoneId
+import kotlin.coroutines.cancellation.CancellationException
 
 class TagListActivity : AppCompatActivity() {
 
@@ -35,7 +40,7 @@ class TagListActivity : AppCompatActivity() {
 
     private lateinit var dialogWarningTaglistBinding: DialogWarningTaglistBinding
 
-    private var dockerTagListAdapter: DockerTagListAdapter? = null
+    private lateinit var dockerTagListAdapter: DockerTagListAdapter
 
     private lateinit var listView: ListView
     private lateinit var fabNextPage: FloatingActionButton
@@ -45,7 +50,7 @@ class TagListActivity : AppCompatActivity() {
     private var imageName: String? = null
 
     private val disposables = CompositeDisposable()
-    private val dockerRegistryClient = DockerRegistryClient()
+//    private val dockerRegistryClient = DockerRegistryClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,7 +108,7 @@ class TagListActivity : AppCompatActivity() {
         requestTagsList(
             imageName!!, 1,
             {
-                dockerTagListAdapter!!.clear()
+                dockerTagListAdapter.clear()
                 binding.progressIndicator.show()
             },
             { binding.progressIndicator.hide() })
@@ -120,43 +125,96 @@ class TagListActivity : AppCompatActivity() {
     }
 
     private fun requestTagsList(
-        imgName: String, pageNumber: Int,
-        onStart: Runnable, onEnd: Runnable
+        imgName: String,
+        pageNumber: Int,
+        onStart: Runnable,
+        onEnd: Runnable
     ) {
-        // Fetch list tags (first page)
-        val disposable = dockerRegistryClient.listTagsV2(imageNameToRepository(imgName), pageNumber)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe(Consumer { data: Disposable? -> onStart.run() })
-            .subscribe(Consumer { data: ContainerRepositoryTagV2? ->
-                val listTags = data!!.tags
-                dockerTagListAdapter!!.addAll(listTags)
+
+        lifecycleScope.launch {
+            onStart.run()
+
+            try {
+                // Fetch list tags (first page)
+                val response =
+                    DockerSearchApiClient.api.listTags(imageNameToRepository(imgName), pageNumber)
+
+                val listTags: List<RepositoryTagKotlin> = response.results
+                listTags.forEach {
+                    val newItem = RepositoryTagV2()
+                    newItem.name = it.name
+                    newItem.fullSize = it.fullSize
+                    newItem.lastUpdated = it.lastUpdated.atZone(ZoneId.systemDefault())
+                  // TODO: fill newItem.imageVariants
+                    dockerTagListAdapter.add(newItem)
+                }
 
                 // dockerTagListAdapter.notifyDataSetChanged();
+
                 currentPage = pageNumber
                 Log.d(TAG, "requestTagsList() - currentPage = $currentPage")
-                hasNextPage = data.nextUrl != null
+                hasNextPage = response.nextUrl != null
                 Log.d(TAG, "requestTagsList() - hasNextPage = $hasNextPage")
 
-                // Lint incorrectly reported :
-                // Error: VisibilityAwareImageButton.setVisibility can only be called from within
-                // the same library group (groupId=com.google.android.material) [RestrictedApi]
-                // See : https://stackoverflow.com/questions/50343634/android-p-visibilityawareimagebutton-setvisibility-can-only-be-called-from-the-s
                 if (hasNextPage) {
                     fabNextPage.show()
                 } else {
                     fabNextPage.hide()
                 }
-            }, Consumer { throwable: Throwable? ->
-                onEnd.run()
+
+            } catch (e: CancellationException) {
+                // Important : ne pas intercepter silencieusement l'annulation d'une coroutine.
+                throw e
+
+            } catch (e: Exception) {
+                Log.e(TAG, e.message, e)
+
                 Toast.makeText(
                     this@TagListActivity,
-                    getString(R.string.msg_error, throwable!!.message),
+                    getString(R.string.msg_error, e.message),
                     Toast.LENGTH_LONG
                 ).show()
+
+            } finally {
+                onEnd.run()
             }
-            ) { onEnd.run() }
-        disposables.add(disposable)
+        }
+
+
+//        // Fetch list tags (first page)
+//        val disposable = dockerRegistryClient.listTagsV2(imageNameToRepository(imgName), pageNumber)
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .doOnSubscribe(Consumer { data: Disposable? -> onStart.run() })
+//            .subscribe(Consumer { data: ContainerRepositoryTagV2? ->
+//                val listTags = data!!.tags
+//                dockerTagListAdapter!!.addAll(listTags)
+//
+//                // dockerTagListAdapter.notifyDataSetChanged();
+//                currentPage = pageNumber
+//                Log.d(TAG, "requestTagsList() - currentPage = $currentPage")
+//                hasNextPage = data.nextUrl != null
+//                Log.d(TAG, "requestTagsList() - hasNextPage = $hasNextPage")
+//
+//                // Lint incorrectly reported :
+//                // Error: VisibilityAwareImageButton.setVisibility can only be called from within
+//                // the same library group (groupId=com.google.android.material) [RestrictedApi]
+//                // See : https://stackoverflow.com/questions/50343634/android-p-visibilityawareimagebutton-setvisibility-can-only-be-called-from-the-s
+//                if (hasNextPage) {
+//                    fabNextPage.show()
+//                } else {
+//                    fabNextPage.hide()
+//                }
+//            }, Consumer { throwable: Throwable? ->
+//                onEnd.run()
+//                Toast.makeText(
+//                    this@TagListActivity,
+//                    getString(R.string.msg_error, throwable!!.message),
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            }
+//            ) { onEnd.run() }
+//        disposables.add(disposable)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

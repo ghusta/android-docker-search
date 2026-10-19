@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.squareup.moshi.Moshi;
 
-import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 import fr.husta.android.dockersearch.AppConstants;
@@ -20,7 +19,8 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
-public class DockerRegistryClient {
+public class DockerRegistryClient
+{
 
     /**
      * @deprecated HTTP 301 with "Location: https://registry.hub.docker.com/"
@@ -38,7 +38,8 @@ public class DockerRegistryClient {
      */
     private final Retrofit retrofitRxJava3;
 
-    public DockerRegistryClient() {
+    public DockerRegistryClient()
+    {
         ObjectMapper objectMapper = JsonMapper.builder()
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -51,7 +52,7 @@ public class DockerRegistryClient {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
-                .proxy(Proxy.NO_PROXY)
+                .proxy(null)
                 .build();
 
         retrofitDockerIndex = new Retrofit.Builder()
@@ -71,22 +72,28 @@ public class DockerRegistryClient {
                 .build();
     }
 
-    public Observable<ContainerImageSearchResult> searchImagesAsync(String term) {
+    @Deprecated(forRemoval = true)
+    public Observable<ContainerImageSearchResult> searchImagesAsync(String term)
+    {
         final int pageSize = AppConstants.IMAGE_SEARCH_PAGE_SIZE;
 
         DockerSearchRestService dockerSearchService = retrofitDockerIndex.create(DockerSearchRestService.class);
         return dockerSearchService.searchImages(term, pageSize);
     }
 
-    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository) {
+    @Deprecated(forRemoval = true)
+    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository)
+    {
         return listTagsV2(repository, 1);
     }
 
-    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page) {
+    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page)
+    {
         return listTagsV2(repository, page, AppConstants.TAG_LIST_PAGE_SIZE);
     }
 
-    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page, int pageSize) {
+    public Observable<ContainerRepositoryTagV2> listTagsV2(String repository, int page, int pageSize)
+    {
         DockerSearchRestService dockerSearchService = retrofitRxJava3.create(DockerSearchRestService.class);
         return dockerSearchService.listTagsV2(repository, page, pageSize);
     }

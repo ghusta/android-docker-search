@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var suggestionAdapter: SuggestionAdapter
 
     private val disposables = CompositeDisposable()
-    private val dockerRegistryClient = DockerRegistryClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // init Retrofit API -> done by Kotlin object
