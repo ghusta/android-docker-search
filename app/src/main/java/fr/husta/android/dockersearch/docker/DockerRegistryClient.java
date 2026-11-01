@@ -10,7 +10,6 @@ import com.squareup.moshi.Moshi;
 import java.util.concurrent.TimeUnit;
 
 import fr.husta.android.dockersearch.AppConstants;
-import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.OkHttpClient;
@@ -70,15 +69,6 @@ public class DockerRegistryClient
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
-    }
-
-    @Deprecated(forRemoval = true)
-    public Observable<ContainerImageSearchResult> searchImagesAsync(String term)
-    {
-        final int pageSize = AppConstants.IMAGE_SEARCH_PAGE_SIZE;
-
-        DockerSearchRestService dockerSearchService = retrofitDockerIndex.create(DockerSearchRestService.class);
-        return dockerSearchService.searchImages(term, pageSize);
     }
 
     @Deprecated(forRemoval = true)

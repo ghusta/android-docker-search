@@ -1,9 +1,12 @@
 package fr.husta.android.dockersearch.docker.model
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class SearchItem(
 
     @Json(name = "name")
@@ -20,4 +23,4 @@ data class SearchItem(
 
     @Json(name = "is_automated")
     val isAutomated: Boolean = false
-)
+) : Parcelable

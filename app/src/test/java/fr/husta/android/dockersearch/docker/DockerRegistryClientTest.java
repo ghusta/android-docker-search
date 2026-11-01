@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import fr.husta.android.dockersearch.docker.model.ContainerImageSearchResult;
 import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2;
 import fr.husta.android.dockersearch.docker.model.RepositoryTagV2;
 import io.reactivex.rxjava3.core.Observable;
@@ -17,64 +16,6 @@ public class DockerRegistryClientTest
 
     private static final long _30_SECONDS_IN_MILLIS = 30 * 1000L;
     private static final long _45_SECONDS_IN_MILLIS = 45 * 1000L;
-
-    @Test(timeout = _30_SECONDS_IN_MILLIS)
-    public void searchImagesAsync()
-    {
-        DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
-        String term;
-
-        term = "tomcat";
-        Observable<ContainerImageSearchResult> containerImageSearchResultObservable = dockerRegistryClient.searchImagesAsync(term);
-        ContainerImageSearchResult containerImageSearchResult = containerImageSearchResultObservable
-                .blockingFirst();
-        assertThat(containerImageSearchResult).isNotNull();
-        assertThat(containerImageSearchResult.getResults()).isNotEmpty();
-    }
-
-    @Test(timeout = _30_SECONDS_IN_MILLIS)
-    public void listTagsV2()
-    {
-        long start = System.currentTimeMillis();
-        DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
-        String repo;
-
-//        repo = "tomcat";
-        repo = "library/tomcat";
-        // ContainerRepositoryTagV2 containerRepositoryTagV2 = dockerRegistryClient.listTagsV2(repo);
-        AtomicReference<ContainerRepositoryTagV2> containerRepositoryTagV2 = new AtomicReference<>();
-        dockerRegistryClient.listTagsV2(repo).blockingSubscribe(containerRepositoryTagV2::set);
-        List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.get().getTags();
-
-        long end = System.currentTimeMillis();
-        System.out.println("Reponse en : " + (end - start) + " ms");
-        System.out.println("Page count = " + repositoryTags.size());
-        System.out.println("Total count = " + containerRepositoryTagV2.get().getTotalCount());
-        assertThat(repositoryTags.size()).isGreaterThan(1);
-        RepositoryTagV2 firstTag = repositoryTags.get(0);
-        System.out.printf("%s / %,d bytes / %s%n",
-                firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated());
-    }
-
-    @Test(timeout = _30_SECONDS_IN_MILLIS)
-    public void listTagsV2_Jenkins()
-    {
-        long start = System.currentTimeMillis();
-        DockerRegistryClient dockerRegistryClient = new DockerRegistryClient();
-        String repo;
-
-//        repo = "tomcat";
-        repo = "library/jenkins";
-        AtomicReference<ContainerRepositoryTagV2> containerRepositoryTagV2 = new AtomicReference<>();
-        dockerRegistryClient.listTagsV2(repo).blockingSubscribe(containerRepositoryTagV2::set);
-        List<RepositoryTagV2> repositoryTags = containerRepositoryTagV2.get().getTags();
-
-        System.out.println("Page count = " + repositoryTags.size());
-        assertThat(repositoryTags.size()).isGreaterThan(1);
-        RepositoryTagV2 firstTag = repositoryTags.get(0);
-        System.out.printf("%s / %,d bytes / %s%n",
-                firstTag.getName(), firstTag.getFullSize(), firstTag.getLastUpdated());
-    }
 
     @Test(timeout = _30_SECONDS_IN_MILLIS)
     public void listTagsV2_pageFull()

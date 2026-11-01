@@ -32,16 +32,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.husta.android.dockersearch.databinding.ActivityMainBinding
 import fr.husta.android.dockersearch.databinding.DialogAboutBinding
-import fr.husta.android.dockersearch.docker.DockerRegistryClient
 import fr.husta.android.dockersearch.docker.DockerSearchApiClient
 import fr.husta.android.dockersearch.docker.model.ImageSearchResult
+import fr.husta.android.dockersearch.docker.model.SearchItem
 import fr.husta.android.dockersearch.docker.model.comparator.SearchItemComparators
 import fr.husta.android.dockersearch.listadapter.DockerImageExpandableListAdapter
 import fr.husta.android.dockersearch.listadapter.SuggestionAdapter
 import fr.husta.android.dockersearch.search.CustomSearchRecentSuggestions
 import fr.husta.android.dockersearch.search.RecentSearchProvider
 import fr.husta.android.dockersearch.utils.AppInfo
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.launch
 import java.util.Objects
 import kotlin.coroutines.cancellation.CancellationException
@@ -62,8 +61,6 @@ class MainActivity : AppCompatActivity() {
     private var lastSearchQuery: String? = null
 
     private lateinit var suggestionAdapter: SuggestionAdapter
-
-    private val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // init Retrofit API -> done by Kotlin object
@@ -94,15 +91,15 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             dockerImageExpandableListAdapter = DockerImageExpandableListAdapter(
                 this@MainActivity,
-                ArrayList<ImageSearchResult?>()
+                ArrayList()
             )
         } else {
             Log.d(TAG, "onCreate: state to be restored ?")
-            val savedArrayList = savedInstanceState.getParcelableArrayList<ImageSearchResult?>(
+            val savedArrayList = savedInstanceState.getParcelableArrayList<SearchItem>(
                 KEY_IMAGE_LIST_ADAPTER
             )
             dockerImageExpandableListAdapter =
-                DockerImageExpandableListAdapter(this@MainActivity, savedArrayList)
+                savedArrayList?.let { DockerImageExpandableListAdapter(this@MainActivity, it) }
         }
         listView.setAdapter(dockerImageExpandableListAdapter)
 
@@ -238,7 +235,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onSaveInstanceState: listView => " + listView.adapter.count)
         outState.putParcelableArrayList(
             KEY_IMAGE_LIST_ADAPTER,
-            dockerImageExpandableListAdapter!!.groupList
+            dockerImageExpandableListAdapter?.groupList
         )
         if (lastSearchQuery != null) {
             outState.putString(KEY_LAST_SEARCH, lastSearchQuery)
@@ -399,7 +396,7 @@ class MainActivity : AppCompatActivity() {
 
                     for ((name, description, starCount, isOfficial) in sortedItems) {
                         dockerImageExpandableListAdapter!!.groupList.add(
-                            ImageSearchResult(name, description, isOfficial, starCount)
+                            SearchItem(name, description, starCount, isOfficial)
                         )
                     }
 //                    dockerImageExpandableListAdapter!!.groupList.addAll( sortedItems )
@@ -590,26 +587,6 @@ class MainActivity : AppCompatActivity() {
             val networkInfo = connMgr.activeNetworkInfo
             return (networkInfo != null && networkInfo.isConnected)
         }
-
-    //    /**
-    //     * Check that Google Play services APK is installed and up to date.
-    //     * => https://developers.google.com/android/reference/com/google/android/gms/common/GoogleApiAvailability
-    //     *
-    //     * @return true if Google Play Services is available and up to
-    //     * date on this device; false otherwise.
-    //     */
-    //    private boolean isGooglePlayServicesAvailable()
-    //    {
-    //        GoogleApiAvailability apiAvailability =
-    //                GoogleApiAvailability.getInstance();
-    //        final int connectionStatusCode =
-    //                apiAvailability.isGooglePlayServicesAvailable(this);
-    //        return connectionStatusCode == ConnectionResult.SUCCESS;
-    //    }
-    override fun onDestroy() {
-        super.onDestroy()
-        this.disposables.clear()
-    }
 
     companion object {
         const val PROJECT_GITHUB_URL: String = "https://github.com/ghusta/android-docker-search"
