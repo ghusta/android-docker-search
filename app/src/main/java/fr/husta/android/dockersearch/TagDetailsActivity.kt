@@ -6,10 +6,8 @@ import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import fr.husta.android.dockersearch.databinding.ActivityTagDetailsBinding
-import fr.husta.android.dockersearch.docker.model.ImageVariantByTagV2
+import fr.husta.android.dockersearch.docker.model.ImageVariantByTag
 import fr.husta.android.dockersearch.listadapter.DockerTagDetailsListAdapter
-import java.util.function.Predicate
-import java.util.stream.Collectors
 
 class TagDetailsActivity : AppCompatActivity() {
 
@@ -30,12 +28,14 @@ class TagDetailsActivity : AppCompatActivity() {
         val intent = getIntent()
         val tagName = intent.getStringExtra(DATA_TAG_NAME)
         Log.d("TAG_DETAILS", "Tag : $tagName")
-        val imageVariants: MutableList<ImageVariantByTagV2?>? =
+        val imageVariants: MutableList<ImageVariantByTag>? =
             intent.getParcelableArrayListExtra(DATA_IMG_VARIANT_ARRAY)
-        Log.d("TAG_DETAILS", "List<ImageVariantByTagV2> # = " + imageVariants!!.size)
+        Log.d("TAG_DETAILS", "List<ImageVariantByTagV2> # = " + imageVariants?.size)
         // filter ImageVariantByTagV2 list to hide "unknown" value
-        val imageVariantsFiltered: MutableList<ImageVariantByTagV2?> =
-            filterShownVariants(imageVariants)
+        var imageVariantsFiltered: List<ImageVariantByTag> = listOf()
+        if (imageVariants != null) {
+            imageVariantsFiltered = filterShownVariants(imageVariants)
+        }
 
         // setSupportActionBar(binding.toolbar);
         supportActionBar?.let { actionBar ->
@@ -51,7 +51,7 @@ class TagDetailsActivity : AppCompatActivity() {
         listView.addHeaderView(headerView, null, false)
 
         dockerTagDetailsListAdapter =
-            DockerTagDetailsListAdapter(this@TagDetailsActivity, ArrayList<ImageVariantByTagV2?>())
+            DockerTagDetailsListAdapter(this@TagDetailsActivity, ArrayList())
         listView.setAdapter(dockerTagDetailsListAdapter)
         dockerTagDetailsListAdapter!!.addAll(imageVariantsFiltered)
     }
@@ -60,17 +60,13 @@ class TagDetailsActivity : AppCompatActivity() {
         const val DATA_TAG_NAME: String = "DATA_TAG_NAME"
         const val DATA_IMG_VARIANT_ARRAY: String = "DATA_IMG_VARIANT_ARRAY"
 
-        fun filterShownVariants(imageVariants: MutableList<ImageVariantByTagV2?>): MutableList<ImageVariantByTagV2?> {
-            return imageVariants.stream()
-                .filter(Predicate.not(isUnknownOrEmptyValue))
-                .collect(Collectors.toList())
+        fun filterShownVariants(imageVariants: List<ImageVariantByTag>): List<ImageVariantByTag> {
+            return imageVariants.filterNot { variant ->
+                variant.architecture == "unknown" ||
+                        variant.architecture == null ||
+                        variant.os == "unknown"
+            }
         }
 
-        private val isUnknownOrEmptyValue: Predicate<ImageVariantByTagV2?>
-            get() = Predicate { variant: ImageVariantByTagV2? ->
-                variant!!.architecture == "unknown"
-                        || variant.architecture.isEmpty()
-                        || variant.os == "unknown"
-            }
     }
 }

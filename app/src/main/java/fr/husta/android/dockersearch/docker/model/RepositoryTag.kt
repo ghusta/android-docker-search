@@ -1,32 +1,25 @@
-package fr.husta.android.dockersearch.docker.model;
+package fr.husta.android.dockersearch.docker.model
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import android.os.Parcelable
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
+import java.time.Instant
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+@JsonClass(generateAdapter = true)
+@Parcelize
+data class RepositoryTag(
 
-@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, setterVisibility = NONE)
-@JsonIgnoreProperties(ignoreUnknown = true)
-@Deprecated
-public class RepositoryTag
-{
+    @Json(name = "name")
+    val name: String,
 
-    @JsonProperty("name")
-    private String name;
+    @Json(name = "full_size")
+    val fullSize: Long?,
 
-    public RepositoryTag()
-    {
-    }
+    @Json(name = "last_updated")
+    val lastUpdated: Instant?,
 
-    public String getName()
-    {
-        return name;
-    }
+    @Json(name = "images")
+    val imageVariants: List<ImageVariantByTag>
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-}
+) : Parcelable

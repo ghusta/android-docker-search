@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = true)
 @Parcelize
-data class SearchItem(
+data class ImageItem(
 
     @Json(name = "name")
     val name: String,

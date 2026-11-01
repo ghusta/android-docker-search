@@ -1,6 +1,5 @@
 package fr.husta.android.dockersearch.docker.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -10,13 +9,13 @@ data class RepositoryTagsResponse(
     @Json(name = "count")
     val totalCount: Int,
 
-    @JsonProperty("next")
+    @Json(name = "next")
     val nextUrl: String?,
 
-    @JsonProperty("previous")
+    @Json(name = "previous")
     val previousUrl: String?,
 
     @Json(name = "results")
-    val results: List<RepositoryTagKotlin>
+    val results: List<RepositoryTag>
 
 )

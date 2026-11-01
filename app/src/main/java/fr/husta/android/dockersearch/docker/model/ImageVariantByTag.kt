@@ -1,24 +1,27 @@
 package fr.husta.android.dockersearch.docker.model
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class ImageVariantByTag(
 
     @Json(name = "digest")
     val digest: String,
 
     @Json(name = "os")
-    val os: String,
+    val os: String?,
 
     @Json(name = "os_version")
     val osVersion: String?,
 
     @Json(name = "architecture")
-    val architecture: String,
+    val architecture: String?,
 
     @Json(name = "variant")
     val variant: String?
 
-)
+) : Parcelable

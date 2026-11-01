@@ -93,15 +93,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     implementation(libs.commons.lang3)
-    implementation(libs.rxjava)
-    implementation(libs.rxandroid)
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.jackson)
     implementation(libs.retrofit.converter.moshi)
     implementation(libs.retrofit.adapter.rxjava3)
     implementation(libs.okhttp)
-    implementation(libs.jackson.databind)
-    implementation(libs.jackson.datatype.jsr310)
 
     implementation(libs.moshi.adapters)
 

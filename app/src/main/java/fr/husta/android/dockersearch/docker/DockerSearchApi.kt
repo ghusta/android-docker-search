@@ -2,7 +2,7 @@ package fr.husta.android.dockersearch.docker
 
 import fr.husta.android.dockersearch.AppConstants
 import fr.husta.android.dockersearch.docker.model.RepositoryTagsResponse
-import fr.husta.android.dockersearch.docker.model.SearchItemsResponse
+import fr.husta.android.dockersearch.docker.model.SearchImagesResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -17,7 +17,7 @@ interface DockerSearchApi {
     suspend fun searchImages(
         @Query("q") term: String,
         @Query("n") size: Int = 25
-    ): SearchItemsResponse
+    ): SearchImagesResponse
 
     /**
      * @param repository Like 'library/centos' (param must be encoded because it may contain /)

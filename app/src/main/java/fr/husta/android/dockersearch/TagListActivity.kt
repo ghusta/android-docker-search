@@ -20,18 +20,11 @@ import com.google.android.material.snackbar.Snackbar
 import fr.husta.android.dockersearch.databinding.ActivityTaglistBinding
 import fr.husta.android.dockersearch.databinding.DialogWarningTaglistBinding
 import fr.husta.android.dockersearch.docker.DockerSearchApiClient
-import fr.husta.android.dockersearch.docker.model.ContainerRepositoryTagV2
-import fr.husta.android.dockersearch.docker.model.ImageVariantByTagV2
-import fr.husta.android.dockersearch.docker.model.RepositoryTagKotlin
-import fr.husta.android.dockersearch.docker.model.RepositoryTagV2
+import fr.husta.android.dockersearch.docker.model.ImageVariantByTag
+import fr.husta.android.dockersearch.docker.model.RepositoryTag
 import fr.husta.android.dockersearch.listadapter.DockerTagListAdapter
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.functions.Consumer
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.launch
-import java.time.ZoneId
 import kotlin.coroutines.cancellation.CancellationException
 
 class TagListActivity : AppCompatActivity() {
@@ -78,11 +71,11 @@ class TagListActivity : AppCompatActivity() {
         fabNextPage.setOnClickListener { view: View? -> loadNextPage(view) }
 
         dockerTagListAdapter =
-            DockerTagListAdapter(this@TagListActivity, ArrayList<RepositoryTagV2?>())
+            DockerTagListAdapter(this@TagListActivity, mutableListOf())
         listView.setAdapter(dockerTagListAdapter)
 
-        listView.setOnItemClickListener { adapterView: AdapterView<*>?, view: View?, i: Int, l: Long ->
-            val item = listView.getItemAtPosition(i) as RepositoryTagV2
+        listView.setOnItemClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->
+            val item = listView.getItemAtPosition(i) as RepositoryTag
             val count = TagDetailsActivity.filterShownVariants(item.imageVariants).size
             Snackbar.make(
                 listView,
@@ -91,7 +84,7 @@ class TagListActivity : AppCompatActivity() {
             )
                 .setAnchorView(if (fabNextPage.isOrWillBeShown) fabNextPage else null)
                 .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
-                .setAction(R.string.snackbar_action_details) { view1: View? ->
+                .setAction(R.string.snackbar_action_details) {
                     Log.d(TAG, "Tag : " + item.name)
                     startActivityTagDetails(this, item)
                 }
@@ -114,12 +107,12 @@ class TagListActivity : AppCompatActivity() {
             { binding.progressIndicator.hide() })
     }
 
-    fun startActivityTagDetails(context: Context?, data: RepositoryTagV2) {
+    fun startActivityTagDetails(context: Context?, data: RepositoryTag) {
         val intent = Intent(context, TagDetailsActivity::class.java)
         intent.putExtra(TagDetailsActivity.DATA_TAG_NAME, data.name)
         intent.putParcelableArrayListExtra(
             TagDetailsActivity.DATA_IMG_VARIANT_ARRAY,
-            ArrayList<ImageVariantByTagV2?>(data.imageVariants)
+            ArrayList<ImageVariantByTag>(data.imageVariants)
         )
         startActivity(intent)
     }
@@ -139,17 +132,11 @@ class TagListActivity : AppCompatActivity() {
                 val response =
                     DockerSearchApiClient.api.listTags(imageNameToRepository(imgName), pageNumber)
 
-                val listTags: List<RepositoryTagKotlin> = response.results
-                listTags.forEach {
-                    val newItem = RepositoryTagV2()
-                    newItem.name = it.name
-                    newItem.fullSize = it.fullSize
-                    newItem.lastUpdated = it.lastUpdated.atZone(ZoneId.systemDefault())
-                  // TODO: fill newItem.imageVariants
-                    dockerTagListAdapter.add(newItem)
+                response.results.forEach {
+                    dockerTagListAdapter.add(it)
                 }
 
-                // dockerTagListAdapter.notifyDataSetChanged();
+//                dockerTagListAdapter.notifyDataSetChanged();
 
                 currentPage = pageNumber
                 Log.d(TAG, "requestTagsList() - currentPage = $currentPage")
@@ -247,10 +234,8 @@ class TagListActivity : AppCompatActivity() {
         val messageView: View = dialogWarningTaglistBinding.getRoot()
 
         val textView = dialogWarningTaglistBinding.txtWarningTaglist
-        textView.setText(
-            "Tag list may not be up to date. \n" +
-                    "See bug #687 ( https://github.com/docker/hub-feedback/issues/687 )"
-        )
+        textView.text = "Tag list may not be up to date. \n" +
+                "See bug #687 ( https://github.com/docker/hub-feedback/issues/687 )"
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Warning").setIcon(R.drawable.ic_warning_black_24dp)
@@ -273,7 +258,7 @@ class TagListActivity : AppCompatActivity() {
         val swipeRefreshLayout = binding.swipeRefreshTags
         requestTagsList(
             imageName!!, 1,
-            { dockerTagListAdapter!!.clear() },
+            { dockerTagListAdapter.clear() },
             { swipeRefreshLayout.isRefreshing = false })
     }
 

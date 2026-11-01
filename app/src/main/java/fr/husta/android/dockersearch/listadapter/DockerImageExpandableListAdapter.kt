@@ -19,7 +19,7 @@ import fr.husta.android.dockersearch.AppConstants
 import fr.husta.android.dockersearch.MainActivity
 import fr.husta.android.dockersearch.R
 import fr.husta.android.dockersearch.TagListActivity
-import fr.husta.android.dockersearch.docker.model.SearchItem
+import fr.husta.android.dockersearch.docker.model.ImageItem
 import fr.husta.android.dockersearch.view.DockerImageViewHolder
 import java.util.Locale
 
@@ -28,7 +28,7 @@ import java.util.Locale
  */
 class DockerImageExpandableListAdapter(
     private val context: Context,
-    val groupList: ArrayList<SearchItem>
+    val groupList: ArrayList<ImageItem>
 ) : BaseExpandableListAdapter() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -41,7 +41,7 @@ class DockerImageExpandableListAdapter(
         return 1
     }
 
-    override fun getGroup(groupPosition: Int): SearchItem {
+    override fun getGroup(groupPosition: Int): ImageItem {
         return groupList[groupPosition]
     }
 

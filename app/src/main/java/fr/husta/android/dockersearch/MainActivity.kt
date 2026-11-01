@@ -2,7 +2,6 @@ package fr.husta.android.dockersearch
 
 import android.app.SearchManager
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -33,8 +32,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.husta.android.dockersearch.databinding.ActivityMainBinding
 import fr.husta.android.dockersearch.databinding.DialogAboutBinding
 import fr.husta.android.dockersearch.docker.DockerSearchApiClient
-import fr.husta.android.dockersearch.docker.model.ImageSearchResult
-import fr.husta.android.dockersearch.docker.model.SearchItem
+import fr.husta.android.dockersearch.docker.model.ImageItem
 import fr.husta.android.dockersearch.docker.model.comparator.SearchItemComparators
 import fr.husta.android.dockersearch.listadapter.DockerImageExpandableListAdapter
 import fr.husta.android.dockersearch.listadapter.SuggestionAdapter
@@ -95,7 +93,7 @@ class MainActivity : AppCompatActivity() {
             )
         } else {
             Log.d(TAG, "onCreate: state to be restored ?")
-            val savedArrayList = savedInstanceState.getParcelableArrayList<SearchItem>(
+            val savedArrayList = savedInstanceState.getParcelableArrayList<ImageItem>(
                 KEY_IMAGE_LIST_ADAPTER
             )
             dockerImageExpandableListAdapter =
@@ -396,7 +394,7 @@ class MainActivity : AppCompatActivity() {
 
                     for ((name, description, starCount, isOfficial) in sortedItems) {
                         dockerImageExpandableListAdapter!!.groupList.add(
-                            SearchItem(name, description, starCount, isOfficial)
+                            ImageItem(name, description, starCount, isOfficial)
                         )
                     }
 //                    dockerImageExpandableListAdapter!!.groupList.addAll( sortedItems )
@@ -435,12 +433,6 @@ class MainActivity : AppCompatActivity() {
             binding.searchView.getEditText().getText().toString(),
             {},
             { swipeRefreshLayout.isRefreshing = false })
-    }
-
-    fun startActivityTagList(context: Context?, data: ImageSearchResult) {
-        val starter = Intent(context, TagListActivity::class.java)
-        starter.putExtra(TagListActivity.DATA_IMG_NAME, data.name)
-        startActivity(starter)
     }
 
     fun checkInternetConnection() {
