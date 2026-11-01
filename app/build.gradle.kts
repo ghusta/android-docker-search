@@ -95,7 +95,6 @@ dependencies {
     implementation(libs.commons.lang3)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.moshi)
-    implementation(libs.retrofit.adapter.rxjava3)
     implementation(libs.okhttp)
 
     implementation(libs.moshi.adapters)

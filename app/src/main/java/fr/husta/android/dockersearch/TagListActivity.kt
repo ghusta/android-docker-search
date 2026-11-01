@@ -23,7 +23,6 @@ import fr.husta.android.dockersearch.docker.DockerSearchApiClient
 import fr.husta.android.dockersearch.docker.model.ImageVariantByTag
 import fr.husta.android.dockersearch.docker.model.RepositoryTag
 import fr.husta.android.dockersearch.listadapter.DockerTagListAdapter
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -41,9 +40,6 @@ class TagListActivity : AppCompatActivity() {
     private var currentPage = -1
     private var hasNextPage = false
     private var imageName: String? = null
-
-    private val disposables = CompositeDisposable()
-//    private val dockerRegistryClient = DockerRegistryClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -264,11 +260,6 @@ class TagListActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        this.disposables.clear()
     }
 
     companion object {
