@@ -1,15 +1,12 @@
 package fr.husta.android.dockersearch.docker
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import kotlinx.coroutines.test.runTest
 import okhttp3.OkHttpClient
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.net.Proxy
-import java.util.Date
 import java.util.concurrent.TimeUnit
 
 class DockerSearchApiTest {
@@ -24,7 +21,7 @@ class DockerSearchApiTest {
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(5, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
-            .proxy(Proxy.NO_PROXY)
+            .proxy(null)
             .build()
 
         val retrofitMain = Retrofit.Builder()
