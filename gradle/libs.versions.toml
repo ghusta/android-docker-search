@@ -1,5 +1,5 @@
 [versions]
-agp = "9.5.2"
+agp = "9.5.3"
 
 # AndroidX & Material
 androidxCore = "1.19.1"
