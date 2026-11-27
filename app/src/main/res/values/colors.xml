@@ -141,4 +141,5 @@
     <color name="md_theme_surfaceContainer_highContrast">#DFE3E8</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#D1D5DA</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#C3C7CC</color>
+    <color name="docker_logo_fill_color">#000000</color>
 </resources>
