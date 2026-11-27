@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dip"
             android:contentDescription="Docker Logo"
-            android:src="@drawable/new_docker_logo"
+            android:src="@drawable/docker_logo_2019"
             tools:ignore="HardcodedText" />
 
         <TextView
